@@ -1,0 +1,5 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^cached_data.*$
+^example_code\.R$
+^README.*$

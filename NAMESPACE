@@ -1,0 +1,3 @@
+importFrom(dplyr, "%>%")
+importFrom(rlang, ":=", .data)
+exportPattern("^[[:alpha:]]+")
