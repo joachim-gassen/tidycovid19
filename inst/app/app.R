@@ -1,6 +1,7 @@
 library(shiny)
 library(dplyr)
 library(shinyWidgets)
+library(tidycovid19)
 
 ui <- fluidPage(
   titlePanel("Explore the Spread of Covid-19"),
