@@ -1,6 +1,6 @@
 #' Download a merged country-day data frame containing Covid-19 related data
 #'
-#' Merges data from the Johns Hopkins University CSSSE team on the spread of the
+#' Merges data from the Johns Hopkins University CSSE team on the spread of the
 #' SARS-CoV-2 virus and the Covid-19 pandemic
 #' (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 #' measures database

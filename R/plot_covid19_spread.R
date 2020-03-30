@@ -67,7 +67,8 @@ plot_covid19_spread <- function(
     dplyr::filter(!is.na(.data$edate)) %>%
     dplyr::group_by(.data$country) %>%
     dplyr::filter(dplyr::n() >= min_by_ctry_obs) %>%
-    dplyr::ungroup() -> df
+    dplyr::ungroup() %>%
+    dplyr::filter(.data$edate <= edate_cutoff) -> df
 
   if (per_capita) df <- df %>%
     dplyr::mutate(!! type := 1e5*(!! rlang::sym(type))/.data$population) %>%
@@ -129,7 +130,7 @@ plot_covid19_spread <- function(
     title_str <- sprintf("The First %d Days: Recovered Cases", edate_cutoff)
   }
 
-  p <- ggplot2::ggplot(df %>% dplyr::filter(.data$edate <= edate_cutoff),
+  p <- ggplot2::ggplot(df,
          ggplot2::aes(x = .data$edate, color = .data$country,
                       y = !! rlang::sym(type))) +
     ggplot2::geom_line() +

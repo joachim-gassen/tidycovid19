@@ -26,7 +26,8 @@ reference:
   - download_google_trends_data
   - download_wbank_data
   - download_merged_data
-- title: Visualization function
-  desc: A customizable function to display the spread of Covid-19, inspired by the displays by John Burn-Murdoch from the Financial Times
+- title: Visualization functions
+  desc: A customizable function and an accompanying shiny app to display the spread of Covid-19, inspired by the displays by John Burn-Murdoch from the Financial Times
   contents:
   - plot_covid19_spread
+  - shiny_covid19_spread

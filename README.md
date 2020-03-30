@@ -104,6 +104,19 @@ plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
 
 <img src="man/figures/DemoPlot-1.png" style="display: block; margin: auto;" />
 
+## Shiny App
+
+Sorry, I could not resist. The options of the `plot_covid19_spread()`
+make the implementation of a shiny app a little bit to tempting to pass.
+The command `shiny_covid19_spread()` starts the app.
+
+<center>
+
+![Screenshot of `shiny_covid19_spread()`
+app](man/figures/shiny_covid19_spread.png)
+
+</center>
+
 ## Blog post
 
 [Click
