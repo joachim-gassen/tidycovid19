@@ -67,7 +67,7 @@ Currently, the package offers the following functions to download data:
     (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset).
     These relatively new data allow researchers to study the effect of
     non-pharmaceutical interventions on the development of the virus.
-  - `download_google_trend_data()`: Downloads and tidies [Google
+  - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
     for the term “coronavirus” (Thank you to Yan Ouaknine for bringing
     up that idea\!). This data can be used to assess the public
@@ -86,11 +86,11 @@ Currently, the package offers the following functions to download data:
 
 The focus of the package lies on data collection and not on
 visualization as there are already many great tools floating around. The
-function `plot_covid19_spred()` however, allows you to quickly visualize
-the spread of the virus in relation to governmental intervention
-measures. It is inpired by the insightful displays created by John
-Burn-Murdoch from the Financial Times and offers various customization
-options.
+function `plot_covid19_spread()` however, allows you to quickly
+visualize the spread of the virus in relation to governmental
+intervention measures. It is inpired by the insightful displays created
+by John Burn-Murdoch from the Financial Times and offers various
+customization options.
 
 ``` r
 #remotes::install_github("joachim-gassen/tidycovid19")
@@ -102,11 +102,11 @@ plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
                     intervention = "lockdown")
 ```
 
-![](README_files/figure-gfm/DemoPlot-1.png)<!-- -->
+<img src="man/figures/DemoPlot-1.png" style="display: block; margin: auto;" />
 
 ## Blog post
 
 [Click
 here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
-for the blog post that showcases some descriptive visuals to see what
-one can do with the data retrieved by this package.
+for a blog post that showcases some descriptive visuals to see what one
+can do with the data retrieved by this package.

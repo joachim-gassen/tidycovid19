@@ -4,7 +4,10 @@ author: Joachim Gassen
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+knitr::opts_chunk$set(
+  echo = TRUE, warning = FALSE, message = FALSE, 
+  cache = TRUE, fig.path = "man/figures/", fig.align="center"
+)
 library(tidyverse)
 library(knitr)
 ```
@@ -54,14 +57,14 @@ Currently, the package offers the following functions to download data:
 - `download_jhu_csse_covid19_data()`: Downloads and tidies [Covid-19 data from the Johns Hopkins University CSSE Github Repo](https://github.com/CSSEGISandData/COVID-19). This data has developed to a standard resource for researchers and the general audience 
 interested in assessing the global spreading of the virus. The data is aggregated to the country level.
 - `download_acaps_npi_data()`: Downloads and tidies the [Government measures dataset provided by the Assessment Capacities Project (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset). These relatively new data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus. 
-- `download_google_trend_data()`: Downloads and tidies [Google Trends](https://trends.google.com/trends/) data on the search volume for the term "coronavirus" (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries (see plot below) and over time within a given country.
+- `download_google_trends_data()`: Downloads and tidies [Google Trends](https://trends.google.com/trends/) data on the search volume for the term "coronavirus" (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries (see plot below) and over time within a given country.
 - `download_wbank_data()`: Downloads and tidies additional country level information provided by the [World Bank](https://data.worldbank.org) using the {wbstats} package. These data allow researchers to calculate per capita measures of the virus spread and to assess the association of macro-economic variables with the development of the virus.
 - `download_merged_data()`: Downloads all data sources and creates a merged country-day panel sample.
 
 
 ## Visualization
 
-The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. The function `plot_covid19_spred()` however, allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.
+The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. The function `plot_covid19_spread()` however, allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.
 
 ```{r DemoPlot}
 #remotes::install_github("joachim-gassen/tidycovid19")
@@ -76,6 +79,6 @@ plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
 
 ## Blog post
 
-[Click here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/) for the blog post that showcases some descriptive visuals to see what one can do with the data retrieved by this package.
+[Click here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/) for a blog post that showcases some descriptive visuals to see what one can do with the data retrieved by this package.
 
 

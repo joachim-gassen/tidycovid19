@@ -119,7 +119,7 @@
 <li>
 <code><a href="reference/download_acaps_npi_data.html">download_acaps_npi_data()</a></code>: Downloads and tidies the <a href="https://www.acaps.org/covid19-government-measures-dataset">Government measures dataset provided by the Assessment Capacities Project (ACAPS)</a>. These relatively new data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus.</li>
 <li>
-<code>download_google_trend_data()</code>: Downloads and tidies <a href="https://trends.google.com/trends/">Google Trends</a> data on the search volume for the term “coronavirus” (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries (see plot below) and over time within a given country.</li>
+<code><a href="reference/download_google_trends_data.html">download_google_trends_data()</a></code>: Downloads and tidies <a href="https://trends.google.com/trends/">Google Trends</a> data on the search volume for the term “coronavirus” (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries (see plot below) and over time within a given country.</li>
 <li>
 <code><a href="reference/download_wbank_data.html">download_wbank_data()</a></code>: Downloads and tidies additional country level information provided by the <a href="https://data.worldbank.org">World Bank</a> using the {wbstats} package. These data allow researchers to calculate per capita measures of the virus spread and to assess the association of macro-economic variables with the development of the virus.</li>
 <li>
@@ -129,7 +129,7 @@
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h2>
-<p>The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. The function <code>plot_covid19_spred()</code> however, allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
+<p>The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. The function <code><a href="reference/plot_covid19_spread.html">plot_covid19_spread()</a></code> however, allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#remotes::install_github("joachim-gassen/tidycovid19")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
@@ -137,12 +137,12 @@
 <a class="sourceLine" id="cb1-5" data-line-number="5">merged &lt;-<span class="st"> </span><span class="kw"><a href="reference/download_merged_data.html">download_merged_data</a></span>(<span class="dt">cached =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="reference/plot_covid19_spread.html">plot_covid19_spread</a></span>(merged, <span class="dt">highlight =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>), </a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">                    <span class="dt">intervention =</span> <span class="st">"lockdown"</span>)</a></code></pre></div>
-<p><img src="docs/index_files/figure-html/DemoPlot-1.png" width="700"></p>
+<p><img src="reference/figures/DemoPlot-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="blog-post" class="section level2">
 <h2 class="hasAnchor">
 <a href="#blog-post" class="anchor"></a>Blog post</h2>
-<p><a href="https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/">Click here</a> for the blog post that showcases some descriptive visuals to see what one can do with the data retrieved by this package.</p>
+<p><a href="https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/">Click here</a> for a blog post that showcases some descriptive visuals to see what one can do with the data retrieved by this package.</p>
 </div>
 </div>
   </div>
