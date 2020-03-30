@@ -1,3 +1,56 @@
+#' Download Google Trends data on Covid-19
+#'
+#' Downloads Google Trends data (\url{https://trends.google.com/trends/})
+#' about the 2020 search activity for a given search term at global and
+#' country levels. The search term defaults to "coronavirus" to reflect
+#' the relative public attention to the Covid-19 pandemic.
+#'
+#' @param search_term Defaults to "coronavirus".
+#' @param type The type of data that you want to retrieve. Can be any subset of
+#' \itemize{
+#'  \item{"country": }{Relative search activity at the global level, reporting by country.}
+#'  \item{"country_day": }{Relative search activity at the country level, reporting by country.}
+#'  \item{"region": }{Relative search activity at the country level, reporting by region.}
+#'  \item{"city": }{Relative search activity at the country level, reporting by city.}
+#' }
+#' @param silent Whether you want the function to send some status messages to
+#'     the console. Might be informative as downloading will take some time
+#'     and thus defaults to \code{TRUE}.
+#' @param cached Whether you want to download the cached version of the data
+#'     from the {tidycovid19} Github repository instead of retrieving the
+#'     data from the authorative source. Downloading the cached version is
+#'     faster and the cache is updated daily. Defaults to \code{FALSE}.
+#'
+#' @return If only one \code{type} was selected, a data frame containing the
+#'     data. Otherwise, a list containing the desired data frames ordered as
+#'     in \code{type}.
+#'
+#' @details Uses the \code{gtrendsR} package. Please note that Google Trends
+#'     only reports relative search volume. For each data frame, the values
+#'     are standardized so that the observations with the highest search volume
+#'     gets a score of 100 and the other scores of the data frame are relative
+#'     to that. This implies that comparisons across data frames are not
+#'     feasible. When Google Trends reports a score of "<1" this is
+#'     translated to 0.5 in the data.
+#'
+#' @examples
+#' df <- download_google_trends_data(type = "country", silent = TRUE, cached = TRUE)
+#' df %>%
+#'   dplyr::select(iso3c, gtrends_score) %>%
+#'   dplyr::arrange(-gtrends_score)
+#'
+#' lst <- download_google_trends_data(type = c("region", "city"), silent = TRUE, cached = TRUE)
+#' lst[[1]] %>%
+#'   dplyr::filter(iso3c == "DEU") %>%
+#'   dplyr::select(region, gtrends_score) %>%
+#'   dplyr::arrange(-gtrends_score)
+#'
+#' lst[[2]] %>%
+#'   dplyr::filter(iso3c == "DEU") %>%
+#'   dplyr::select(city, gtrends_score) %>%
+#'   dplyr::arrange(-gtrends_score)
+#'
+#' @export
 download_google_trends_data <- function(search_term = "coronavirus",
                                     type = "country_day",
                                     silent = FALSE, cached = FALSE) {
@@ -25,7 +78,8 @@ download_google_trends_data <- function(search_term = "coronavirus",
       ))
     if (!silent) message("Downloading cached version of Google Trends data...", appendLF = FALSE)
     lst <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/google_trends.RDS")))
-    if (!silent) message("done. Timestamp is %s", lst[[1]]$timestamp[1])
+    lst <- lst[match(type, c('country', 'country_day', 'region', 'city'))]
+    if (!silent) message(sprintf("done. Timestamp is %s", lst[[1]]$timestamp[1]))
   } else {
     time <- paste("2020-01-01", Sys.Date())
 

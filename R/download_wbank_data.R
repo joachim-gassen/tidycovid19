@@ -1,3 +1,41 @@
+#' Download current country-level World Bank data
+#'
+#' Uses the \code{wbstats} package to download recent country-level data from
+#' the World Bank (\url{https://data.worldbank.org}).
+#'
+#' @param vars Specify the data items that you want to retrieve.
+#' @param labels Give somewhat more informative variable names for the output
+#'     data frame. Has to match the length of \code{vars} and needs to contain
+#'     valid variable names.
+#' @param var_def Do you want to retrieve a data frame containing the World Bank
+#'     data definitions along with the actual data? Defaults to \code{FALSE}.
+#' @param silent Whether you want the function to send some status messages to
+#'     the console. Might be informative as downloading will take some time
+#'     and thus defaults to \code{TRUE}.
+#' @param cached Whether you want to download the cached version of the data
+#'     from the {tidycovid19} Github repository instead of retrieving the
+#'     data from the authorative source. Downloading the cached version is
+#'     faster and the cache is updated daily. Defaults to \code{FALSE}.
+#'
+#' @return If \code{var_def = FALSE}, a data frame containing the
+#'     data and a \code{timestamp} variable indicating the time of data
+#'     retrieval. Otherwise, a list including the data frame with the
+#'     data followed by a data frame containing the variable definitions.
+#'
+#'
+#' @examples
+#' df <- download_wbank_data(silent = TRUE, cached = TRUE)
+#' df %>%
+#'   dplyr::select(country, population) %>%
+#'   dplyr::arrange(-population)
+#'
+#' lst <- download_wbank_data(silent = TRUE, cached = TRUE, var_def = TRUE)
+#' lst[[1]] %>%
+#'   tidyr::pivot_longer(5:10, names_to = "wbank_variable", values_to = "values") %>%
+#'   dplyr::group_by(wbank_variable) %>%
+#'   dplyr::summarise(non_na = sum(!is.na(values)))
+#'
+#' @export
 download_wbank_data <- function(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
                                          "EN.POP.DNST", "EN.URB.LCTY",
                                          "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD"),
@@ -27,20 +65,22 @@ download_wbank_data <- function(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
   )
 
   if(cached) {
-    if (vars != c("SP.POP.TOTL", "AG.LND.TOTL.K2",
-                  "EN.POP.DNST", "EN.URB.LCTY",
-                  "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD") ||
-        labels != c("population", "land_area_skm",
-                    "pop_density", "pop_largest_city",
-                    "life_expectancy", "gdp_capita"))
+    if (!identical(vars, c("SP.POP.TOTL", "AG.LND.TOTL.K2",
+                           "EN.POP.DNST", "EN.URB.LCTY",
+                           "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD")) ||
+        !identical(labels,  c("population", "land_area_skm",
+                              "pop_density", "pop_largest_city",
+                              "life_expectancy", "gdp_capita")))
       stop(paste(
         "'cached' == TRUE but either 'vars' or 'labels' is different from",
         "the default. You need to use 'cached' == FALSE when you want to",
         "retrieve customized World Bank data."
         ))
-    if (!silent) message("Downloading cached version of merged data...", appendLF = FALSE)
+    if (!silent) message("Downloading cached version of World Bank data...", appendLF = FALSE)
     wb_list <-readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/wbank.RDS")))
-    if (!silent) message("done. Timestamp is %s", wb_list$timestamp)
+    if (!silent) message(sprintf("done. Timestamp is %s", wb_list[[1]]$timestamp[1]))
+    df <- wb_list[[1]]
+    data_def <- wb_list[[2]]
   } else {
     pull_worldbank_data <- function(vars) {
       new_cache <- wbstats::wbcache()
@@ -81,35 +121,35 @@ download_wbank_data <- function(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     }
 
     wb_list <- pull_worldbank_data(vars)
+    wb_data <- wb_list[[1]]
+    wb_data_def <- wb_list[[2]]
+
+    wb_data_def[wb_data_def$var_name %in% vars, ] <-
+      wb_data_def[wb_data_def$var_name %in% vars, ][order(
+        match(wb_data_def$var_name[wb_data_def$var_name %in% vars], vars)), ]
+    wb_data_def$var_name[wb_data_def$var_name %in% vars] <- labels
+
+
+    df <- wb_data %>%
+      dplyr::group_by(.data$iso3c) %>%
+      dplyr::arrange(.data$iso3c, .data$year) %>%
+      dplyr::summarise_at(dplyr::vars(-.data$iso2c, -.data$country, -.data$region,
+                                      -.data$income, -.data$year),
+                          function(x) dplyr::last(stats::na.omit(x))
+      ) %>%
+      dplyr::select(dplyr::one_of(c("iso3c", vars))) %>%
+      dplyr::left_join(wb_data %>%
+                         dplyr::select(.data$iso3c, .data$country,
+                                       .data$region, .data$income) %>%
+                         dplyr::distinct(),
+                       by = "iso3c") %>%
+      dplyr::select(dplyr::one_of(c("iso3c", "country", "region", "income", vars))) %>%
+      dplyr::mutate(timestamp = wb_list[[3]])
+
+    names(df)[5:(ncol(df) - 1)] <- labels
+    data_def <- wb_data_def[c(1,3,4,5,7:nrow(wb_data_def)), ]
+    if (!silent) message("Done downloading World Bank data\n")
   }
-  wb_data <- wb_list[[1]]
-  wb_data_def <- wb_list[[2]]
-
-  wb_data_def[wb_data_def$var_name %in% vars, ] <-
-    wb_data_def[wb_data_def$var_name %in% vars, ][order(
-      match(wb_data_def$var_name[wb_data_def$var_name %in% vars], vars)), ]
-  wb_data_def$var_name[wb_data_def$var_name %in% vars] <- labels
-
-
-  df <- wb_data %>%
-    dplyr::group_by(.data$iso3c) %>%
-    dplyr::arrange(.data$iso3c, .data$year) %>%
-    dplyr::summarise_at(dplyr::vars(-.data$iso2c, -.data$country, -.data$region,
-                             -.data$income, -.data$year),
-                        function(x) dplyr::last(stats::na.omit(x))
-    ) %>%
-    dplyr::select(dplyr::one_of(c("iso3c", vars))) %>%
-    dplyr::left_join(wb_data %>%
-                       dplyr::select(.data$iso3c, .data$country,
-                                     .data$region, .data$income) %>%
-                       dplyr::distinct(),
-                     by = "iso3c") %>%
-    dplyr::select(dplyr::one_of(c("iso3c", "country", "region", "income", vars))) %>%
-    dplyr::mutate(timestamp = wb_list[[3]])
-
-  names(df)[5:(ncol(df) - 1)] <- labels
-  data_def <- wb_data_def[c(1,3,4,5,7:nrow(wb_data_def)), ]
-  if (!silent && !cached) message("Done downloading World Bank data\n")
-  if(var_def) list(df, data_def, wb_list[[3]]) else df
+  if(var_def) list(df, data_def) else df
 }
 

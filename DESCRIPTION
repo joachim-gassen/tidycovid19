@@ -1,7 +1,7 @@
 Package: tidycovid19
 Type: Package
 Title: Download, Tidy and Visualize Covid-19 Related Data
-Version: 0.1.0
+Version: 0.0.0.9000
 Authors@R: person("Joachim", "Gassen", role = c("aut", "cre"), 
     email = "gassen@wiwi.hu-berlin.de",
     comment = c(ORCID = "0000-0003-4364-2911"))
@@ -14,7 +14,9 @@ Description: This package facilitates the download of current Covid-19 related
     In addition, the package features a function to visualize the country-level 
     spread of Covid-19. 
 License: MIT + file LICENSE
-Imports: xml2, rvest, readxl, dplyr, countrycode, ggplot2, wbstats, gghighlight,
-    gtrendsR, readr, rlang, scales, tidyr, stringr, lubridate
+Imports: 
+    xml2, rvest, readxl, magrittr, dplyr, tidyr, countrycode, ggplot2, wbstats,
+    gghighlight, gtrendsR, ggrepel, readr, rlang, scales, stringr, lubridate
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1

@@ -1,3 +1,29 @@
+#' Download non-pharmaceutical interventions data
+#'
+#' Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
+#' from the ACAPS governmental measures database
+#' (\url{https://www.acaps.org/covid19-government-measures-dataset}).
+#'
+#' @param silent Whether you want the function to send some status messages to
+#'     the console. Might be informative as downloading will take some time
+#'     and thus defaults to \code{TRUE}.
+#' @param cached Whether you want to download the cached version of the data
+#'     from the {tidycovid19} Github repository instead of retrieving the
+#'     data from the authorative source. Downloading the cached version is
+#'     faster and the cache is updated daily. Defaults to \code{FALSE}.
+#'
+#' @return A data frame containing the data, organized by intervention. It
+#'     includes a \code{timestamp} variable indicating the time of data
+#'     retrieval.
+#'
+#' @examples
+#' df <- download_acaps_npi_data(silent = TRUE, cached = TRUE)
+#' df %>%
+#'   dplyr::group_by(country) %>%
+#'   dplyr::summarise(number_of_interventions = dplyr::n()) %>%
+#'   dplyr::arrange(-number_of_interventions)
+#'
+#' @export
 download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   if (length(silent) > 1 || !is.logical(silent)) stop(
     "'silent' needs to be a single logical value"
@@ -9,7 +35,7 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   if(cached) {
     if (!silent) message("Downloading cached version of ACAPS NPI data...", appendLF = FALSE)
     df <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/acaps_npi.RDS")))
-    if (!silent) message("done. Timestamp is %s", df$timestamp[1])
+    if (!silent) message(sprintf("done. Timestamp is %s", df$timestamp[1]))
     return(df)
   }
 

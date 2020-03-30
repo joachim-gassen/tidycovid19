@@ -1,3 +1,33 @@
+#' Download Johns Hopkins University CSSE data on Covid-19
+#'
+#' Downloads Johns Hopkins University CSSE data on the spread of the
+#' SARS-CoV-2 virus and the Covid-19 pandemic
+#' (\url{https://github.com/CSSEGISandData/COVID-19}).
+#' The data for confirmed cases, reported deaths and recoveries are merged into
+#' one data frame, aggregated at the country level, converted to long format and
+#' joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
+#' \link{countrycode} package.
+#'
+#' @param silent Whether you want the function to send some status messages to
+#'     the console. Might be informative as downloading will take some time
+#'     and thus defaults to \code{TRUE}.
+#' @param cached Whether you want to download the cached version of the data
+#'     from the {tidycovid19} Github repository instead of retrieving the
+#'     data from the authorative source. Downloading the cached version is
+#'     faster and the cache is updated daily. Defaults to \code{FALSE}.
+#'
+#' @return A data frame containing the data, organized by country and date. It
+#'     includes a \code{timestamp} variable indicating the time of data
+#'     retrieval.
+#'
+#' @examples
+#' df <- download_jhu_csse_covid19_data(silent = TRUE, cached = TRUE)
+#' df %>%
+#'   dplyr::group_by(country) %>%
+#'   dplyr::summarise(confirmed_cases = max(confirmed, na.rm = TRUE)) %>%
+#'   dplyr::arrange(-confirmed_cases)
+#'
+#' @export
 download_jhu_csse_covid19_data <- function(silent = FALSE, cached = FALSE) {
   if (length(silent) > 1 || !is.logical(silent)) stop(
     "'silent' needs to be a single logical value"
@@ -10,7 +40,7 @@ download_jhu_csse_covid19_data <- function(silent = FALSE, cached = FALSE) {
   if(cached) {
     if (!silent) message("Downloading cached version of JHU CSSE Covid 19 data...", appendLF = FALSE)
     df <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/jhu_csse_covid19.RDS")))
-    if (!silent) message("done. Timestamp is %s", df$timestamp[1])
+    if (!silent) message(sprintf("done. Timestamp is %s", df$timestamp[1]))
     return(df)
   }
 

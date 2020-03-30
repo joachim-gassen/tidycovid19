@@ -39,11 +39,18 @@ infrastructure related to Covid-19:
 Other than the two packages above, the key objective of the
 {tidycovid19} package is to provide *transparent* access to *various*
 data sources. It does not contain any data per se. Instead, it provides
-functions to pull data from publicly available data sources.
+functions to pull data from publicly available sources.
 
 For those interested in speedy downloads it alternatively provides the
 option to download the data from the cached data in this repo (stored in
 the directory `cached_data`). The cached data will be updated daily.
+
+If you rather want to start your own project by customizing the code of
+this package to fit your needs, I suggest that you take a look at my
+[Github repository
+“tidy\_covid19”](https://github.com/joachim-gassen/tidy_covid19)
+(mind the underscore). This repo presents a forkable code infrastructure
+for Covid 19 projects using the same data infrastructure.
 
 ## The Data
 
@@ -57,7 +64,7 @@ Currently, the package offers the following functions to download data:
     The data is aggregated to the country level.
   - `download_acaps_npi_data()`: Downloads and tidies the [Government
     measures dataset provided by the Assessment Capacities Project
-    (ACAPS)](https://data.humdata.org/dataset/acaps-covid19-government-measures-dataset).
+    (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset).
     These relatively new data allow researchers to study the effect of
     non-pharmaceutical interventions on the development of the virus.
   - `download_google_trend_data()`: Downloads and tidies [Google
@@ -81,7 +88,9 @@ The focus of the package lies on data collection and not on
 visualization as there are already many great tools floating around. The
 function `plot_covid19_spred()` however, allows you to quickly visualize
 the spread of the virus in relation to governmental intervention
-measures.
+measures. It is inpired by the insightful displays created by John
+Burn-Murdoch from the Financial Times and offers various customization
+options.
 
 ``` r
 #remotes::install_github("joachim-gassen/tidycovid19")

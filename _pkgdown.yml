@@ -1,0 +1,32 @@
+template:
+  params:
+    ganalytics: UA-119053376-1
+development:
+  mode: auto
+navbar:
+  type: default
+  left:
+  - icon: fa-home fa-lg
+    href: index.html
+  - text: Reference
+    href: reference/index.html
+  - text: News
+    href: news/index.html
+  right:
+  - text: Code repository
+    icon: fa-github
+    href: https://www.github.com/joachim-gassen/tidycovid19
+
+reference:
+- title: Data functions
+  desc: Functions to download Covid-19 related data from authorative sources
+  contents:
+  - download_jhu_csse_covid19_data
+  - download_acaps_npi_data
+  - download_google_trends_data
+  - download_wbank_data
+  - download_merged_data
+- title: Visualization function
+  desc: A customizable function to display the spread of Covid-19, inspired by the displays by John Burn-Murdoch from the Financial Times
+  contents:
+  - plot_covid19_spread
