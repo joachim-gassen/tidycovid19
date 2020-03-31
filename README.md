@@ -108,12 +108,13 @@ plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
 
 Sorry, I could not resist. The options of the `plot_covid19_spread()`
 make the implementation of a shiny app a little bit to tempting to pass.
-The command `shiny_covid19_spread()` starts the app.
+The command `shiny_covid19_spread()` starts the app. Click on the image
+to be taken to the online app.
 
 <center>
 
-![Screenshot of `shiny_covid19_spread()`
-app](man/figures/shiny_covid19_spread.png)
+[![Screenshot of `shiny_covid19_spread()`
+app](man/figures/shiny_covid19_spread.png)](https://jgassen.shinyapps.io/tidycovid19/)
 
 </center>
 
@@ -121,5 +122,8 @@ app](man/figures/shiny_covid19_spread.png)
 
 [Click
 here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
-for a blog post that showcases some descriptive visuals to see what one
-can do with the data retrieved by this package.
+for an older blog post that showcases some descriptive visuals to see
+what one can do with the data retrieved by this package. [Click
+here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
+for an older blog post that showcases some descriptive visuals to see
+what one can do with the data retrieved by this package.

@@ -1,4 +1,6 @@
+# remotes::install_github("joachim-gassen/tidycovid19")
 library(tidycovid19)
+
 # Some examples - not part of the package
 # Code to generate the cached data
 
@@ -25,3 +27,7 @@ plot_covid19_spread(merged, highlight = "DEU",
                     intervention = "lockdown")
 plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
                     intervention = "lockdown")
+
+# Shiny app
+
+shiny_covid19_spread()
