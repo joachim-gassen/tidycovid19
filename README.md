@@ -109,7 +109,10 @@ plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
 Sorry, I could not resist. The options of the `plot_covid19_spread()`
 make the implementation of a shiny app a little bit to tempting to pass.
 The command `shiny_covid19_spread()` starts the app. Click on the image
-to be taken to the online app.
+to be taken to the online app. You can use it to customize your
+`plot_covid19_spread()` display as it allows copying the plot generating
+code to the clipboard, thanks to the fine
+[{rclipboard}](https://github.com/sbihorel/rclipboard) package.
 
 <center>
 
@@ -118,12 +121,17 @@ app](man/figures/shiny_covid19_spread.png)](https://jgassen.shinyapps.io/tidycov
 
 </center>
 
-## Blog post
+As the shinyapps.io server has had some issues with exhausting
+connections, you can also use this [alternative
+server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
-[Click
-here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
-for an older blog post that showcases some descriptive visuals to see
-what one can do with the data retrieved by this package. [Click
-here](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
-for an older blog post that showcases some descriptive visuals to see
-what one can do with the data retrieved by this package.
+## Blog posts
+
+  - [An intro blog
+    post](https://joachim-gassen.github.io/2020/03/meet-tidycovid19-yet-another-covid-19-related-r-package/)
+    containing not much more information then this README.
+
+  - [An older blog
+    post](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
+    that showcases some descriptive visuals to see what one can do with
+    the data retrieved by this package.

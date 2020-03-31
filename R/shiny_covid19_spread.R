@@ -3,7 +3,9 @@
 #' @description A shiny based web app that allows users to customize the
 #'    \code{\link{plot_covid19_spread}} display. The display has been
 #'    inpired by the displays created by John Burn-Murdoch for the Financial
-#'    Times.
+#'    Times. You can use it to customize your \code{plot_covid19_spread()}
+#'    display as it allows copying the plot generating code to the clipboard,
+#'    thanks to the fine {rclipboard} package.
 #'
 #' @param data The data frame to base the plot on. Should be a merged data
 #'     frame obtained by \link{download_merged_data} and defaults to

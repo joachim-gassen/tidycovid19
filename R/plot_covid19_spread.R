@@ -6,6 +6,9 @@
 #' (\url{https://github.com/CSSEGISandData/COVID-19}) and the ACAPS governmental
 #' measures database
 #' (\url{https://www.acaps.org/covid19-government-measures-dataset}).
+#' If your are overwhelmed with the options of the plot, explore them with
+#' \code{shiny_covid19_spread()} and use the 'copy code for plot to clipboard'
+#' option.
 #'
 #' @param data The data frame to base the plot on. Should be a merged data
 #'     frame obtained by \link{download_merged_data} and defaults to
@@ -140,7 +143,6 @@ plot_covid19_spread <- function(
       title = title_str,
       caption = caption_str
     ) +
-    ggplot2::scale_y_continuous(trans='log10', labels = scales::comma) +
     ggplot2::theme_minimal() +
     ggplot2::theme(
       plot.title.position = "plot",
@@ -150,6 +152,13 @@ plot_covid19_spread <- function(
       axis.title.y = ggplot2::element_text(hjust = 1),
     )
 
+  if(per_capita)
+    p <- p + ggplot2::scale_y_continuous(
+      trans='log10',
+      labels = scales::number_format(accuracy = 0.01, big.mark = ",")
+    )
+  else
+    p <- p + ggplot2::scale_y_continuous(trans='log10', labels = scales::comma)
   if(!is.null(intervention)) p <- p +
     ggplot2::geom_point(data = df %>%
                  dplyr::group_by(.data$iso3c) %>%

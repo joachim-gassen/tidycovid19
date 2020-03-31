@@ -59,6 +59,9 @@ Times. Uses data from the Johns Hopkins University CSSE team
 (\url{https://github.com/CSSEGISandData/COVID-19}) and the ACAPS governmental
 measures database
 (\url{https://www.acaps.org/covid19-government-measures-dataset}).
+If your are overwhelmed with the options of the plot, explore them with
+\code{shiny_covid19_spread()} and use the 'copy code for plot to clipboard'
+option.
 }
 \examples{
 plot_covid19_spread()

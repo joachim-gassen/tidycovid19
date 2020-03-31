@@ -4,3 +4,4 @@
 .Ruserdata
 *.Rproj
 README_cache
+*.DS_Store
