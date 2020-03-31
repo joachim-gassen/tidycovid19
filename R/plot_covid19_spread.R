@@ -107,7 +107,7 @@ plot_covid19_spread <- function(
   )
   caption_str <- paste(strwrap(paste(
     caption_str,
-    "Code: https://github.com/joachim-gassem/tidy_covid19."
+    "Code: https://github.com/joachim-gassen/tidycovid19."
   ), width = 120), collapse = "\n")
 
   if (type == "deaths") {

@@ -72,21 +72,17 @@ ui <- fluidPage(
         "Covid19Plot", width = "100%", height = "600px",
         hover = hoverOpts("plot_hover", delay = 100, delayType = "debounce"))
     ),
-    uiOutput("Covid19PlotHover")
+    uiOutput("Covid19PlotHover"),
+    hr(),
+    HTML("<p><center>Based on the <a href=https://joachim-gassen.github.io/tidycovid19>",
+         "{tidycovid19} R Package</a>, <a href=https://twitter.com/JoachimGassen>",
+         "Joachim Gassen</a>,<br>",
+         "<a href=https://www.wiwi.hu-berlin.de/rewe>",
+         "Humboldt-Universität zu Berlin</a> and",
+         "<a href=https://www.accounting-for-transparency.de>",
+         "TRR 266 Accounting for Transparency</a>, 2020</center></p>")
+
     )),
-  hr(),
-  fluidRow(
-    column(
-      12, align="center",
-      HTML("Based on the <a href=https://joachim-gassen.github.io/tidycovid19>",
-           "{tidycovid19} R Package</a>, <a href=https://twitter.com/JoachimGassen>",
-           "Joachim Gassen</a>,",
-           "<a href=https://www.wiwi.hu-berlin.de/rewe>",
-           "Humboldt-Universität zu Berlin</a> and",
-           "<a href=https://www.accounting-for-transparency.de>",
-           "TRR 266 Accounting for Transparency</a>, 2020<p>")
-    )
-  )
 )
 
 server <- function(input, output) {
@@ -175,7 +171,7 @@ server <- function(input, output) {
   )
 
   output$SendCodeToClipboard <- renderUI({
-    rclipButton("clipbtn", "Send Code for Plot to Clpboard",
+    rclipButton("clipbtn", "Send Code for Plot to Clipboard",
                 plot_code(), icon("clipboard"))
   })
 
@@ -209,12 +205,18 @@ server <- function(input, output) {
     style <- paste0("position:absolute; background-color: rgba(245, 245, 245, 0.85); ",
                     "left:", hover$coords_img$x + 2, "px; top:", hover$coords_img$y + 2, "px;")
     # actual tooltip created as wellPanel
-    wellPanel(
-      style = style, class = "well-sm",
-      HTML(paste0(point$country),
-           sprintf("<br> %s, %s: ", as.character(point$date), input$type),
-           format(point[, input$type] %>% pull(), big.mark = ","))
+    panel_text <- sprintf(
+      "%s, %s:<br>%s %s", point$country, as.character(point$date),
+      format(point[, input$type] %>% pull(), digits = 3, big.mark = ","),
+      case_when(
+        input$type == "confirmed" ~ "confirmed cases",
+        input$type == "deaths" ~ "reported deaths",
+        input$type == "recovered" ~ "recoveries"
+      )
     )
+    if (input$per_capita)
+      panel_text <- paste(panel_text, "<br>per 100,000 inhabitants")
+    wellPanel(style = style, class = "well-sm", HTML(panel_text))
   })
 }
 
