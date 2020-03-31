@@ -54,7 +54,7 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
 
   tmp_file <- tempfile(".xlsx")
   utils::download.file(paste0("https://data.humdata.org", dta_url), tmp_file,
-                       quiet = silent)
+                       quiet = silent, mode = "wb")
   raw_dta <- readxl::read_excel(tmp_file, sheet = "Database")
 
   df <- raw_dta
