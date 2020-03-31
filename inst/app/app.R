@@ -36,7 +36,7 @@ ui <- fluidPage(
       ),
       sliderInput(
         "min_cases",
-        "Set day zero to day where countries have more than ... cases",
+        "Number of cases to mark day zero on X-axis",
         min = 1, max = 1000, value = 100
       ),
       sliderInput(
@@ -53,6 +53,11 @@ ui <- fluidPage(
         "per_capita",
         "Display relative to population (per capita)",
         FALSE
+      ),
+      checkboxInput(
+        "log_scale",
+        "Use logarithmic scaling for Y-axis",
+        TRUE
       ),
       selectInput(
         "intervention",
@@ -136,8 +141,9 @@ server <- function(input, output) {
       'plot_covid19_spread(',
       sprintf('  type = "%s", min_cases = %d, min_by_ctry_obs = %d,',
               input$type, input$min_cases, input$min_by_ctry_obs),
-      sprintf('  edate_cutoff = %d, per_capita = %s,',
-              input$edate_cutoff, as.character(input$per_capita)),
+      sprintf('  edate_cutoff = %d, per_capita = %s, log_scale = %s,',
+              input$edate_cutoff, as.character(input$per_capita),
+              as.character(input$log_scale)),
       paste0(strwrap(sprintf('  highlight = %s,',
               paste0(capture.output(dput(unname(input$highlight))), collapse = "")), 66),
               collapse = "\n  "),
@@ -182,6 +188,7 @@ server <- function(input, output) {
       min_cases = input$min_cases,
       min_by_ctry_obs = input$min_by_ctry_obs,
       per_capita = input$per_capita,
+      log_scale = input$log_scale,
       edate_cutoff = input$edate_cutoff,
       intervention = if(input$intervention != "none") input$intervention else NULL,
       highlight = input$highlight

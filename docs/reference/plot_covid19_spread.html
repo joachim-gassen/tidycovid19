@@ -144,8 +144,8 @@ option.</p>
   <span class='fl'>TRUE</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"deaths"</span>, <span class='kw'>min_cases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"deaths"</span>, <span class='fl'>10</span>,
   <span class='fl'>100</span>), <span class='kw'>min_by_ctry_obs</span> <span class='kw'>=</span> <span class='fl'>7</span>, <span class='kw'>edate_cutoff</span> <span class='kw'>=</span> <span class='fl'>30</span>,
   <span class='kw'>data_date_str</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span>(<span class='no'>data</span>$<span class='no'>timestamp</span>[<span class='fl'>1</span>]),
-  <span class='st'>"%B %d, %Y"</span>), <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='st'>"%B %d, %Y"</span>), <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>log_scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -187,6 +187,11 @@ this in a non-english locale. Consider setting it by hand then.</p></td>
       <th>per_capita</th>
       <td><p>If <code>TRUE</code> data is being plotted as per capita measure
 based on World Bank data. Defaults to <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>log_scale</th>
+      <td><p>Do you want the Y-axis to be log-scaled? Defaults to
+<code>TRUE</code>.</p></td>
     </tr>
     <tr>
       <th>highlight</th>

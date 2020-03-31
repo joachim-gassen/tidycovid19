@@ -27,6 +27,8 @@
 #'     this in a non-english locale. Consider setting it by hand then.
 #' @param per_capita If \code{TRUE} data is being plotted as per capita measure
 #'     based on World Bank data. Defaults to \code{FALSE}.
+#' @param log_scale Do you want the Y-axis to be log-scaled? Defaults to
+#'     \code{TRUE}.
 #' @param highlight A character vector of ISO3c (ISO 3166-1 alpha-3) codes that
 #'     identify countries that you want to highlight. Using the
 #'     \code{gghighlight} package, these observations are highlighted by color
@@ -59,7 +61,7 @@ plot_covid19_spread <- function(
   type = "deaths", min_cases = ifelse(type == "deaths", 10, 100),
   min_by_ctry_obs = 7, edate_cutoff = 30,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "%B %d, %Y"),
-  per_capita = FALSE, highlight = NULL, intervention = NULL) {
+  per_capita = FALSE, log_scale = TRUE, highlight = NULL, intervention = NULL) {
   if(!type %in% c("confirmed", "deaths", "recovered"))
     stop("Wrong 'type': Only 'confirmed', 'deaths', and 'recovered' are supported")
 
@@ -152,13 +154,20 @@ plot_covid19_spread <- function(
       axis.title.y = ggplot2::element_text(hjust = 1),
     )
 
-  if(per_capita)
+  if(log_scale && per_capita)
     p <- p + ggplot2::scale_y_continuous(
       trans='log10',
       labels = scales::number_format(accuracy = 0.01, big.mark = ",")
     )
-  else
+  if(!log_scale && per_capita)
+    p <- p + ggplot2::scale_y_continuous(
+      labels = scales::number_format(accuracy = 0.01, big.mark = ",")
+    )
+  if(log_scale && !per_capita)
     p <- p + ggplot2::scale_y_continuous(trans='log10', labels = scales::comma)
+  if(!log_scale && !per_capita)
+    p <- p + ggplot2::scale_y_continuous(labels = scales::comma)
+
   if(!is.null(intervention)) p <- p +
     ggplot2::geom_point(data = df %>%
                  dplyr::group_by(.data$iso3c) %>%

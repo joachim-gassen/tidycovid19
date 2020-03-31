@@ -8,8 +8,8 @@ plot_covid19_spread(data = download_merged_data(cached = TRUE, silent =
   TRUE), type = "deaths", min_cases = ifelse(type == "deaths", 10,
   100), min_by_ctry_obs = 7, edate_cutoff = 30,
   data_date_str = format(lubridate::as_date(data$timestamp[1]),
-  "\%B \%d, \%Y"), per_capita = FALSE, highlight = NULL,
-  intervention = NULL)
+  "\%B \%d, \%Y"), per_capita = FALSE, log_scale = TRUE,
+  highlight = NULL, intervention = NULL)
 }
 \arguments{
 \item{data}{The data frame to base the plot on. Should be a merged data
@@ -35,6 +35,9 @@ this in a non-english locale. Consider setting it by hand then.}
 
 \item{per_capita}{If \code{TRUE} data is being plotted as per capita measure
 based on World Bank data. Defaults to \code{FALSE}.}
+
+\item{log_scale}{Do you want the Y-axis to be log-scaled? Defaults to
+\code{TRUE}.}
 
 \item{highlight}{A character vector of ISO3c (ISO 3166-1 alpha-3) codes that
 identify countries that you want to highlight. Using the
