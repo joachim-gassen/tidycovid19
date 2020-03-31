@@ -81,7 +81,7 @@ download_google_trends_data <- function(search_term = "coronavirus",
     lst <- lst[match(type, c('country', 'country_day', 'region', 'city'))]
     if (!silent) message(sprintf("done. Timestamp is %s", lst[[1]]$timestamp[1]))
   } else {
-    time <- paste("2020-01-01", Sys.Date())
+    time <- paste("2020-01-01", lubridate::today(tzone = "US/Pacific"))
 
     trends_global <- gtrendsR::gtrends(search_term, time = time)
 

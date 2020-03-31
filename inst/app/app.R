@@ -4,6 +4,8 @@ library(shinyWidgets)
 library(tidycovid19)
 library(rclipboard)
 
+load("shiny_data.Rda")
+
 ui <- fluidPage(
   rclipboardSetup(),
   titlePanel("Explore the Spread of Covid-19"),
@@ -91,7 +93,6 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  load("shiny_data.Rda")
   df <- shiny_data
 
   dyn_data <- reactive({
