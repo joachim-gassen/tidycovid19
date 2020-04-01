@@ -25,8 +25,8 @@ benefits of open science.
 
 ## Why yet another package on Covid-19?
 
-There are at least already two packages that provide data and
-infrastructure related to Covid-19:
+There are several packages that provide data and infrastructure related
+to Covid-19. Two prominent cases are:
 
   - `{nCov2019}`: This
     [package](https://github.com/GuangchuangYu/nCov2019) has a focus on
@@ -36,10 +36,15 @@ infrastructure related to Covid-19:
     [package](https://github.com/RamiKrispin/coronavirus) provides the
     Johns Hopkins University CSSE dataset together with a dashboard
 
-Other than the two packages above, the key objective of the
+Additional R related resources on Covid-19 can be found
+[here](https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f)
+and [here](https://github.com/mine-cetinkaya-rundel/covid19-r).
+
+Other than the packages mentioned above, the key objective of the
 {tidycovid19} package is to provide *transparent* access to *various*
-data sources. It does not contain any data per se. Instead, it provides
-functions to pull data from publicly available sources.
+data sources, including data on governmental interventions. It does not
+contain any data per se. Instead, it provides functions to pull data
+from publicly available sources.
 
 For those interested in speedy downloads it alternatively provides the
 option to download the data from the cached data in this repo (stored in
