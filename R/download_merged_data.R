@@ -115,6 +115,11 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     df
   }
 
+  # 2020-04-01: There is a new ppopulated category in the ACAPS NPI data
+  #             "Humanitarian exemption". I do not code it for the time
+  #             being as it contains only two Irish cases (parking for
+  #             essential workers and leeway for pharamacisist)
+
   df <- cases %>%
     dplyr::left_join(
       calc_npi_measure("Social distancing", "soc_dist"),
