@@ -37,7 +37,7 @@ to Covid-19. Two prominent cases are:
     Johns Hopkins University CSSE dataset together with a dashboard
 
 Additional R related resources on Covid-19 can be found
-[here](https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f)
+[here](https://www.statsandr.com/blog/top-r-resources-on-covid-19-coronavirus/)
 and [here](https://github.com/mine-cetinkaya-rundel/covid19-r).
 
 Other than the packages mentioned above, the key objective of the

@@ -41,7 +41,7 @@ There are several packages that provide data and infrastructure related to Covid
 - `{conronavirus}`: This [package](https://github.com/RamiKrispin/coronavirus) provides
 the Johns Hopkins University CSSE dataset together with a dashboard
 
-Additional R related resources on Covid-19 can be found [here](https://towardsdatascience.com/top-5-r-resources-on-covid-19-coronavirus-1d4c8df6d85f) and [here](https://github.com/mine-cetinkaya-rundel/covid19-r).
+Additional R related resources on Covid-19 can be found [here](https://www.statsandr.com/blog/top-r-resources-on-covid-19-coronavirus/) and [here](https://github.com/mine-cetinkaya-rundel/covid19-r).
 
 Other than the packages mentioned above, the key objective of the {tidycovid19} package is to provide *transparent* access to *various* data sources, including data on governmental interventions. It does not contain any data per se. Instead, it provides functions to pull data from publicly available sources.
 
