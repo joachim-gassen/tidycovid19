@@ -3,8 +3,12 @@ library(dplyr)
 library(shinyWidgets)
 library(tidycovid19)
 library(rclipboard)
+library(lubridate)
 
 load("shiny_data.Rda")
+
+if(difftime(now(tzone = "Europe/Berlin"), shiny_data$timestamp[1]) > 24)
+  shiny_df <- download_merged_data(cached = TRUE, silent = TRUE)
 
 ui <- fluidPage(
   rclipboardSetup(),
@@ -185,6 +189,7 @@ server <- function(input, output) {
   output$Covid19Plot <- renderPlot({
     req(input$highlight)
     plot_covid19_spread(
+      data = df,
       type = input$type,
       min_cases = input$min_cases,
       min_by_ctry_obs = input$min_by_ctry_obs,
