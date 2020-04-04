@@ -93,14 +93,26 @@ plot_covid19_spread <- function(
     ))
 
 
+  if (is.null(intervention)) {
+    caption_str <- paste(
+      "Data: Johns Hopkins University Center for Systems Science",
+      sprintf("and Engineering (JHU CSSE), obtained on %s.", data_date_str)
+    )
+  } else {
+    caption_str <- paste(
+      "Case data: Johns Hopkins University Center for Systems Science",
+      "and Engineering (JHU CSSE). Interventions data: ACAPS.",
+      sprintf("Data obtained on %s.", data_date_str)
+    )
+  }
   caption_str <- paste(
-    "Data as provided by Johns Hopkins University Center for Systems Science",
-    sprintf("and Engineering (JHU CSSE) and obtained on %s.", data_date_str),
+    caption_str,
     sprintf(
       "The sample is limited to countries with at least %d days of data.",
       min_by_ctry_obs
     )
   )
+
   if (!is.null(intervention)) caption_str <- paste(
     caption_str,
     sprintf(
