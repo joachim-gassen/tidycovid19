@@ -97,10 +97,9 @@ ui <- fluidPage(
 )
 
 server <- function(input, output) {
-  df <- shiny_data
 
   dyn_data <- reactive({
-    df %>%
+    shiny_data %>%
       group_by(iso3c) %>%
       filter(!! sym(input$type) >= input$min_cases) %>%
       mutate(edate = as.numeric(date - min(date))) %>%
@@ -189,7 +188,7 @@ server <- function(input, output) {
   output$Covid19Plot <- renderPlot({
     req(input$highlight)
     plot_covid19_spread(
-      data = df,
+      data = shiny_data,
       type = input$type,
       min_cases = input$min_cases,
       min_by_ctry_obs = input$min_by_ctry_obs,
@@ -216,7 +215,7 @@ server <- function(input, output) {
     # background color is set so tooltip is a bit transparent
     # z-index is set so we are sure are tooltip will be on top
     style <- paste0("position:absolute; background-color: rgba(245, 245, 245, 0.85); ",
-                    "left:", hover$coords_img$x + 2, "px; top:", hover$coords_img$y + 2, "px;")
+                    "left:", hover$coords_css$x + 2, "px; top:", hover$coords_css$y + 2, "px;")
     # actual tooltip created as wellPanel
     panel_text <- sprintf(
       "%s, %s:<br>%s %s", point$country, as.character(point$date),
