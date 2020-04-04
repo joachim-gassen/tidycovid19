@@ -7,7 +7,9 @@ library(lubridate)
 
 load("shiny_data.Rda")
 
-if(difftime(now(tzone = "Europe/Berlin"), shiny_data$timestamp[1]) > 24)
+if(as.numeric(
+  difftime(now(tzone = "Europe/Berlin"),
+           shiny_data$timestamp[1]), units = "hours") > 24)
   shiny_data <- download_merged_data(cached = TRUE, silent = TRUE)
 
 ui <- fluidPage(
