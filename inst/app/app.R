@@ -29,7 +29,7 @@ ui <- fluidPage(
       tags$li(HTML(paste0("from the ",
               tags$a(href = "https://data.worldbank.org", "World Bank"), ".")))
     ),
-    "It has been inpired by the displays created by John Burn-Murdoch",
+    "It has been inspired by the displays created by John Burn-Murdoch",
     "for the Financial Times."
   ),
   hr(),
