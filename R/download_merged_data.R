@@ -115,7 +115,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     df
   }
 
-  # 2020-04-01: There is a new ppopulated category in the ACAPS NPI data
+  # 2020-04-01: There is a new populated category in the ACAPS NPI data
   #             "Humanitarian exemption". I do not code it for the time
   #             being as it contains only two Irish cases (parking for
   #             essential workers and leeway for pharamacisist)
@@ -145,6 +145,19 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     ) %>%
     dplyr::left_join(gtrends_c, by = "iso3c") %>%
     dplyr::left_join(wbank, by = "iso3c") %>%
+    dplyr::group_by(.data$iso3c) %>%
+    dplyr::mutate(
+      has_npi = max(.data$soc_dist) + max(.data$mov_rest) +
+        max(.data$pub_health) + max(.data$soc_econ) +
+        max(.data$lockdown) > 0,
+      soc_dist = ifelse(.data$has_npi, .data$soc_dist, NA),
+      mov_rest = ifelse(.data$has_npi, .data$mov_rest, NA),
+      pub_health = ifelse(.data$has_npi, .data$pub_health, NA),
+      soc_econ = ifelse(.data$has_npi, .data$soc_econ, NA),
+      lockdown = ifelse(.data$has_npi, .data$lockdown, NA)
+    ) %>%
+    dplyr::select(-.data$has_npi) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(timestamp = Sys.time())
 
   if (!silent) message("done!")

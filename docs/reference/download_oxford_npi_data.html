@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download non-pharmaceutical interventions data — download_acaps_npi_data • tidycovid19</title>
+<title>Download non-pharmaceutical interventions data — download_oxford_npi_data • tidycovid19</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,14 @@
 
 
 
-<meta property="og:title" content="Download non-pharmaceutical interventions data — download_acaps_npi_data" />
+<meta property="og:title" content="Download non-pharmaceutical interventions data — download_oxford_npi_data" />
 
 <meta property="og:description" content="Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
-from the ACAPS governmental measures database
-(https://www.acaps.org/covid19-government-measures-dataset)." />
+from the Oxford Covid-19 Government Response Tracker.
+(https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker).
+It currently only uses the policy measures from that data and tidies them
+into long format, defining observations to be interventions and discarding
+observations with NA and unchanged 0 measures." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,18 +120,21 @@ from the ACAPS governmental measures database
     <div class="page-header">
     <h1>Download non-pharmaceutical interventions data</h1>
     
-    <div class="hidden name"><code>download_acaps_npi_data.Rd</code></div>
+    <div class="hidden name"><code>download_oxford_npi_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
     <p>Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
-from the ACAPS governmental measures database
-(<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>).</p>
+from the Oxford Covid-19 Government Response Tracker.
+(<a href='https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker'>https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker</a>).
+It currently only uses the policy measures from that data and tidies them
+into long format, defining observations to be interventions and discarding
+observations with <code>NA</code> and unchanged <code>0</code> measures.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_acaps_npi_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_oxford_npi_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,26 +160,34 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
     includes a <code>timestamp</code> variable indicating the time of data
     retrieval.</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The Oxford data is currently not included in the data frame
+    produced by <code><a href='download_merged_data.html'>download_merged_data()</a></code> as the ACAPS NPI data seem
+    to be of better quality overall. See
+    <a href='https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/'>this blog post</a>
+    for a discussion.</p>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_acaps_npi_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_oxford_npi_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>df</span> <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>country</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>number_of_interventions</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/n.html'>n</a></span>()) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>number_of_interventions</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 183 x 2</span><span>
-#&gt;    country                  number_of_interventions
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                      </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Sri Lanka                                     69
-#&gt; </span><span style='color: #555555;'> 2</span><span> Philippines                                   67
-#&gt; </span><span style='color: #555555;'> 3</span><span> Hungary                                       66
-#&gt; </span><span style='color: #555555;'> 4</span><span> Malaysia                                      65
-#&gt; </span><span style='color: #555555;'> 5</span><span> Australia                                     60
-#&gt; </span><span style='color: #555555;'> 6</span><span> Thailand                                      59
-#&gt; </span><span style='color: #555555;'> 7</span><span> Barbados                                      55
-#&gt; </span><span style='color: #555555;'> 8</span><span> New Zealand                                   53
-#&gt; </span><span style='color: #555555;'> 9</span><span> United States of America                      48
-#&gt; </span><span style='color: #555555;'>10</span><span> Japan                                         42
-#&gt; </span><span style='color: #555555;'># … with 173 more rows</span><span></div><div class='input'>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>number_of_interventions</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 90 x 2</span><span>
+#&gt;    country   number_of_interventions
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Syria                          75
+#&gt; </span><span style='color: #555555;'> 2</span><span> Brazil                         50
+#&gt; </span><span style='color: #555555;'> 3</span><span> Hong Kong                      38
+#&gt; </span><span style='color: #555555;'> 4</span><span> China                          37
+#&gt; </span><span style='color: #555555;'> 5</span><span> India                          35
+#&gt; </span><span style='color: #555555;'> 6</span><span> Italy                          34
+#&gt; </span><span style='color: #555555;'> 7</span><span> Sri Lanka                      32
+#&gt; </span><span style='color: #555555;'> 8</span><span> Uganda                         31
+#&gt; </span><span style='color: #555555;'> 9</span><span> Indonesia                      30
+#&gt; </span><span style='color: #555555;'>10</span><span> Macao                          30
+#&gt; </span><span style='color: #555555;'># … with 80 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -182,6 +196,8 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

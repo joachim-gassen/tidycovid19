@@ -47,8 +47,8 @@ contain any data per se. Instead, it provides functions to pull data
 from publicly available sources.
 
 For those interested in speedy downloads it alternatively provides the
-option to download the data from the cached data in this repo (stored in
-the directory `cached_data`). The cached data will be updated daily.
+option to download from the cached data in this repo (stored in the
+directory `cached_data`). The cached data is updated daily.
 
 If you rather want to start your own project by customizing the code of
 this package to fit your needs, I suggest that you take a look at my
@@ -72,12 +72,21 @@ Currently, the package offers the following functions to download data:
     (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset).
     These relatively new data allow researchers to study the effect of
     non-pharmaceutical interventions on the development of the virus.
+  - `download_oxford_npi_data()`: Downloads and tidies data from the
+    [Oxford Covid-19 Government Response
+    Tracker](https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker),
+    an alternative data source for governmental interventions.
+    Currently, I do not include the financial measures of this data set
+    and also do not include its data in the merged data file (see below)
+    as I view the ACAPS data to be better suited ([this blog post
+    details
+    why](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)).
   - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
     for the term “coronavirus” (Thank you to Yan Ouaknine for bringing
     up that idea\!). This data can be used to assess the public
-    attention to Covid-19 across countries (see plot below) and over
-    time within a given country.
+    attention to Covid-19 across countries and over time within a given
+    country.
   - `download_wbank_data()`: Downloads and tidies additional country
     level information provided by the [World
     Bank](https://data.worldbank.org) using the {wbstats} package. These
@@ -103,8 +112,10 @@ customization options.
 library(tidycovid19)
 
 merged <- download_merged_data(cached = TRUE)
-plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"), 
-                    intervention = "lockdown")
+plot_covid19_spread(
+  merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
+  intervention = "lockdown", edate_cutoff = 40
+)
 ```
 
 <img src="man/figures/DemoPlot-1.png" style="display: block; margin: auto;" />
@@ -131,6 +142,10 @@ connections, you can also use this [alternative
 server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
 ## Blog posts
+
+  - [A recent blog
+    post](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)
+    comparing the ACAPS and Oxford data on governmental interventions.
 
   - [An intro blog
     post](https://joachim-gassen.github.io/2020/03/meet-tidycovid19-yet-another-covid-19-related-r-package/)
