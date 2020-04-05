@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_oxford_npi_data.R
 \name{download_oxford_npi_data}
 \alias{download_oxford_npi_data}
-\title{Download non-pharmaceutical interventions data}
+\title{Download Oxford non-pharmaceutical interventions data}
 \usage{
 download_oxford_npi_data(silent = FALSE, cached = FALSE)
 }

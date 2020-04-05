@@ -1,4 +1,4 @@
-#' Download non-pharmaceutical interventions data
+#' Download ACAPS non-pharmaceutical interventions data
 #'
 #' Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
 #' from the ACAPS governmental measures database

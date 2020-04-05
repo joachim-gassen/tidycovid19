@@ -2,7 +2,7 @@
 % Please edit documentation in R/download_acaps_npi_data.R
 \name{download_acaps_npi_data}
 \alias{download_acaps_npi_data}
-\title{Download non-pharmaceutical interventions data}
+\title{Download ACAPS non-pharmaceutical interventions data}
 \usage{
 download_acaps_npi_data(silent = FALSE, cached = FALSE)
 }

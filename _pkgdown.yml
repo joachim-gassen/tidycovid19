@@ -19,10 +19,11 @@ navbar:
 
 reference:
 - title: Data functions
-  desc: Functions to download Covid-19 related data from authorative sources
+  desc: Functions to download and tidy Covid-19 related data from authorative sources
   contents:
   - download_jhu_csse_covid19_data
   - download_acaps_npi_data
+  - download_oxford_npi_data
   - download_google_trends_data
   - download_wbank_data
   - download_merged_data
