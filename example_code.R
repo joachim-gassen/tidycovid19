@@ -24,7 +24,7 @@ saveRDS(df, "cached_data/oxford_npi.RDS")
 # Code from download_merged_data() to avoid reloading the data
 
 cases <- readRDS("cached_data/jhu_csse_covid19.RDS") %>%
-    select(-.data$timestamp)
+    select(-timestamp)
 
 npis <- readRDS("cached_data/acaps_npi.RDS") %>%
     mutate(npi_date = ymd(date_implemented)) %>%
@@ -34,15 +34,15 @@ npis <- readRDS("cached_data/acaps_npi.RDS") %>%
 gtrends_list <- readRDS("cached_data/google_trends.RDS")
 
 gtrends_cd <- gtrends_list[[2]] %>%
-  select(timestamp)
+  select(-timestamp)
 
 gtrends_c <- gtrends_list[[1]] %>%
   rename(gtrends_country_score = gtrends_score) %>%
-  select(timestamp)
+  select(-timestamp)
 
 wb_list <- readRDS("cached_data/wbank.RDS")
 wbank <-  wb_list[[1]] %>%
-  select(country, timestamp)
+  select(-country, -timestamp)
 
 calc_npi_measure <-function(type, var_name) {
   my_npi <- npis %>% filter(npi_type == type)
