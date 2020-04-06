@@ -155,3 +155,47 @@ plot_covid19_spread(
   intervention = NULL
 )
 
+# --- Code from https://robjhyndman.com/hyndsight/logratios-covid19/ -----------
+
+library(tidyverse)
+library(tsibble)
+library(tidycovid19)
+
+updates <- download_merged_data(cached = TRUE)
+
+countries <- c("AUS", "NZL", "ITA", "ESP", "USA", "GBR")
+
+updates %>%
+  mutate(cases_logratio = difference(log(confirmed))) %>%
+  filter(
+    iso3c %in% countries,
+    date >= as.Date("2020-03-01")
+  ) %>%
+  ggplot(aes(x = date, y = cases_logratio, col = country)) +
+  geom_point() +
+  geom_smooth(method = "loess") +
+  facet_wrap(. ~ country, ncol = 3) +
+  xlab("Date")
+
+updates %>%
+  mutate(
+    cases_logratio = difference(log(confirmed))
+  ) %>%
+  filter(iso3c %in% countries) %>%
+  filter(date >= as.Date("2020-03-01")) %>%
+  ggplot(aes(x = date, y = cases_logratio, col = country)) +
+  geom_hline(yintercept = log(2)/c(2:7,14,21), col='grey') +
+  geom_smooth(method = "loess", se = FALSE) +
+  scale_y_continuous(
+    "Daily increase in cumulative cases",
+    breaks = log(1+seq(0,60,by=10)/100),
+    labels = paste0(seq(0,60,by=10),"%"),
+    minor_breaks=NULL,
+    sec.axis = sec_axis(~ log(2)/(.),
+                        breaks = c(2:7,14,21),
+                        name = "Doubling time (days)")
+  ) +
+  theme_minimal() + theme(
+    panel.grid = element_blank()
+  )
+
