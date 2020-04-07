@@ -79,8 +79,8 @@ plot_covid19_spread <- function(
     dplyr::mutate(!! type := 1e5*(!! rlang::sym(type))/.data$population) %>%
     dplyr::filter(!is.na(!! rlang::sym(type)))
 
-  if(!is.null(highlight) && !any(highlight %in% df$iso3c))
-    stop(paste(
+  if(!is.null(highlight) && highlight != "" && !any(highlight %in% df$iso3c))
+    warning(paste(
       "Non-NULL 'highlight' value but no countries matched in data",
       "(Did you specify correct ISO3c codes?)"
     ))

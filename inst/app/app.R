@@ -128,7 +128,11 @@ server <- function(input, output) {
     names(ctries) <- ctries_temp$country
     ctries <- ctries[order(ctries_temp$country)]
     if (isolate(ctry_selected()[1]) == "all") ctry_selected(ctries)
-    else ctry_selected(isolate(ctry_selected()[ctry_selected() %in% ctries]))
+    else {
+      still_selectable_ctries <- isolate(ctry_selected()[ctry_selected() %in% ctries])
+      if (length(still_selectable_ctries) == 0) still_selectable_ctries <- ""
+      ctry_selected(still_selectable_ctries)
+    }
     return(ctries)
   })
 
@@ -160,11 +164,14 @@ server <- function(input, output) {
     )
   })
 
-  observeEvent(input$highlight, {
+  observeEvent(input$highlight, ignoreNULL = FALSE, ignoreInit = TRUE, {
     ctry_sel <- isolate(ctry_selected())
     if (length(input$highlight) != length(ctry_sel) ||
-        !all(input$highlight %in% ctry_sel))
-      ctry_selected(input$highlight)
+        !all(input$highlight %in% ctry_sel)) {
+      if (!is.null(input$highlight)) {
+        ctry_selected(input$highlight)
+      } else ctry_selected("")
+    }
   })
 
   output$SelectCountriesHL <- renderUI(
@@ -188,7 +195,7 @@ server <- function(input, output) {
   })
 
   output$Covid19Plot <- renderPlot({
-    req(input$highlight)
+    req(input$min_by_ctry_obs)
     plot_covid19_spread(
       data = shiny_data,
       type = input$type,
@@ -198,7 +205,7 @@ server <- function(input, output) {
       log_scale = input$log_scale,
       edate_cutoff = input$edate_cutoff,
       intervention = if(input$intervention != "none") input$intervention else NULL,
-      highlight = input$highlight
+      highlight = ctry_selected()
     )
   })
 
