@@ -199,3 +199,25 @@ updates %>%
     panel.grid = element_blank()
   )
 
+
+# --- Find data inconsitencies in JHU CSSE data --------------------------------
+library(tidycovid19)
+library(dplyr)
+
+df <- download_jhu_csse_covid19_data(cached = TRUE, silent = TRUE)
+
+df %>%
+  group_by(iso3c) %>%
+  filter(recovered < lag(recovered) |
+           recovered > lead(recovered)) -> odd_recovered
+
+df %>%
+  group_by(iso3c) %>%
+  filter(deaths < lag(deaths) |
+           deaths > lead(deaths)) -> odd_deaths
+
+df %>%
+  group_by(iso3c) %>%
+  filter(confirmed < lag(confirmed) |
+           confirmed > lead(confirmed))
+
