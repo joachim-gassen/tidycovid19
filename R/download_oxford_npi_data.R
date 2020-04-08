@@ -50,25 +50,25 @@ download_oxford_npi_data <- function(silent = FALSE, cached = FALSE) {
 
   if (!silent) message("Start downloading Oxford NPI data\n")
 
-  dta_url <- "https://www.bsg.ox.ac.uk/sites/default/files/OxCGRT_Download_latest_data.xlsx"
+  # 2020-04-08 The csv file seems to include trailing separators. This creates
+  # a warning.
 
-  tmp_file <- tempfile(".xlsx")
-  utils::download.file(dta_url, tmp_file, quiet = silent, mode = "wb")
-  raw_data <- readxl::read_excel(
-    tmp_file,
-    col_types = c("text", "text", "numeric",
-                  rep(c("numeric", "numeric", "text"), 6),
-                  rep(c("numeric", "text"), 5), rep("numeric", 3), "skip")
+  data_url <- "https://ocgptweb.azurewebsites.net/CSVDownload"
+  if (!silent) raw_data <- readr::read_csv(data_url, col_types = readr::cols())
+  else suppressWarnings(
+    raw_data <- readr::read_csv(data_url, col_types = readr::cols())
   )
 
   df <- raw_data
   # Fix column names for pivot_long()
-  names(df)[seq(from = 4, by = 3, length.out = 7)] <- paste0("S", 1:7, "_measure")
+  names(df)[c(seq(from = 4, by = 3, length.out = 7), 32, 34)] <- paste0("S", c(1:7, 12, 13), "_measure")
 
-  df <- df %>% dplyr::select(1:23) %>%
-    # S7 has no "IsGeneral" value. I attach an NA var for consistency
-    dplyr::mutate(S7_IsGeneral = NA) %>%
-    tidyr::pivot_longer(4:24, names_pattern = "(.*)_(.*)", names_to = c("type", ".value")) %>%
+  df <- df %>% dplyr::select(1:23, 32:35) %>%
+    # S7, S12, S13 have no "IsGeneral" value. I attach NA vars for consistency
+    dplyr::mutate(S7_IsGeneral = NA,
+                  S12_IsGeneral = NA,
+                  S13_IsGeneral = NA) %>%
+    tidyr::pivot_longer(4:28, names_pattern = "(.*)_(.*)", names_to = c("type", ".value")) %>%
     dplyr::rename(
       country = .data$CountryName,
       iso3c = .data$CountryCode,
@@ -81,13 +81,14 @@ download_oxford_npi_data <- function(silent = FALSE, cached = FALSE) {
 
   # Fix NPI type categories
   lup <- dplyr::tibble(
-    type = paste(paste0("S", 1:7)),
+    type = paste(paste0("S", c(1:7, 12, 13))),
     npi_type = sub("S\\d*_", "",
-                   names(raw_data)[seq(from = 4, by = 3, length.out = 7)])
+                   names(raw_data)[c(seq(from = 4, by = 3, length.out = 7), 32, 34)])
   )
 
   oxford_pm <- df %>%
     dplyr::left_join(lup, by = "type") %>%
+    dplyr::mutate(npi_notes = stringr::str_squish(.data$npi_notes)) %>%
     dplyr::select(.data$iso3c, .data$country, .data$date, .data$npi_type,
                   .data$npi_measure, .data$npi_is_general, .data$npi_notes) %>%
     dplyr::arrange(.data$iso3c, .data$npi_type, .data$date)
