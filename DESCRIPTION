@@ -16,8 +16,8 @@ Description: This package facilitates the download of current Covid-19 related
 License: MIT + file LICENSE
 Imports: 
     xml2, rvest, readxl, magrittr, dplyr, tidyr, countrycode, ggplot2, wbstats,
-    gghighlight, gtrendsR, ggrepel, readr, rlang, scales, stringr, lubridate,
-    shiny, shinyWidgets, rclipboard, stringr
+    gghighlight, gtrendsR, ggrepel, readr, rlang, scales, lubridate,
+    shiny, shinyWidgets, rclipboard, stringr, zoo
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1

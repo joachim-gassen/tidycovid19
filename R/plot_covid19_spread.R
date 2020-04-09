@@ -14,17 +14,23 @@
 #'     frame obtained by \link{download_merged_data} and defaults to
 #'     \code{download_merged_data(cached = TRUE, silent = TRUE)}.
 #' @param type The statistic that you want to plot. Needs to be either "confirmed",
-#'     "deaths", or "revovered".
+#'     "deaths", "revovered" or "active", defined as the difference of "confirmed"
+#'     and "recovered".
 #' @param min_cases Defines the zero point of your X axis (the 'event date').
-#'     Defaults to 10 cases for deaths and 100 cases otherwise.
+#'     Defaults to 100 cases for deaths and 1,000 cases otherwise.
 #' @param min_by_ctry_obs Limits the plot to countries that have at least that
 #'     many days of dater since and including the event date. Defaults to 7.
 #' @param edate_cutoff The upper limit of the X axis in event days.
-#'     Defaults to 30.
+#'     Defaults to 40.
 #' @param data_date_str A date string to include in the annotation of the plot
 #'     giving the time when the data was pulled. Defaults to the time stemp of the
 #'     data. Note that you might run into issues with the default when running
 #'     this in a non-english locale. Consider setting it by hand then.
+#' @param cumulative If \code{TRUE} (the default) data is being plotted as
+#'     cumulative (showing the total figures). If \code{FALSE}, (averaged) daily
+#'     changes are plotted instead. See \code{change_ave} to set the averaging
+#'     window.
+#' @param change_ave Number of days to average over when you plot daily changes.
 #' @param per_capita If \code{TRUE} data is being plotted as per capita measure
 #'     based on World Bank data. Defaults to \code{FALSE}.
 #' @param log_scale Do you want the Y-axis to be log-scaled? Defaults to
@@ -58,12 +64,30 @@
 #' @export
 plot_covid19_spread <- function(
   data = download_merged_data(cached = TRUE, silent = TRUE),
-  type = "deaths", min_cases = ifelse(type == "deaths", 10, 100),
-  min_by_ctry_obs = 7, edate_cutoff = 30,
+  type = "deaths", min_cases = ifelse(type == "deaths", 100, 1000),
+  min_by_ctry_obs = 7, edate_cutoff = 40,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "%B %d, %Y"),
+  cumulative = TRUE, change_ave = 7,
   per_capita = FALSE, log_scale = TRUE, highlight = NULL, intervention = NULL) {
-  if(!type %in% c("confirmed", "deaths", "recovered"))
-    stop("Wrong 'type': Only 'confirmed', 'deaths', and 'recovered' are supported")
+  if(!type %in% c("confirmed", "deaths", "recovered", "active"))
+    stop("Wrong 'type': Only 'confirmed', 'deaths', 'recovered' and 'active' are supported")
+
+  if(!is.logical(cumulative)) stop ("'cumulative' needs to be a logical value")
+  change_ave <- as.integer(change_ave)
+  if(change_ave < 0)
+    stop ("'change_ave' needs to be a positive integer")
+
+  data <- data %>%
+    dplyr::mutate(active = .data$confirmed - .data$recovered)
+
+  if (!cumulative)
+    data <- data %>%
+      dplyr::group_by(.data$iso3c) %>%
+      dplyr::mutate(
+        delta = !! rlang::sym(type) - dplyr::lag(!! rlang::sym(type)),
+        change = zoo::rollmean(.data$delta, change_ave, na.pad=TRUE, align="right")
+      ) %>%
+      dplyr::ungroup()
 
   data %>%
     dplyr::group_by(.data$iso3c) %>%
@@ -73,13 +97,26 @@ plot_covid19_spread <- function(
     dplyr::group_by(.data$country) %>%
     dplyr::filter(dplyr::n() >= min_by_ctry_obs) %>%
     dplyr::ungroup() %>%
-    dplyr::filter(.data$edate <= edate_cutoff) -> df
+    dplyr::filter(.data$edate <= edate_cutoff) %>%
+    dplyr::filter(!is.na(!! rlang::sym(type))) -> df
+
+  if (log_scale) df <- df %>%
+    dplyr::filter(!! rlang::sym(type) > 0)
+
+  if (!cumulative) df <- df %>%
+    dplyr::mutate(!! type := .data$change)
 
   if (per_capita) df <- df %>%
-    dplyr::mutate(!! type := 1e5*(!! rlang::sym(type))/.data$population) %>%
+    dplyr::filter(!is.na(.data$population)) %>%
+    dplyr::mutate(!! type := 1e5*(!! rlang::sym(type))/.data$population)
+
+  df <- df %>%
     dplyr::filter(!is.na(!! rlang::sym(type)))
 
-  if(!is.null(highlight) && highlight != "" && !any(highlight %in% df$iso3c))
+  if (log_scale)  df <- df %>%
+    dplyr::filter(!! rlang::sym(type) > 0)
+
+  if(!is.null(highlight) && (length(highlight) > 1 || highlight != "") && !any(highlight %in% df$iso3c))
     warning(paste(
       "Non-NULL 'highlight' value but no countries matched in data",
       "(Did you specify correct ISO3c codes?)"
@@ -91,7 +128,6 @@ plot_covid19_spread <- function(
       "(valid intervention types are 'lockdown', 'soc_dist', 'mov_rest',",
       "'pub_health', and 'soc_econ')."
     ))
-
 
   if (is.null(intervention)) {
     caption_str <- paste(
@@ -124,28 +160,44 @@ plot_covid19_spread <- function(
     "Code: https://github.com/joachim-gassen/tidycovid19."
   ), width = 120), collapse = "\n")
 
-  if (type == "deaths") {
-    x_str <- sprintf("Days after %s reported death\n",
-                     scales::label_ordinal(big.mark = ",")(min_cases))
-    if (per_capita)
-      y_str <- "Reported deaths per 100,000 inhabitants (logarithmic scale)"
-    else y_str <- "Reported deaths (logarithmic scale)"
-    title_str <- sprintf("The First %d Days: Reported Deaths", edate_cutoff)
-  }
-  if (type == "confirmed") {
-    x_str <- sprintf("Days after %s confirmed case\n",
-                     scales::label_ordinal(big.mark = ",")(min_cases))
-    if (per_capita)
-      y_str <- "Confirmed cases per 100,000 inhabitants (logarithmic scale)"
-    else y_str <- "Confirmed cases (logarithmic scale)"
-    title_str <- sprintf("The First %d Days: Confirmed Cases", edate_cutoff)
-  }
-  if (type == "recovered") {
-    x_str <- sprintf("Days after %s recovered case\n",
-                     scales::label_ordinal(big.mark = ",")(min_cases))
-    y_str <- "Recovered cases (logarithmic scale)"
-    title_str <- sprintf("The First %d Days: Recovered Cases", edate_cutoff)
-  }
+  x_str <- sprintf("Days after %s reported",
+                   scales::label_ordinal(big.mark = ",")(min_cases))
+  x_str <- paste(x_str, dplyr::case_when(
+    type == "deaths" ~ "death\n",
+    type == "confirmed" ~ "confirmed case\n",
+    type == "recovered" ~ "recovered case\n",
+    type == "active" ~ "active case\n"
+  ))
+
+  if (!cumulative) y_str <- "Daily change in"
+  else y_str <- "Reported"
+  y_str <- paste(y_str, dplyr::case_when(
+    type == "deaths" ~ "deaths",
+    type == "confirmed" ~ "confirmed cases",
+    type == "recovered" ~ "recovered cases",
+    type == "active" ~ "active cases"
+  ))
+  if (per_capita) y_str <- paste(y_str, "per 100,000 inhabitants")
+  if (log_scale && cumulative) y_str <- paste(y_str, "(logarithmic scale)")
+  if (log_scale && !cumulative && change_ave > 1) y_str <- paste(
+    y_str,
+    sprintf("(%d days average, logarithmic scale)", change_ave)
+  )
+  if (!log_scale && !cumulative && change_ave > 1) y_str <- paste(
+    y_str,
+    sprintf("(%d days average)", change_ave)
+  )
+  if(nchar(y_str > 60))
+     y_str <- paste(strwrap(y_str, width = 50), collapse = "\n")
+
+  title_str <- sprintf("The First %d Days: Reported", edate_cutoff)
+  if (!cumulative) title_str <- paste(title_str, "daily change in")
+  title_str <- paste(title_str, dplyr::case_when(
+    type == "deaths" ~ "deaths",
+    type == "confirmed" ~ "confirmed cases",
+    type == "recovered" ~ "recovered cases",
+    type == "active" ~ "active cases"
+  ))
 
   p <- ggplot2::ggplot(df,
          ggplot2::aes(x = .data$edate, color = .data$country,

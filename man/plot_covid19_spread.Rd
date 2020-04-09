@@ -5,11 +5,12 @@
 \title{Visualize the spread of the Covid-19 pandemic}
 \usage{
 plot_covid19_spread(data = download_merged_data(cached = TRUE, silent =
-  TRUE), type = "deaths", min_cases = ifelse(type == "deaths", 10,
-  100), min_by_ctry_obs = 7, edate_cutoff = 30,
+  TRUE), type = "deaths", min_cases = ifelse(type == "deaths", 100,
+  1000), min_by_ctry_obs = 7, edate_cutoff = 40,
   data_date_str = format(lubridate::as_date(data$timestamp[1]),
-  "\%B \%d, \%Y"), per_capita = FALSE, log_scale = TRUE,
-  highlight = NULL, intervention = NULL)
+  "\%B \%d, \%Y"), cumulative = TRUE, change_ave = 7,
+  per_capita = FALSE, log_scale = TRUE, highlight = NULL,
+  intervention = NULL)
 }
 \arguments{
 \item{data}{The data frame to base the plot on. Should be a merged data
@@ -17,21 +18,29 @@ frame obtained by \link{download_merged_data} and defaults to
 \code{download_merged_data(cached = TRUE, silent = TRUE)}.}
 
 \item{type}{The statistic that you want to plot. Needs to be either "confirmed",
-"deaths", or "revovered".}
+"deaths", "revovered" or "active", defined as the difference of "confirmed"
+and "recovered".}
 
 \item{min_cases}{Defines the zero point of your X axis (the 'event date').
-Defaults to 10 cases for deaths and 100 cases otherwise.}
+Defaults to 100 cases for deaths and 1,000 cases otherwise.}
 
 \item{min_by_ctry_obs}{Limits the plot to countries that have at least that
 many days of dater since and including the event date. Defaults to 7.}
 
 \item{edate_cutoff}{The upper limit of the X axis in event days.
-Defaults to 30.}
+Defaults to 40.}
 
 \item{data_date_str}{A date string to include in the annotation of the plot
 giving the time when the data was pulled. Defaults to the time stemp of the
 data. Note that you might run into issues with the default when running
 this in a non-english locale. Consider setting it by hand then.}
+
+\item{cumulative}{If \code{TRUE} (the default) data is being plotted as
+cumulative (showing the total figures). If \code{FALSE}, (averaged) daily
+changes are plotted instead. See \code{change_ave} to set the averaging
+window.}
+
+\item{change_ave}{Number of days to average over when you plot daily changes.}
 
 \item{per_capita}{If \code{TRUE} data is being plotted as per capita measure
 based on World Bank data. Defaults to \code{FALSE}.}

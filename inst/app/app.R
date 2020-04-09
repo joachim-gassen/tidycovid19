@@ -4,6 +4,7 @@ library(shinyWidgets)
 library(tidycovid19)
 library(rclipboard)
 library(lubridate)
+library(zoo)
 
 load("shiny_data.Rda")
 
@@ -39,7 +40,7 @@ ui <- fluidPage(
       radioButtons(
         "type", "Which statistics do you want to display?",
         c("Confirmed Cases" = "confirmed", "Reported deaths" = "deaths",
-          "Recovered Cases" = "recovered"),
+          "Recovered Cases" = "recovered", "Active cases" = "active"),
         "deaths"
       ),
       sliderInput(
@@ -56,6 +57,16 @@ ui <- fluidPage(
         "edate_cutoff",
         "How many days do you want to display?",
         min = 10, max = 90, value = 30
+      ),
+      checkboxInput(
+        "cumulative",
+        "Deselect for daily changes instead of cumulative",
+        TRUE
+      ),
+      sliderInput(
+        "change_ave",
+        "For daily changes, days to average over",
+        min = 1, max = 14, value = 7
       ),
       checkboxInput(
         "per_capita",
@@ -101,7 +112,19 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   dyn_data <- reactive({
-    shiny_data %>%
+    data <- shiny_data %>%
+      mutate(active = confirmed - recovered)
+
+    if (!input$cumulative)
+      data <- data %>%
+        group_by(iso3c) %>%
+        mutate(
+          delta = !! sym(input$type) - dplyr::lag(!! sym(input$type)),
+          change = rollmean(delta, input$change_ave, na.pad=TRUE, align="right")
+        ) %>%
+        ungroup()
+
+    data %>%
       group_by(iso3c) %>%
       filter(!! sym(input$type) >= input$min_cases) %>%
       mutate(edate = as.numeric(date - min(date))) %>%
@@ -111,9 +134,13 @@ server <- function(input, output) {
       ungroup() %>%
       filter(edate <= input$edate_cutoff) -> df_temp
 
+    if (!input$cumulative) df_temp <- df_temp %>%
+      mutate(!! input$type := change) %>%
+      filter(!is.na(!! sym(input$type)))
+
     if (input$per_capita) df_temp <- df_temp %>%
-        mutate(!! input$type := 1e5*(!! sym(input$type))/population) %>%
-        filter(!is.na(!! sym(input$type)))
+      mutate(!! input$type := 1e5*(!! sym(input$type))/population) %>%
+      filter(!is.na(!! sym(input$type)))
 
     return(df_temp)
   })
@@ -154,6 +181,8 @@ server <- function(input, output) {
       sprintf('  edate_cutoff = %d, per_capita = %s, log_scale = %s,',
               input$edate_cutoff, as.character(input$per_capita),
               as.character(input$log_scale)),
+      sprintf('  cumulative = %s, change_ave = %d,',
+              as.character(input$cumulative), input$change_ave),
       paste0(strwrap(sprintf('  highlight = %s,',
               paste0(capture.output(dput(unname(input$highlight))), collapse = "")), 66),
               collapse = "\n  "),
@@ -203,6 +232,8 @@ server <- function(input, output) {
       min_by_ctry_obs = input$min_by_ctry_obs,
       per_capita = input$per_capita,
       log_scale = input$log_scale,
+      cumulative = input$cumulative,
+      change_ave = input$change_ave,
       edate_cutoff = input$edate_cutoff,
       intervention = if(input$intervention != "none") input$intervention else NULL,
       highlight = ctry_selected()
@@ -227,14 +258,16 @@ server <- function(input, output) {
                     "left:", hover$coords_css$x + 2, "px; top:", hover$coords_css$y + 2, "px;")
     # actual tooltip created as wellPanel
     panel_text <- sprintf(
-      "%s, %s:<br>%s %s", point$country, as.character(point$date),
-      format(point[, input$type] %>% pull(), digits = 3, big.mark = ","),
-      case_when(
+      "%s, %s:<br>%s", point$country, as.character(point$date),
+      format(point[, input$type] %>% pull(), digits = 3, big.mark = ",")
+    )
+    if (!input$cumulative) panel_text <- paste(panel_text, "daily change in<br>")
+    panel_text <- paste(panel_text, case_when(
         input$type == "confirmed" ~ "confirmed cases",
         input$type == "deaths" ~ "reported deaths",
-        input$type == "recovered" ~ "recoveries"
-      )
-    )
+        input$type == "recovered" ~ "recoveries",
+        input$type == "active" ~ "active cases"
+    ))
     if (input$per_capita)
       panel_text <- paste(panel_text, "<br>per 100,000 inhabitants")
     wellPanel(style = style, class = "well-sm", HTML(panel_text))
