@@ -134,17 +134,17 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>shiny_covid19_spread</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span>
-  <span class='fl'>TRUE</span>), <span class='no'>...</span>)</pre>
+    <pre class="usage"><span class='fu'>shiny_covid19_spread</span>(<span class='kw'>plot_options</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>data</span> <span class='kw'>=</span>
+  <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)), <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>data</th>
-      <td><p>The data frame to base the plot on. Should be a merged data
-frame obtained by <a href='download_merged_data.html'>download_merged_data</a> and defaults to
-<code><a href='download_merged_data.html'>download_merged_data(cached = TRUE, silent = TRUE)</a></code></p></td>
+      <th>plot_options</th>
+      <td><p>A named list containing parameters to
+initialize the plot in the shiny app. All parameters of
+<code><a href='plot_covid19_spread.html'>plot_covid19_spread()</a></code> are supported.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -169,7 +169,9 @@ detail.</p>
   <span class='fu'>shiny_covid19_spread</span>()
 
   <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-  <span class='fu'>shiny_covid19_spread</span>(<span class='no'>df</span>)
+  <span class='fu'>shiny_covid19_spread</span>(
+    <span class='kw'>plot_options</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>df</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"USA"</span>, <span class='st'>"ESP"</span>, <span class='st'>"ITA"</span>))
+  )
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

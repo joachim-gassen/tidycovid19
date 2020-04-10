@@ -125,6 +125,16 @@ library(tidycovid19)
 shiny_covid19_spread()
 
 
+# --- Customize shiny app ------------------------------------------------------
+
+shiny_covid19_spread(plot_options = list(
+  type = "deaths", min_cases = 100, min_by_ctry_obs = 10,
+  edate_cutoff = 40, per_capita = FALSE, cumulative = FALSE, change_ave = 7,
+  highlight = c("FRA", "DEU", "ITA", "ESP", "GBR", "USA"),
+  intervention = "lockdown"
+))
+
+
 # --- Some visuals -------------------------------------------------------------
 
 library(tidycovid19)

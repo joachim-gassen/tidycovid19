@@ -128,7 +128,9 @@ The command `shiny_covid19_spread()` starts the app. Click on the image
 to be taken to the online app. You can use it to customize your
 `plot_covid19_spread()` display as it allows copying the plot generating
 code to the clipboard, thanks to the fine
-[{rclipboard}](https://github.com/sbihorel/rclipboard) package.
+[{rclipboard}](https://github.com/sbihorel/rclipboard) package. You can
+now also customize the app by providing `plot_covid19_spread()` options
+as a list to the `plot_options` parameter.
 
 <center>
 

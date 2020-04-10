@@ -4,13 +4,12 @@
 \alias{shiny_covid19_spread}
 \title{Explore the spread of Covid-19 interactively}
 \usage{
-shiny_covid19_spread(data = download_merged_data(cached = TRUE, silent =
-  TRUE), ...)
+shiny_covid19_spread(plot_options = list(), ...)
 }
 \arguments{
-\item{data}{The data frame to base the plot on. Should be a merged data
-frame obtained by \link{download_merged_data} and defaults to
-\code{download_merged_data(cached = TRUE, silent = TRUE)}}
+\item{plot_options}{A named list containing parameters to
+initialize the plot in the shiny app. All parameters of
+\code{plot_covid19_spread()} are supported.}
 
 \item{...}{Parameters that will be parsed on to \code{\link[shiny]{runApp}}.}
 }
@@ -37,6 +36,8 @@ detail.
   shiny_covid19_spread()
 
   df <- download_merged_data(cached = TRUE)
-  shiny_covid19_spread(df)
+  shiny_covid19_spread(
+    plot_options = list(data = df, highlight = c("USA", "ESP", "ITA"))
+  )
 }
 }

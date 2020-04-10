@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyjs)
 library(dplyr)
 library(shinyWidgets)
 library(tidycovid19)
@@ -8,13 +9,16 @@ library(zoo)
 
 load("shiny_data.Rda")
 
+po <- shiny_plot_options
+
 if(as.numeric(
   difftime(now(tzone = "Europe/Berlin"),
-           shiny_data$timestamp[1]), units = "hours") > 24)
-  shiny_data <- download_merged_data(cached = TRUE, silent = TRUE)
+           po$data$timestamp[1]), units = "hours") > 24)
+  po$data <- download_merged_data(cached = TRUE, silent = TRUE)
 
 ui <- fluidPage(
   rclipboardSetup(),
+  useShinyjs(),
   titlePanel("Explore the Spread of Covid-19"),
   tags$p(
     "This display is based on data",
@@ -41,42 +45,42 @@ ui <- fluidPage(
         "type", "Which statistics do you want to display?",
         c("Confirmed Cases" = "confirmed", "Reported deaths" = "deaths",
           "Recovered Cases" = "recovered", "Active cases" = "active"),
-        "deaths"
+        po$type
       ),
       sliderInput(
         "min_cases",
         "Number of cases to mark day zero on X-axis",
-        min = 1, max = 1000, value = 100
+        min = 1, max = max(1000, po$min_cases), value = po$min_cases
       ),
       sliderInput(
         "min_by_ctry_obs",
         "Required number of days to include country",
-        min = 1, max = 30, value = 7
+        min = 1, max = max(30, po$min_by_ctry_obs), value = po$min_by_ctry_obs
       ),
       sliderInput(
         "edate_cutoff",
         "How many days do you want to display?",
-        min = 10, max = 90, value = 30
+        min = 10, max = max(90, po$edate_cutoff), value = po$edate_cutoff
       ),
       checkboxInput(
         "cumulative",
         "Deselect for daily changes instead of cumulative",
-        TRUE
+        po$cumulative
       ),
       sliderInput(
         "change_ave",
         "For daily changes, days to average over",
-        min = 1, max = 14, value = 7
+        min = 1, max = max(po$change_ave, 14), value = po$change_ave
       ),
       checkboxInput(
         "per_capita",
         "Display relative to population (per capita)",
-        FALSE
+        po$per_capita
       ),
       checkboxInput(
         "log_scale",
         "Use logarithmic scaling for Y-axis",
-        TRUE
+        po$log_scale
       ),
       selectInput(
         "intervention",
@@ -85,7 +89,7 @@ ui <- fluidPage(
           "Social distancing"= 'soc_dist', "Movement restrictions" = 'mov_rest',
           "Public health measures" = 'pub_health',
           "Social and economic measures" = 'soc_econ'),
-        "none"
+        ifelse(!is.null(po$intervention), po$intervention, "none")
       ),
       uiOutput("SelectCountriesHL"),
       uiOutput("SendCodeToClipboard")
@@ -112,7 +116,7 @@ ui <- fluidPage(
 server <- function(input, output) {
 
   dyn_data <- reactive({
-    data <- shiny_data %>%
+    data <- po$data %>%
       mutate(active = confirmed - recovered)
 
     if (!input$cumulative)
@@ -145,7 +149,18 @@ server <- function(input, output) {
     return(df_temp)
   })
 
-  ctry_selected <- reactiveVal("all")
+  ctry_selected <- reactiveVal(
+    if(!is.null(po$highlight)) {
+        po$data %>%
+          select(country, iso3c) %>%
+          unique() %>%
+          filter(iso3c %in% po$highlight) -> ctries_temp
+        ctries <- ctries_temp$iso3c
+        names(ctries) <- ctries_temp$country
+        ctries <- ctries[order(ctries_temp$country)]
+        ctries
+    } else "all"
+  )
 
   ctry_list <- reactive({
     dyn_data() %>%
@@ -193,6 +208,11 @@ server <- function(input, output) {
     )
   })
 
+  observeEvent(input$cumulative, {
+    if (input$cumulative) shinyjs::disable("change_ave")
+    else shinyjs::enable("change_ave")
+  })
+
   observeEvent(input$highlight, ignoreNULL = FALSE, ignoreInit = TRUE, {
     ctry_sel <- isolate(ctry_selected())
     if (length(input$highlight) != length(ctry_sel) ||
@@ -226,7 +246,7 @@ server <- function(input, output) {
   output$Covid19Plot <- renderPlot({
     req(input$min_by_ctry_obs)
     plot_covid19_spread(
-      data = shiny_data,
+      data = po$data,
       type = input$type,
       min_cases = input$min_cases,
       min_by_ctry_obs = input$min_by_ctry_obs,
