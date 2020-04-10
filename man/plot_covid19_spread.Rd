@@ -10,7 +10,7 @@ plot_covid19_spread(data = download_merged_data(cached = TRUE, silent =
   data_date_str = format(lubridate::as_date(data$timestamp[1]),
   "\%B \%d, \%Y"), cumulative = TRUE, change_ave = 7,
   per_capita = FALSE, log_scale = TRUE, highlight = NULL,
-  intervention = NULL)
+  exclude_others = FALSE, intervention = NULL)
 }
 \arguments{
 \item{data}{The data frame to base the plot on. Should be a merged data
@@ -53,6 +53,10 @@ identify countries that you want to highlight. Using the
 \code{gghighlight} package, these observations are highlighted by color
 and labeled while the other are grayed out. In \code{NULL} (the default),
 all countries are labeled. This can cause very cluttered plots.}
+
+\item{exclude_others}{If \code{TRUE}, unhighlighted countries are excluded
+from the plot. If \code{FALSE} (the default), unhighlighted countries
+are grayed out.}
 
 \item{intervention}{If not default \code{NULL} then this identifies the
 intervention type that you want to be highlighted by a point marker.

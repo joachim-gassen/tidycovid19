@@ -146,7 +146,7 @@ option.</p>
   <span class='kw'>data_date_str</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span>(<span class='no'>data</span>$<span class='no'>timestamp</span>[<span class='fl'>1</span>]),
   <span class='st'>"%B %d, %Y"</span>), <span class='kw'>cumulative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>change_ave</span> <span class='kw'>=</span> <span class='fl'>7</span>,
   <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>log_scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+  <span class='kw'>exclude_others</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,6 +213,12 @@ identify countries that you want to highlight. Using the
 <code>gghighlight</code> package, these observations are highlighted by color
 and labeled while the other are grayed out. In <code>NULL</code> (the default),
 all countries are labeled. This can cause very cluttered plots.</p></td>
+    </tr>
+    <tr>
+      <th>exclude_others</th>
+      <td><p>If <code>TRUE</code>, unhighlighted countries are excluded
+from the plot. If <code>FALSE</code> (the default), unhighlighted countries
+are grayed out.</p></td>
     </tr>
     <tr>
       <th>intervention</th>

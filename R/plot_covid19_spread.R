@@ -40,6 +40,9 @@
 #'     \code{gghighlight} package, these observations are highlighted by color
 #'     and labeled while the other are grayed out. In \code{NULL} (the default),
 #'     all countries are labeled. This can cause very cluttered plots.
+#' @param exclude_others If \code{TRUE}, unhighlighted countries are excluded
+#'     from the plot. If \code{FALSE} (the default), unhighlighted countries
+#'     are grayed out.
 #' @param intervention If not default \code{NULL} then this identifies the
 #'     intervention type that you want to be highlighted by a point marker.
 #'     Valid intervention types are based on the ACAPS government measure data
@@ -68,7 +71,8 @@ plot_covid19_spread <- function(
   min_by_ctry_obs = 7, edate_cutoff = 40,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "%B %d, %Y"),
   cumulative = TRUE, change_ave = 7,
-  per_capita = FALSE, log_scale = TRUE, highlight = NULL, intervention = NULL) {
+  per_capita = FALSE, log_scale = TRUE, highlight = NULL,
+  exclude_others = FALSE, intervention = NULL) {
   if(!type %in% c("confirmed", "deaths", "recovered", "active"))
     stop("Wrong 'type': Only 'confirmed', 'deaths', 'recovered' and 'active' are supported")
 
@@ -115,6 +119,9 @@ plot_covid19_spread <- function(
 
   if (log_scale)  df <- df %>%
     dplyr::filter(!! rlang::sym(type) > 0)
+
+  if(!is.null(highlight) && exclude_others) df <- df %>%
+    dplyr::filter(iso3c %in% highlight)
 
   if(!is.null(highlight) && (length(highlight) > 1 || highlight != "") && !any(highlight %in% df$iso3c))
     warning(paste(

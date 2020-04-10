@@ -139,11 +139,14 @@ shiny_covid19_spread(plot_options = list(
 
 library(tidycovid19)
 
+merged <- download_merged_data(cached = TRUE, silent = TRUE)
 plot_covid19_spread(merged)
 plot_covid19_spread(merged, highlight = "DEU",
                     intervention = "lockdown")
 plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
                     intervention = "lockdown")
+plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
+                    exclude_others = TRUE, intervention = "lockdown")
 
 
 # --- Example clipping code produced by hiny_covid19_spread() ------------------

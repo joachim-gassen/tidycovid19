@@ -35,7 +35,10 @@ ui <- fluidPage(
               tags$a(href = "https://data.worldbank.org", "World Bank"), ".")))
     ),
     "It has been inspired by the displays created by John Burn-Murdoch",
-    "for the Financial Times."
+    "for the Financial Times. Read this",
+    tags$a(href = "https://joachim-gassen.github.io/2020/04/covid19-explore-your-visualier-dof/", "blog post"),
+    "about using the visualizations and hover over the plot with your mouse to",
+    "get more information about the respective data point."
   ),
   hr(),
 
@@ -92,6 +95,11 @@ ui <- fluidPage(
         ifelse(!is.null(po$intervention), po$intervention, "none")
       ),
       uiOutput("SelectCountriesHL"),
+      checkboxInput(
+        "exclude_others",
+        "Check to exclude unhighlighted countries",
+        po$exclude_others
+      ),
       uiOutput("SendCodeToClipboard")
     ),
     mainPanel(div(
@@ -201,8 +209,8 @@ server <- function(input, output) {
       paste0(strwrap(sprintf('  highlight = %s,',
               paste0(capture.output(dput(unname(input$highlight))), collapse = "")), 66),
               collapse = "\n  "),
-      sprintf('  intervention = %s',
-              ifelse(input$intervention == "none", "NULL",
+      sprintf('  exclude_others = %s, intervention = %s',
+              as.character(input$log_scale), ifelse(input$intervention == "none", "NULL",
                      paste0('"', input$intervention, '"'))),
       ')'
     )
@@ -256,7 +264,8 @@ server <- function(input, output) {
       change_ave = input$change_ave,
       edate_cutoff = input$edate_cutoff,
       intervention = if(input$intervention != "none") input$intervention else NULL,
-      highlight = ctry_selected()
+      highlight = ctry_selected(),
+      exclude_others = input$exclude_others
     )
   })
 
@@ -264,6 +273,8 @@ server <- function(input, output) {
     req(input$plot_hover)
     hover <- input$plot_hover
     df <- dyn_data()
+    if (input$exclude_others && isolate(ctry_selected()[1]) != "all" )
+      df <- df %>% filter(iso3c %in% isolate(ctry_selected()))
     if (!is.null(hover)) {
       hover$mapping$x <- "edate"
       hover$mapping$y <- input$type
