@@ -81,6 +81,16 @@ Currently, the package offers the following functions to download data:
     as I view the ACAPS data to be better suited ([this blog post
     details
     why](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)).
+  - **NEW**: `download_google_cmr_pdfs()`/`scrape_google_cmr_data()`:
+    Downloads and scrapes [Google COVID-19 Community Mobility
+    Reports](https://www.google.com/covid19/mobility/). These reports
+    come in PDF format and contain information on the changes in
+    geographical moving patterns across georgraphic regions. As daily
+    data is only provided as line graphs in these documents, I scan
+    these graphs to provide country-day data. This process generates
+    noisy measures and is likely to break as soon Google is changing the
+    PDF format of the reports. The function `download_google_cmr_pdfs()`
+    downloads the PDF reports directly to a local directory.
   - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
     for the term “coronavirus” (Thank you to Yan Ouaknine for bringing

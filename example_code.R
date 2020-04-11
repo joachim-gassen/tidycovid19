@@ -31,6 +31,12 @@ npis <- readRDS("cached_data/acaps_npi.RDS") %>%
     rename(npi_type = category) %>%
     select(iso3c, npi_date, npi_type)
 
+gcmr_list <- readRDS("cached_data/google_cmr.RDS")
+
+gcmr_cd <- gcmr_list[[2]] %>%
+  select(-timestamp) %>%
+  rename_at(dplyr::vars(-iso3c, -date), ~ paste0("gcmr_", .))
+
 gtrends_list <- readRDS("cached_data/google_trends.RDS")
 
 gtrends_cd <- gtrends_list[[2]] %>%
@@ -94,8 +100,8 @@ df <- cases %>%
     calc_npi_measure("Lockdown", "lockdown"),
     by = c("iso3c", "date")
   ) %>%
-  left_join(gtrends_cd, by = c("iso3c", "date")
-  ) %>%
+  left_join(gtrends_cd, by = c("iso3c", "date")) %>%
+  left_join(gcmr_cd, by = c("iso3c", "date")) %>%
   left_join(gtrends_c, by = "iso3c") %>%
   left_join(wbank, by = "iso3c") %>%
   group_by(iso3c) %>%

@@ -39,6 +39,8 @@ SARS-CoV-2 virus and the Covid-19 pandemic
 (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 measures database
 (\url{https://www.acaps.org/covid19-government-measures-dataset}),
+Google COVID-19 Community Mobility Reports
+(\url{https://www.google.com/covid19/mobility/}),
 Google Trends Covid-19 related search volume
 (\url{https://trends.google.com/trends/}), and the World Bank
 (\url{https://data.worldbank.org}) intro a country-day data frame.

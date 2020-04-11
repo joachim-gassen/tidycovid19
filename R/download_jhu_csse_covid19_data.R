@@ -34,7 +34,7 @@ download_jhu_csse_covid19_data <- function(silent = FALSE, cached = FALSE) {
   )
   if (!silent) message("Start downloading JHU CSSE Covid-19 data\n")
   if (length(cached) > 1 || !is.logical(cached)) stop(
-    "'silent' needs to be a single logical value"
+    "'cached' needs to be a single logical value"
   )
 
   if(cached) {

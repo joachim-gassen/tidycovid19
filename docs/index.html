@@ -10,14 +10,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Download, Tidy and Visualize Covid-19 Related Data">
-<meta property="og:description" content='This package facilitates the download of current Covid-19 related 
-    country-level virus spread data from the Johns Hopkins University CSSE team, 
-    the Government measures dataset provided by the Assessment Capacities 
-    Project (ACAPS), Google Trends data on the search volume for the term 
-    "coronavirus" and additional country-level data provided by the World Bank. 
-    These data can be downloaded separately or in one merged data frame. 
-    In addition, the package features a function to visualize the country-level 
-    spread of Covid-19. '>
+<meta property="og:description" content="This package facilitates the download of current Covid-19 related 
+    data from various sources, including the Johns Hopkins University CSSE 
+    team, the Assessment Capacities Project (ACAPS), Google Trends and movement 
+    data, Government measures provided by University of Oxford and additional 
+    country-level data provided by the World Bank. These data can be downloaded 
+    separately or in one merged data frame. In addition, the package features a 
+    function and shiny app to visualize the country-level spread of Covid-19. ">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -121,6 +120,8 @@
 <code><a href="reference/download_acaps_npi_data.html">download_acaps_npi_data()</a></code>: Downloads and tidies the <a href="https://www.acaps.org/covid19-government-measures-dataset">Government measures dataset provided by the Assessment Capacities Project (ACAPS)</a>. These relatively new data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus.</li>
 <li>
 <code><a href="reference/download_oxford_npi_data.html">download_oxford_npi_data()</a></code>: Downloads and tidies data from the <a href="https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker">Oxford Covid-19 Government Response Tracker</a>, an alternative data source for governmental interventions. Currently, I do not include the financial measures of this data set and also do not include its data in the merged data file (see below) as I view the ACAPS data to be better suited (<a href="https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/">this blog post details why</a>).</li>
+<li>
+<strong>NEW</strong>: <code><a href="reference/download_google_cmr_pdfs.html">download_google_cmr_pdfs()</a></code>/<code><a href="reference/scrape_google_cmr_data.html">scrape_google_cmr_data()</a></code>: Downloads and scrapes <a href="https://www.google.com/covid19/mobility/">Google COVID-19 Community Mobility Reports</a>. These reports come in PDF format and contain information on the changes in geographical moving patterns across georgraphic regions. As daily data is only provided as line graphs in these documents, I scan these graphs to provide country-day data. This process generates noisy measures and is likely to break as soon Google is changing the PDF format of the reports. The function <code><a href="reference/download_google_cmr_pdfs.html">download_google_cmr_pdfs()</a></code> downloads the PDF reports directly to a local directory.</li>
 <li>
 <code><a href="reference/download_google_trends_data.html">download_google_trends_data()</a></code>: Downloads and tidies <a href="https://trends.google.com/trends/">Google Trends</a> data on the search volume for the term “coronavirus” (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries and over time within a given country.</li>
 <li>

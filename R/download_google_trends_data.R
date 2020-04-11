@@ -66,7 +66,7 @@ download_google_trends_data <- function(search_term = "coronavirus",
   )
   if (!silent) message("Start downloading Google Trends data\n")
   if (length(cached) > 1 || !is.logical(cached)) stop(
-    "'silent' needs to be a single logical value"
+    "'cached' needs to be a single logical value"
   )
 
   if(cached) {
@@ -174,7 +174,7 @@ download_google_trends_data <- function(search_term = "coronavirus",
     gt_parsed_list <- lapply(gt_ctry_lists, parse_gt_list)
 
     lst <- lapply(type, extract_tibble_from_list, lst = gt_parsed_list)
-    if (!silent) message("Finished downloading Google Trends data\n")
+    if (!silent) message("\nFinished downloading Google Trends data\n")
   }
 
   if (length(type) == 1) lst[[1]] else lst

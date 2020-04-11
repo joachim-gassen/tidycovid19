@@ -29,7 +29,7 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
     "'silent' needs to be a single logical value"
   )
   if (length(cached) > 1 || !is.logical(cached)) stop(
-    "'silent' needs to be a single logical value"
+    "'cached' needs to be a single logical value"
   )
 
   if(cached) {

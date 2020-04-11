@@ -61,7 +61,7 @@ download_wbank_data <- function(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     "'var_def' needs to be a single logical value"
   )
   if (length(cached) > 1 || !is.logical(cached)) stop(
-    "'silent' needs to be a single logical value"
+    "'cached' needs to be a single logical value"
   )
 
   if(cached) {

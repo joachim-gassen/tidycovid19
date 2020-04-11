@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download Johns Hopkins University CSSE data on Covid-19 — download_jhu_csse_covid19_data • tidycovid19</title>
+<title>Download Google Community Mobility Reports as PDF files — download_google_cmr_pdfs • tidycovid19</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,15 +30,16 @@
 
 
 
-<meta property="og:title" content="Download Johns Hopkins University CSSE data on Covid-19 — download_jhu_csse_covid19_data" />
+<meta property="og:title" content="Download Google Community Mobility Reports as PDF files — download_google_cmr_pdfs" />
 
-<meta property="og:description" content="Downloads Johns Hopkins University CSSE data on the spread of the
-SARS-CoV-2 virus and the Covid-19 pandemic
-(https://github.com/CSSEGISandData/COVID-19).
-The data for confirmed cases, reported deaths and recoveries are merged into
-one data frame, aggregated at the country level, converted to long format and
-joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
-countrycode package." />
+<meta property="og:description" content="Downloads Google Community Mobility Reports
+(https://www.google.com/covid19/mobility/).
+As stated on this webpage, the &quot;reports chart movement trends over time
+by geography, across different categories of places such as retail and
+recreation, groceries and pharmacies, parks, transit stations,
+workplaces, and residential&quot;. Google prepares these reports to help
+interestes parties to assess responses to social distancing guidance
+related to Covid-19." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,70 +120,52 @@ countrycode package." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download Johns Hopkins University CSSE data on Covid-19</h1>
+    <h1>Download Google Community Mobility Reports as PDF files</h1>
     
-    <div class="hidden name"><code>download_jhu_csse_covid19_data.Rd</code></div>
+    <div class="hidden name"><code>download_google_cmr_pdfs.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Downloads Johns Hopkins University CSSE data on the spread of the
-SARS-CoV-2 virus and the Covid-19 pandemic
-(<a href='https://github.com/CSSEGISandData/COVID-19'>https://github.com/CSSEGISandData/COVID-19</a>).
-The data for confirmed cases, reported deaths and recoveries are merged into
-one data frame, aggregated at the country level, converted to long format and
-joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
-countrycode package.</p>
+    <p>Downloads Google Community Mobility Reports
+(<a href='https://www.google.com/covid19/mobility/'>https://www.google.com/covid19/mobility/</a>).
+As stated on this webpage, the "reports chart movement trends over time
+by geography, across different categories of places such as retail and
+recreation, groceries and pharmacies, parks, transit stations,
+workplaces, and residential". Google prepares these reports to help
+interestes parties to assess responses to social distancing guidance
+related to Covid-19.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_jhu_csse_covid19_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_google_cmr_pdfs</span>(<span class='no'>pdf_dir</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>pdf_dir</th>
+      <td><p>Path to the directory where the PDF files will be stored.</p></td>
+    </tr>
     <tr>
       <th>silent</th>
       <td><p>Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
 and thus defaults to <code>TRUE</code>.</p></td>
     </tr>
-    <tr>
-      <th>cached</th>
-      <td><p>Whether you want to download the cached version of the data
-from the tidycovid19 Github repository instead of retrieving the
-data from the authorative source. Downloading the cached version is
-faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
-    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame containing the data, organized by country and date. It
-    includes a <code>timestamp</code> variable indicating the time of data
-    retrieval.</p>
+    <p>A vector containing the filenames that were downloaded.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_jhu_csse_covid19_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>country</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>confirmed_cases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>confirmed</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>confirmed_cases</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 182 x 2</span><span>
-#&gt;    country        confirmed_cases
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> US                      </span><span style='text-decoration: underline;'>496</span><span>535
-#&gt; </span><span style='color: #555555;'> 2</span><span> Spain                   </span><span style='text-decoration: underline;'>158</span><span>273
-#&gt; </span><span style='color: #555555;'> 3</span><span> Italy                   </span><span style='text-decoration: underline;'>147</span><span>577
-#&gt; </span><span style='color: #555555;'> 4</span><span> France                  </span><span style='text-decoration: underline;'>125</span><span>931
-#&gt; </span><span style='color: #555555;'> 5</span><span> Germany                 </span><span style='text-decoration: underline;'>122</span><span>171
-#&gt; </span><span style='color: #555555;'> 6</span><span> China                    </span><span style='text-decoration: underline;'>82</span><span>941
-#&gt; </span><span style='color: #555555;'> 7</span><span> United Kingdom           </span><span style='text-decoration: underline;'>74</span><span>605
-#&gt; </span><span style='color: #555555;'> 8</span><span> Iran                     </span><span style='text-decoration: underline;'>68</span><span>192
-#&gt; </span><span style='color: #555555;'> 9</span><span> Turkey                   </span><span style='text-decoration: underline;'>47</span><span>029
-#&gt; </span><span style='color: #555555;'>10</span><span> Belgium                  </span><span style='text-decoration: underline;'>26</span><span>667
-#&gt; </span><span style='color: #555555;'># … with 172 more rows</span><span></div><div class='input'>
-</div></span></pre>
+    <pre class="examples"># NOT RUN {
+ download_google_cmr_pdfs(dir "~/gogle_cmr_pdfs", silent = TRUE)
+# }
+<div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

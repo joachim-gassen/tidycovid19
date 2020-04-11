@@ -5,3 +5,4 @@
 ^README.*$
 ^docs.*$
 ^_pkgdown\.yml$
+^google_cmr_pdfs.*$

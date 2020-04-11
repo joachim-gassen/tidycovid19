@@ -5,6 +5,8 @@
 #' (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 #' measures database
 #' (\url{https://www.acaps.org/covid19-government-measures-dataset}),
+#' Google COVID-19 Community Mobility Reports
+#' (\url{https://www.google.com/covid19/mobility/}),
 #' Google Trends Covid-19 related search volume
 #' (\url{https://trends.google.com/trends/}), and the World Bank
 #' (\url{https://data.worldbank.org}) intro a country-day data frame.
@@ -61,7 +63,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     "'silent' needs to be a single logical value"
   )
   if (length(cached) > 1 || !is.logical(cached)) stop(
-    "'silent' needs to be a single logical value"
+    "'cached' needs to be a single logical value"
   )
 
   if(cached) {
@@ -76,9 +78,18 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::mutate(npi_date = lubridate::ymd(.data$date_implemented)) %>%
     dplyr::rename(npi_type = .data$category) %>%
     dplyr::select(.data$iso3c, .data$npi_date, .data$npi_type)
+
+  gcmr_list <- scrape_google_cmr_data(silent = silent)
+
+  gcmr_cd <- gcmr_list[[2]] %>%
+    dplyr::select(-.data$timestamp) %>%
+    dplyr::rename_at(dplyr::vars(-.data$iso3c, -.data$date),
+                      ~ paste0("gcmr_", .))
+
   gtrends_list <- download_google_trends_data(search_term,
                                               c("country_day", "country"),
                                               silent)
+
   gtrends_cd <- gtrends_list[[1]] %>%
     dplyr::select(-.data$timestamp)
 
@@ -141,8 +152,8 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
       calc_npi_measure("Lockdown", "lockdown"),
       by = c("iso3c", "date")
     ) %>%
-    dplyr::left_join(gtrends_cd, by = c("iso3c", "date")
-    ) %>%
+    dplyr::left_join(gcmr_cd, by = c("iso3c", "date")) %>%
+    dplyr::left_join(gtrends_cd, by = c("iso3c", "date")) %>%
     dplyr::left_join(gtrends_c, by = "iso3c") %>%
     dplyr::left_join(wbank, by = "iso3c") %>%
     dplyr::group_by(.data$iso3c) %>%
