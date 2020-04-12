@@ -4,8 +4,12 @@
 \alias{download_google_trends_data}
 \title{Download Google Trends data on Covid-19}
 \usage{
-download_google_trends_data(search_term = "coronavirus",
-  type = "country_day", silent = FALSE, cached = FALSE)
+download_google_trends_data(
+  search_term = "coronavirus",
+  type = "country_day",
+  silent = FALSE,
+  cached = FALSE
+)
 }
 \arguments{
 \item{search_term}{Defaults to "coronavirus".}

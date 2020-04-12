@@ -4,13 +4,21 @@
 \alias{plot_covid19_spread}
 \title{Visualize the spread of the Covid-19 pandemic}
 \usage{
-plot_covid19_spread(data = download_merged_data(cached = TRUE, silent =
-  TRUE), type = "deaths", min_cases = ifelse(type == "deaths", 100,
-  1000), min_by_ctry_obs = 7, edate_cutoff = 40,
-  data_date_str = format(lubridate::as_date(data$timestamp[1]),
-  "\%B \%d, \%Y"), cumulative = TRUE, change_ave = 7,
-  per_capita = FALSE, log_scale = TRUE, highlight = NULL,
-  exclude_others = FALSE, intervention = NULL)
+plot_covid19_spread(
+  data = download_merged_data(cached = TRUE, silent = TRUE),
+  type = "deaths",
+  min_cases = ifelse(type == "deaths", 100, 1000),
+  min_by_ctry_obs = 7,
+  edate_cutoff = 40,
+  data_date_str = format(lubridate::as_date(data$timestamp[1]), "\%B \%d, \%Y"),
+  cumulative = TRUE,
+  change_ave = 7,
+  per_capita = FALSE,
+  log_scale = TRUE,
+  highlight = NULL,
+  exclude_others = FALSE,
+  intervention = NULL
+)
 }
 \arguments{
 \item{data}{The data frame to base the plot on. Should be a merged data
