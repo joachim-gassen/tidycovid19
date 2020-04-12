@@ -4,15 +4,11 @@
 \alias{download_merged_data}
 \title{Download a merged country-day data frame containing Covid-19 related data}
 \usage{
-download_merged_data(
-  wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2", "EN.POP.DNST", "EN.URB.LCTY",
-    "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD"),
-  wbank_labels = c("population", "land_area_skm", "pop_density", "pop_largest_city",
-    "life_expectancy", "gdp_capita"),
-  search_term = "coronavirus",
-  silent = FALSE,
-  cached = FALSE
-)
+download_merged_data(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
+  "EN.POP.DNST", "EN.URB.LCTY", "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD"),
+  wbank_labels = c("population", "land_area_skm", "pop_density",
+  "pop_largest_city", "life_expectancy", "gdp_capita"),
+  search_term = "coronavirus", silent = FALSE, cached = FALSE)
 }
 \arguments{
 \item{wbank_vars}{Specify the World Bank data items that you want to retrieve.}

@@ -155,7 +155,12 @@ server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
 ## Blog posts
 
-  - [A recent blog
+  - [**New**: A blog
+    post](https://joachim-gassen.github.io/2020/04/scrape-google-covid19-cmr-data/)
+    on the PDF scraping of the new Google Covid-19 Community Movement
+    Reports.
+
+  - [A blog
     post](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)
     comparing the ACAPS and Oxford data on governmental interventions.
 

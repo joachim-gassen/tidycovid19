@@ -93,7 +93,9 @@ use this [alternative server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19
 
 ## Blog posts
 
-- [A recent blog post](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/) comparing the ACAPS and Oxford data on governmental interventions.
+- [**New**: A blog post](https://joachim-gassen.github.io/2020/04/scrape-google-covid19-cmr-data/) on the PDF scraping of the new Google Covid-19 Community Movement Reports. 
+
+- [A blog post](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/) comparing the ACAPS and Oxford data on governmental interventions.
 
 - [An intro blog post](https://joachim-gassen.github.io/2020/03/meet-tidycovid19-yet-another-covid-19-related-r-package/) containing not much more information then this README.
 

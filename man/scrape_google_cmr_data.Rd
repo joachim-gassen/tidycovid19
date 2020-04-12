@@ -4,12 +4,8 @@
 \alias{scrape_google_cmr_data}
 \title{Scrape Google Community Mobility Report Data}
 \usage{
-scrape_google_cmr_data(
-  daily_data = TRUE,
-  pdf_dir = NULL,
-  silent = FALSE,
-  cached = FALSE
-)
+scrape_google_cmr_data(daily_data = TRUE, pdf_dir = NULL,
+  silent = FALSE, cached = FALSE)
 }
 \arguments{
 \item{daily_data}{Whether you want the code to extract daily data by

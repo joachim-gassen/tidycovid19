@@ -4,15 +4,11 @@
 \alias{download_wbank_data}
 \title{Download current country-level World Bank data}
 \usage{
-download_wbank_data(
-  vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2", "EN.POP.DNST", "EN.URB.LCTY",
-    "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD"),
-  labels = c("population", "land_area_skm", "pop_density", "pop_largest_city",
-    "life_expectancy", "gdp_capita"),
-  var_def = FALSE,
-  silent = FALSE,
-  cached = FALSE
-)
+download_wbank_data(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
+  "EN.POP.DNST", "EN.URB.LCTY", "SP.DYN.LE00.IN", "NY.GDP.PCAP.KD"),
+  labels = c("population", "land_area_skm", "pop_density",
+  "pop_largest_city", "life_expectancy", "gdp_capita"), var_def = FALSE,
+  silent = FALSE, cached = FALSE)
 }
 \arguments{
 \item{vars}{Specify the data items that you want to retrieve.}
