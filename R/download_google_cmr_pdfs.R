@@ -26,8 +26,8 @@ download_google_cmr_pdfs <- function(pdf_dir, silent = FALSE) {
   if (length(silent) > 1 || !is.logical(silent)) stop(
     "'silent' needs to be a single logical value"
   )
-  if (!dir.exists(dir)) stop(sprintf(
-    "directory '%s' does not exist", dir
+  if (!dir.exists(pdf_dir)) stop(sprintf(
+    "directory '%s' does not exist", pdf_dir
   ))
   if (!silent) message("Start downloading Google CMR PDFs\n")
 
@@ -38,7 +38,7 @@ download_google_cmr_pdfs <- function(pdf_dir, silent = FALSE) {
     rvest::html_attr('href')
 
   invisible(lapply(urls, function(url) {
-    save_to <- file.path(dir, basename(url))
+    save_to <- file.path(pdf_dir, basename(url))
     utils::download.file(url, save_to, quiet = silent, mode = "wb")
   }))
 
