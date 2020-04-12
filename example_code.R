@@ -100,8 +100,8 @@ df <- cases %>%
     calc_npi_measure("Lockdown", "lockdown"),
     by = c("iso3c", "date")
   ) %>%
-  left_join(gtrends_cd, by = c("iso3c", "date")) %>%
   left_join(gcmr_cd, by = c("iso3c", "date")) %>%
+  left_join(gtrends_cd, by = c("iso3c", "date")) %>%
   left_join(gtrends_c, by = "iso3c") %>%
   left_join(wbank, by = "iso3c") %>%
   group_by(iso3c) %>%
