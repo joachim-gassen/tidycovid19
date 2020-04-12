@@ -9,17 +9,17 @@ library(lubridate)
 library(tidycovid19)
 
 df <- download_acaps_npi_data()
-saveRDS(df, "cached_data/acaps_npi.RDS")
+saveRDS(df, "cached_data/acaps_npi.RDS", version = 2)
 wblist <- download_wbank_data(var_def = TRUE)
-saveRDS(wblist, "cached_data/wbank.RDS")
+saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
 df <- download_jhu_csse_covid19_data()
-saveRDS(df, "cached_data/jhu_csse_covid19.RDS")
+saveRDS(df, "cached_data/jhu_csse_covid19.RDS", version = 2)
 gtlist <- download_google_trends_data(
   type = c('country', 'country_day', 'region', 'city')
 )
-saveRDS(gtlist, "cached_data/google_trends.RDS")
+saveRDS(gtlist, "cached_data/google_trends.RDS", version = 2)
 df <- download_oxford_npi_data()
-saveRDS(df, "cached_data/oxford_npi.RDS")
+saveRDS(df, "cached_data/oxford_npi.RDS", version = 2)
 
 # Code from download_merged_data() to avoid reloading the data
 
@@ -119,7 +119,7 @@ df <- cases %>%
   ungroup() %>%
   mutate(timestamp = Sys.time())
 
-saveRDS(df, "cached_data/merged.RDS")
+saveRDS(df, "cached_data/merged.RDS", version = 2)
 
 
 
