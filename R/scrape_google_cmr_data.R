@@ -207,6 +207,9 @@ scrape_google_cmr_data <- function(daily_data = TRUE, pdf_dir = NULL,
     } else pdf <- url
 
     df <- strsplit(paste(pdftools::pdf_text(pdf), collapse = "\n"), "\n")[[1]]
+    # Windows provides strings with CR - remove them
+    df <- sub("\r", "", df)
+    
     value_pos <- which(stringr::str_detect(df, "^[-+]?\\d+%$"))
     rv <- dplyr::tibble(
       iso2c = iso2c,
