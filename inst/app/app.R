@@ -65,9 +65,10 @@ ui <- fluidPage(
         "How many days do you want to display?",
         min = 10, max = max(90, po$edate_cutoff), value = po$edate_cutoff
       ),
+      hr(),
       checkboxInput(
         "cumulative",
-        "Deselect for daily changes instead of cumulative",
+        "Deselect for daily changes instead of cumulative values",
         po$cumulative
       ),
       sliderInput(
@@ -75,11 +76,28 @@ ui <- fluidPage(
         "For daily changes, days to average over",
         min = 1, max = max(po$change_ave, 14), value = po$change_ave
       ),
+      hr(),
       checkboxInput(
         "per_capita",
         "Display relative to population (per capita)",
         po$per_capita
       ),
+      checkboxInput(
+        "per_capita_x_axis",
+        "Construct the X axis relative to population (per capita)",
+        po$per_capita_x_axis,
+      ),
+      helpText(
+        "When checking the above, consider adjusting number of cases to",
+        "reflect that cases are now counted by 100,000 inhabitants."
+      ),
+      sliderInput(
+        "population_cutoff",
+        paste("Limit sample to countries with at least .. million inhabitants",
+              "(useful for per capita displays)"),
+        min = 0, max = max(100, po$population_cutoff), value = po$population_cutoff
+      ),
+      hr(),
       checkboxInput(
         "log_scale",
         "Use logarithmic scaling for Y-axis",
@@ -100,6 +118,7 @@ ui <- fluidPage(
         "Check to exclude unhighlighted countries",
         po$exclude_others
       ),
+      hr(),
       uiOutput("SendCodeToClipboard")
     ),
     mainPanel(div(
@@ -117,14 +136,14 @@ ui <- fluidPage(
          "Humboldt-Universität zu Berlin</a> and",
          "<a href=https://www.accounting-for-transparency.de>",
          "TRR 266 Accounting for Transparency</a>, 2020</center></p>")
-
-    )),
+    ))
 )
 
 server <- function(input, output) {
 
   dyn_data <- reactive({
     data <- po$data %>%
+      filter(population > 1e6*input$population_cutoff) %>%
       mutate(active = confirmed - recovered)
 
     if (!input$cumulative)
@@ -136,9 +155,17 @@ server <- function(input, output) {
         ) %>%
         ungroup()
 
+    if(input$per_capita_x_axis) {
+      data <- data %>%
+        group_by(iso3c) %>%
+        filter((!! sym(input$type)*1e5)/population >= input$min_cases)
+    } else {
+      data <- data %>%
+        group_by(iso3c) %>%
+        filter(!! sym(input$type) >= input$min_cases)
+    }
+
     data %>%
-      group_by(iso3c) %>%
-      filter(!! sym(input$type) >= input$min_cases) %>%
       mutate(edate = as.numeric(date - min(date))) %>%
       filter(!is.na(edate)) %>%
       group_by(iso3c) %>%
@@ -159,7 +186,7 @@ server <- function(input, output) {
 
   ctry_selected <- reactiveVal(
     if(!is.null(po$highlight)) {
-        po$data %>%
+      po$data %>%
           select(country, iso3c) %>%
           unique() %>%
           filter(iso3c %in% po$highlight) -> ctries_temp
@@ -201,11 +228,13 @@ server <- function(input, output) {
       'plot_covid19_spread(',
       sprintf('  type = "%s", min_cases = %d, min_by_ctry_obs = %d,',
               input$type, input$min_cases, input$min_by_ctry_obs),
-      sprintf('  edate_cutoff = %d, per_capita = %s, log_scale = %s,',
-              input$edate_cutoff, as.character(input$per_capita),
-              as.character(input$log_scale)),
-      sprintf('  cumulative = %s, change_ave = %d,',
-              as.character(input$cumulative), input$change_ave),
+      sprintf('  per_capita = %s, per_capita_x_axis = %s, population_cutoff = %d, ',
+              as.character(input$per_capita),
+              as.character(input$per_capita_x_axis), input$population_cutoff),
+      sprintf('  log_scale = %s, cumulative = %s, change_ave = %d,',
+              as.character(input$log_scale), as.character(input$cumulative),
+              input$change_ave),
+      sprintf('  edate_cutoff = %d', input$edate_cutoff),
       paste0(strwrap(sprintf('  highlight = %s,',
               paste0(capture.output(dput(unname(input$highlight))), collapse = "")), 66),
               collapse = "\n  "),
@@ -219,6 +248,11 @@ server <- function(input, output) {
   observeEvent(input$cumulative, {
     if (input$cumulative) shinyjs::disable("change_ave")
     else shinyjs::enable("change_ave")
+  })
+
+  observeEvent(input$per_capita, {
+    if (input$per_capita) shinyjs::enable("per_capita_x_axis")
+    else shinyjs::disable("per_capita_x_axis")
   })
 
   observeEvent(input$highlight, ignoreNULL = FALSE, ignoreInit = TRUE, {
@@ -259,6 +293,8 @@ server <- function(input, output) {
       min_cases = input$min_cases,
       min_by_ctry_obs = input$min_by_ctry_obs,
       per_capita = input$per_capita,
+      per_capita_x_axis = input$per_capita_x_axis,
+      population_cutoff = input$population_cutoff,
       log_scale = input$log_scale,
       cumulative = input$cumulative,
       change_ave = input$change_ave,
@@ -275,6 +311,7 @@ server <- function(input, output) {
     df <- dyn_data()
     if (input$exclude_others && isolate(ctry_selected()[1]) != "all" )
       df <- df %>% filter(iso3c %in% isolate(ctry_selected()))
+
     if (!is.null(hover)) {
       hover$mapping$x <- "edate"
       hover$mapping$y <- input$type

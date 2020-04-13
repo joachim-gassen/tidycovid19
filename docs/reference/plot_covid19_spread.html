@@ -150,6 +150,8 @@ option.</p>
   <span class='kw'>cumulative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>change_ave</span> <span class='kw'>=</span> <span class='fl'>7</span>,
   <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>per_capita_x_axis</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>population_cutoff</span> <span class='kw'>=</span> <span class='fl'>0</span>,
   <span class='kw'>log_scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>exclude_others</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
@@ -208,6 +210,19 @@ window.</p></td>
       <th>per_capita</th>
       <td><p>If <code>TRUE</code> data is being plotted as per capita measure
 based on World Bank data. Defaults to <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>per_capita_x_axis</th>
+      <td><p>If <code>TRUE</code>, the 'event date' cutoff for the x
+axis set by <code>min_cases</code> is evaluated based on by capita
+measures (cases per 100,000  inhabitants). Only feasible when
+<code>per_capita</code> is <code>TRUE</code>. Defaults to <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>population_cutoff</th>
+      <td><p>Do you want to restrict the plot to countries that
+exceed a certain population cutoff? Takes a value in millions and
+defaults to 0. Useful for per capita displays.</p></td>
     </tr>
     <tr>
       <th>log_scale</th>

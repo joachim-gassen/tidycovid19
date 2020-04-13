@@ -33,6 +33,13 @@
 #' @param change_ave Number of days to average over when you plot daily changes.
 #' @param per_capita If \code{TRUE} data is being plotted as per capita measure
 #'     based on World Bank data. Defaults to \code{FALSE}.
+#' @param per_capita_x_axis If \code{TRUE}, the 'event date' cutoff for the x
+#'     axis set by \code{min_cases} is evaluated based on by capita
+#'     measures (cases per 100,000  inhabitants). Only feasible when
+#'     \code{per_capita} is \code{TRUE}. Defaults to \code{FALSE}.
+#' @param population_cutoff Do you want to restrict the plot to countries that
+#'     exceed a certain population cutoff? Takes a value in millions and
+#'     defaults to 0. Useful for per capita displays.
 #' @param log_scale Do you want the Y-axis to be log-scaled? Defaults to
 #'     \code{TRUE}.
 #' @param highlight A character vector of ISO3c (ISO 3166-1 alpha-3) codes that
@@ -70,9 +77,9 @@ plot_covid19_spread <- function(
   type = "deaths", min_cases = ifelse(type == "deaths", 100, 1000),
   min_by_ctry_obs = 7, edate_cutoff = 40,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "%B %d, %Y"),
-  cumulative = TRUE, change_ave = 7,
-  per_capita = FALSE, log_scale = TRUE, highlight = NULL,
-  exclude_others = FALSE, intervention = NULL) {
+  cumulative = TRUE, change_ave = 7, per_capita = FALSE,
+  per_capita_x_axis = FALSE, population_cutoff = 0, log_scale = TRUE,
+  highlight = NULL, exclude_others = FALSE, intervention = NULL) {
   if(!type %in% c("confirmed", "deaths", "recovered", "active"))
     stop("Wrong 'type': Only 'confirmed', 'deaths', 'recovered' and 'active' are supported")
 
@@ -81,7 +88,14 @@ plot_covid19_spread <- function(
   if(change_ave < 0)
     stop ("'change_ave' needs to be a positive integer")
 
+  if(!per_capita && per_capita_x_axis)
+    stop(paste(
+      "'per_capita_x_axis' can be set to 'TRUE' only",
+      "if 'per_capita' is set to 'TRUE'"
+    ))
+
   data <- data %>%
+    dplyr::filter(.data$population > 1e6*population_cutoff) %>%
     dplyr::mutate(active = .data$confirmed - .data$recovered)
 
   if (!cumulative)
@@ -93,9 +107,17 @@ plot_covid19_spread <- function(
       ) %>%
       dplyr::ungroup()
 
+  if(per_capita_x_axis) {
+    data <- data %>%
+      dplyr::group_by(.data$iso3c) %>%
+      dplyr::filter((!! rlang::sym(type)*1e5)/.data$population >= min_cases)
+  } else {
+    data <- data %>%
+      dplyr::group_by(.data$iso3c) %>%
+      dplyr::filter(!! rlang::sym(type) >= min_cases)
+  }
+
   data %>%
-    dplyr::group_by(.data$iso3c) %>%
-    dplyr::filter(!! rlang::sym(type) >= min_cases) %>%
     dplyr::mutate(edate = as.numeric(.data$date - min(.data$date))) %>%
     dplyr::filter(!is.na(.data$edate)) %>%
     dplyr::group_by(.data$country) %>%
@@ -136,25 +158,37 @@ plot_covid19_spread <- function(
       "'pub_health', and 'soc_econ')."
     ))
 
-  if (is.null(intervention)) {
-    caption_str <- paste(
-      "Data: Johns Hopkins University Center for Systems Science",
-      sprintf("and Engineering (JHU CSSE), obtained on %s.", data_date_str)
-    )
-  } else {
-    caption_str <- paste(
-      "Case data: Johns Hopkins University Center for Systems Science",
-      "and Engineering (JHU CSSE). Interventions data: ACAPS.",
-      sprintf("Data obtained on %s.", data_date_str)
-    )
+  caption_str <- paste(
+    "Case data: Johns Hopkins University Center for Systems Science",
+    "and Engineering (JHU CSSE)."
+  )
+  if(!is.null(intervention)) {
+    caption_str <- paste(caption_str, "Interventions data: ACAPS.")
+  }
+  if(per_capita || population_cutoff > 0) {
+    caption_str <- paste(caption_str, "Population data: Worldbank.")
   }
   caption_str <- paste(
     caption_str,
-    sprintf(
-      "The sample is limited to countries with at least %d days of data.",
-      min_by_ctry_obs
-    )
+    sprintf("Data obtained on %s.", data_date_str)
   )
+
+  if(min_by_ctry_obs > 1 || population_cutoff > 0) {
+    caption_str <- paste(caption_str, "The sample is limited to countries with")
+    if(min_by_ctry_obs > 1)
+      caption_str <- paste(
+        caption_str,
+        sprintf("at least %d days of data", min_by_ctry_obs)
+      )
+    if(min_by_ctry_obs > 1 && population_cutoff > 0)
+      caption_str <- paste(caption_str, "and")
+    if(population_cutoff > 0)
+      caption_str <- paste(
+        caption_str,
+        sprintf("a population exceeding %.0f million", population_cutoff)
+      )
+    caption_str <- paste0(caption_str, ".")
+  }
 
   if (!is.null(intervention)) caption_str <- paste(
     caption_str,
@@ -167,14 +201,27 @@ plot_covid19_spread <- function(
     "Code: https://github.com/joachim-gassen/tidycovid19."
   ), width = 120), collapse = "\n")
 
-  x_str <- sprintf("Days after %s reported",
-                   scales::label_ordinal(big.mark = ",")(min_cases))
-  x_str <- paste(x_str, dplyr::case_when(
-    type == "deaths" ~ "death\n",
-    type == "confirmed" ~ "confirmed case\n",
-    type == "recovered" ~ "recovered case\n",
-    type == "active" ~ "active case\n"
-  ))
+  if (per_capita_x_axis) {
+    x_str <- sprintf(
+      "Days after %s per 100,000 inhabitants exceeded %.1f",
+      dplyr::case_when(
+        type == "deaths" ~ "deaths\n",
+        type == "confirmed" ~ "confirmed cases\n",
+        type == "recovered" ~ "recovered cases\n",
+        type == "active" ~ "active cases\n"
+      ), min_cases
+    )
+  } else {
+    x_str <- sprintf("Days after %s reported",
+                     scales::label_ordinal(big.mark = ",")(min_cases))
+
+    x_str <- paste(x_str, dplyr::case_when(
+      type == "deaths" ~ "death\n",
+      type == "confirmed" ~ "confirmed case\n",
+      type == "recovered" ~ "recovered case\n",
+      type == "active" ~ "active case\n"
+    ))
+  }
 
   if (!cumulative) y_str <- "Daily change in"
   else y_str <- "Reported"

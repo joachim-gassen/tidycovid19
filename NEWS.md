@@ -1,5 +1,7 @@
 # tidycovid19 0.0.0.9000
 
+* `*_covid19_spread()`: Added additional options for per capita displays
+
 * Included code to scrape information provided by Google COVID-19 Community Mobility Reports
 
 * `*_covid19_spread()`: Added option to exclude unhighlighted countries

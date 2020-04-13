@@ -177,6 +177,14 @@ plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
 plot_covid19_spread(merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
                     exclude_others = TRUE, intervention = "lockdown")
 
+plot_covid19_spread(
+  per_capita = TRUE, per_capita_x_axis = TRUE,
+  population_cutoff = 10,
+  min_cases = 0.1,
+  highlight = c("ITA", "ESP", "FRA", "DEU", "USA", "BEL", "FRA", "NLD", "GBR"),
+  intervention = "lockdown"
+)
+
 
 # --- Example clipping code produced by hiny_covid19_spread() ------------------
 
