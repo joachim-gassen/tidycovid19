@@ -4,8 +4,12 @@
 \alias{scrape_google_cmr_data}
 \title{Scrape Google Community Mobility Report Data}
 \usage{
-scrape_google_cmr_data(daily_data = TRUE, pdf_dir = NULL,
-  silent = FALSE, cached = FALSE)
+scrape_google_cmr_data(
+  daily_data = TRUE,
+  pdf_dir = NULL,
+  silent = FALSE,
+  cached = FALSE
+)
 }
 \arguments{
 \item{daily_data}{Whether you want the code to extract daily data by
@@ -39,7 +43,7 @@ As stated on this webpage, the "reports chart movement trends over time
 by geography, across different categories of places such as retail and
 recreation, groceries and pharmacies, parks, transit stations,
 workplaces, and residential". Google prepares these reports ino PDF format
-to help interestes parties to assess responses to social distancing guidance
+to help interested parties to assess responses to social distancing guidance
 related to Covid-19.
 }
 \details{

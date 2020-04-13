@@ -7,6 +7,7 @@
 library(dplyr)
 library(lubridate)
 library(tidycovid19)
+library(stringr)
 
 df <- download_acaps_npi_data()
 saveRDS(df, "cached_data/acaps_npi.RDS", version = 2)
@@ -14,6 +15,28 @@ wblist <- download_wbank_data(var_def = TRUE)
 saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
 df <- download_jhu_csse_covid19_data()
 saveRDS(df, "cached_data/jhu_csse_covid19.RDS", version = 2)
+
+# The following assumes that you archive Google CMR PDFs in a local path
+# "google_cmr_pdfs"
+local_cmr_dates <-   str_extract(
+  list.dirs("google_cmr_pdfs", full.names = FALSE, recursive = FALSE),
+  "\\d{4}-\\d{2}-\\d{2}"
+)
+if(length(local_cmr_dates) == 0) {
+  last_local_cmr_date <- ymd("2020-01-01")
+} else last_local_cmr_date <- max(ymd(local_cmr_dates))
+
+google_cmr_date <- download_google_cmr_pdfs(
+  "google_cmr_pdfs", date_indexed = TRUE
+)
+
+if (google_cmr_date > last_local_cmr_date) {
+  gcmrlist <- scrape_google_cmr_data(
+    pdf_dir = file.path("google_cmr_pdfs", google_cmr_date)
+  )
+  saveRDS(gcmrlist, "cached_data/google_cmr.RDS", version = 2)
+}
+
 gtlist <- download_google_trends_data(
   type = c('country', 'country_day', 'region', 'city')
 )

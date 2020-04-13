@@ -38,7 +38,7 @@ As stated on this webpage, the &quot;reports chart movement trends over time
 by geography, across different categories of places such as retail and
 recreation, groceries and pharmacies, parks, transit stations,
 workplaces, and residential&quot;. Google prepares these reports to help
-interestes parties to assess responses to social distancing guidance
+interested parties to assess responses to social distancing guidance
 related to Covid-19." />
 <meta name="twitter:card" content="summary" />
 
@@ -133,12 +133,12 @@ As stated on this webpage, the "reports chart movement trends over time
 by geography, across different categories of places such as retail and
 recreation, groceries and pharmacies, parks, transit stations,
 workplaces, and residential". Google prepares these reports to help
-interestes parties to assess responses to social distancing guidance
+interested parties to assess responses to social distancing guidance
 related to Covid-19.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_google_cmr_pdfs</span>(<span class='no'>pdf_dir</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_google_cmr_pdfs</span>(<span class='no'>pdf_dir</span>, <span class='kw'>date_indexed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -146,6 +146,15 @@ related to Covid-19.</p>
     <tr>
       <th>pdf_dir</th>
       <td><p>Path to the directory where the PDF files will be stored.</p></td>
+    </tr>
+    <tr>
+      <th>date_indexed</th>
+      <td><p>When <code>TRUE</code>, the function first reads the date
+contained in the PDF file names. If the data is newer than the last
+date contained in the directory names in <code>pdf_dir</code>, it downloads
+the new PDFs into a new directory named by date. If not, it downloads
+nothing. If <code>FALSE</code> (the default), it simply downloads the PDFs
+to <code>pdf_dir</code> regardless of their date.</p></td>
     </tr>
     <tr>
       <th>silent</th>
@@ -157,7 +166,7 @@ and thus defaults to <code>TRUE</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector containing the filenames that were downloaded.</p>
+    <p>The datestamp of the available PDFs.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

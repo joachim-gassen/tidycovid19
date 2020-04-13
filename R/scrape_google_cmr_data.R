@@ -127,7 +127,7 @@ extract_clevel_line_graphs <- function(pdf) {
 #' by geography, across different categories of places such as retail and
 #' recreation, groceries and pharmacies, parks, transit stations,
 #' workplaces, and residential". Google prepares these reports ino PDF format
-#' to help interestes parties to assess responses to social distancing guidance
+#' to help interested parties to assess responses to social distancing guidance
 #' related to Covid-19.
 #'
 #' @param daily_data Whether you want the code to extract daily data by
@@ -209,7 +209,7 @@ scrape_google_cmr_data <- function(daily_data = TRUE, pdf_dir = NULL,
     df <- strsplit(paste(pdftools::pdf_text(pdf), collapse = "\n"), "\n")[[1]]
     # Windows provides strings with CR - remove them
     df <- sub("\r", "", df)
-    
+
     value_pos <- which(stringr::str_detect(df, "^[-+]?\\d+%$"))
     rv <- dplyr::tibble(
       iso2c = iso2c,

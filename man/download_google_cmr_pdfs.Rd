@@ -4,17 +4,24 @@
 \alias{download_google_cmr_pdfs}
 \title{Download Google Community Mobility Reports as PDF files}
 \usage{
-download_google_cmr_pdfs(pdf_dir, silent = FALSE)
+download_google_cmr_pdfs(pdf_dir, date_indexed = FALSE, silent = FALSE)
 }
 \arguments{
 \item{pdf_dir}{Path to the directory where the PDF files will be stored.}
+
+\item{date_indexed}{When \code{TRUE}, the function first reads the date
+contained in the PDF file names. If the data is newer than the last
+date contained in the directory names in \code{pdf_dir}, it downloads
+the new PDFs into a new directory named by date. If not, it downloads
+nothing. If \code{FALSE} (the default), it simply downloads the PDFs
+to \code{pdf_dir} regardless of their date.}
 
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
 and thus defaults to \code{TRUE}.}
 }
 \value{
-A vector containing the filenames that were downloaded.
+The datestamp of the available PDFs.
 }
 \description{
 Downloads Google Community Mobility Reports
@@ -23,7 +30,7 @@ As stated on this webpage, the "reports chart movement trends over time
 by geography, across different categories of places such as retail and
 recreation, groceries and pharmacies, parks, transit stations,
 workplaces, and residential". Google prepares these reports to help
-interestes parties to assess responses to social distancing guidance
+interested parties to assess responses to social distancing guidance
 related to Covid-19.
 }
 \examples{
