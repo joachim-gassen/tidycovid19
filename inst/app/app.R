@@ -139,7 +139,7 @@ ui <- fluidPage(
     ))
 )
 
-server <- function(input, output) {
+server <- function(session, input, output) {
 
   dyn_data <- reactive({
     data <- po$data %>%
@@ -230,7 +230,8 @@ server <- function(input, output) {
               input$type, input$min_cases, input$min_by_ctry_obs),
       sprintf('  per_capita = %s, per_capita_x_axis = %s, population_cutoff = %d, ',
               as.character(input$per_capita),
-              as.character(input$per_capita_x_axis), input$population_cutoff),
+              as.character({if (input$per_capita) input$per_capita_x_axis else FALSE}),
+              input$population_cutoff),
       sprintf('  log_scale = %s, cumulative = %s, change_ave = %d,',
               as.character(input$log_scale), as.character(input$cumulative),
               input$change_ave),
@@ -252,7 +253,10 @@ server <- function(input, output) {
 
   observeEvent(input$per_capita, {
     if (input$per_capita) shinyjs::enable("per_capita_x_axis")
-    else shinyjs::disable("per_capita_x_axis")
+    else {
+      updateCheckboxInput(session, "per_capita_x_axis", value = FALSE)
+      shinyjs::disable("per_capita_x_axis")
+    }
   })
 
   observeEvent(input$highlight, ignoreNULL = FALSE, ignoreInit = TRUE, {
@@ -293,7 +297,7 @@ server <- function(input, output) {
       min_cases = input$min_cases,
       min_by_ctry_obs = input$min_by_ctry_obs,
       per_capita = input$per_capita,
-      per_capita_x_axis = input$per_capita_x_axis,
+      per_capita_x_axis = {if (input$per_capita) input$per_capita_x_axis else FALSE},
       population_cutoff = input$population_cutoff,
       log_scale = input$log_scale,
       cumulative = input$cumulative,
