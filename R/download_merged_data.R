@@ -77,7 +77,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
   npis <- download_acaps_npi_data(silent) %>%
     dplyr::mutate(npi_date = lubridate::ymd(.data$date_implemented)) %>%
     dplyr::rename(npi_type = .data$category) %>%
-    dplyr::select(.data$iso3c, .data$npi_date, .data$npi_type)
+    dplyr::select(.data$iso3c, .data$npi_date, .data$log_type, .data$npi_type)
 
   gcmr_list <- scrape_google_cmr_data(silent = silent)
 
@@ -108,7 +108,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
       dplyr::left_join(
         my_npi %>%
           dplyr::rename(date = .data$npi_date) %>%
-          dplyr::mutate(npi = TRUE) %>%
+          dplyr::mutate(npi = ifelse(.data$log_type == "Phase-out measure", -1, 1)) %>%
           dplyr::select(.data$iso3c, .data$date, .data$npi) %>%
           dplyr::group_by(.data$iso3c, .data$date) %>%
           dplyr::summarise(npi = sum(.data$npi)),
