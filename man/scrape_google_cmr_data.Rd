@@ -7,6 +7,7 @@
 scrape_google_cmr_data(
   daily_data = TRUE,
   pdf_dir = NULL,
+  use_all_dates = FALSE,
   silent = FALSE,
   cached = FALSE
 )
@@ -18,8 +19,16 @@ resulting data are noisy but should be accurate by +/- one day and
 +/- 2 percent. Defaults to \code{TRUE}.}
 
 \item{pdf_dir}{Path to the directory where the PDF files are stored.
-If \code{NULL} (the default), the code will download the PDFs from
-Google's website (see above). See \code{google_download_cmr_pdfs()}
+If \code{NULL} (the default), the code will download the current PDFs
+from Google's website (see above). See \code{download_google_cmr_pdfs()}
+for downloading the PDFs.}
+
+\item{use_all_dates}{Defaults to \code{FALSE}. If \code{TRUE}, it parses
+all PDFs from various dates available in \code{pdf_dir} and averages
+over the values found. This extends the time span of the data as
+older Google reports contain values for earlier dates. If \code{TRUE},
+make sure that \code{pdf_dir} points to the directory containing the
+date indexed subdirectories. See \code{download_google_cmr_pdfs()}
 for downloading the PDFs.}
 
 \item{silent}{Whether you want the function to send some status messages to

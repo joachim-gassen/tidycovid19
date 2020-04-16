@@ -1,5 +1,7 @@
 # tidycovid19 0.0.0.9000
 
+* Included Apple Mobility Trends Reports data
+
 * `*_covid19_spread()`: Added additional options for per capita displays
 
 * Included code to scrape information provided by Google COVID-19 Community Mobility Reports

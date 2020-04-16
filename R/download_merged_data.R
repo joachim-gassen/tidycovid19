@@ -5,6 +5,8 @@
 #' (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 #' measures database
 #' (\url{https://www.acaps.org/covid19-government-measures-dataset}),
+#' Mobility Trends Reports provided by Apple related to Covid-19
+#' (\url{https://www.apple.com/covid19/mobility}),
 #' Google COVID-19 Community Mobility Reports
 #' (\url{https://www.google.com/covid19/mobility/}),
 #' Google Trends Covid-19 related search volume
@@ -79,6 +81,11 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::rename(npi_type = .data$category) %>%
     dplyr::select(.data$iso3c, .data$npi_date, .data$log_type, .data$npi_type)
 
+  amtr <- download_apple_mtr_data() %>%
+    dplyr::select(-.data$timestamp) %>%
+    dplyr::rename_at(dplyr::vars(-.data$iso3c, -.data$date),
+                     ~ paste0("apple_mtr_", .))
+
   gcmr_list <- scrape_google_cmr_data(silent = silent)
 
   gcmr_cd <- gcmr_list[[2]] %>%
@@ -152,6 +159,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
       calc_npi_measure("Lockdown", "lockdown"),
       by = c("iso3c", "date")
     ) %>%
+    dplyr::left_join(amtr, by = c("iso3c", "date")) %>%
     dplyr::left_join(gcmr_cd, by = c("iso3c", "date")) %>%
     dplyr::left_join(gtrends_cd, by = c("iso3c", "date")) %>%
     dplyr::left_join(gtrends_c, by = "iso3c") %>%

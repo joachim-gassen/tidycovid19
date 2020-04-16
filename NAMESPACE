@@ -2,6 +2,7 @@
 
 export("%>%")
 export(download_acaps_npi_data)
+export(download_apple_mtr_data)
 export(download_google_cmr_pdfs)
 export(download_google_trends_data)
 export(download_jhu_csse_covid19_data)

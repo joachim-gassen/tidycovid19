@@ -138,7 +138,12 @@ related to Covid-19.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_google_cmr_pdfs</span>(<span class='no'>pdf_dir</span>, <span class='kw'>date_indexed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_google_cmr_pdfs</span>(
+  <span class='no'>pdf_dir</span>,
+  <span class='kw'>date_indexed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>all_dates</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,8 +158,15 @@ related to Covid-19.</p>
 contained in the PDF file names. If the data is newer than the last
 date contained in the directory names in <code>pdf_dir</code>, it downloads
 the new PDFs into a new directory named by date. If not, it downloads
-nothing. If <code>FALSE</code> (the default), it simply downloads the PDFs
-to <code>pdf_dir</code> regardless of their date.</p></td>
+nothing. If <code>FALSE</code> (the default), it simply downloads the current
+PDFs to <code>pdf_dir</code> regardless of their date.</p></td>
+    </tr>
+    <tr>
+      <th>all_dates</th>
+      <td><p>Currently, Google still seems to keep the PDFs from
+previous dates around. If you set this to <code>TRUE</code>, the function will
+try to download old PDFs as well and stores them in directories named by
+date. Required <code>date_indexed == TRUE</code> and defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>silent</th>

@@ -43,6 +43,8 @@ SARS-CoV-2 virus and the Covid-19 pandemic
 (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 measures database
 (\url{https://www.acaps.org/covid19-government-measures-dataset}),
+Mobility Trends Reports provided by Apple related to Covid-19
+(\url{https://www.apple.com/covid19/mobility}),
 Google COVID-19 Community Mobility Reports
 (\url{https://www.google.com/covid19/mobility/}),
 Google Trends Covid-19 related search volume

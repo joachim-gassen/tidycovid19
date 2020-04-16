@@ -4,7 +4,12 @@
 \alias{download_google_cmr_pdfs}
 \title{Download Google Community Mobility Reports as PDF files}
 \usage{
-download_google_cmr_pdfs(pdf_dir, date_indexed = FALSE, silent = FALSE)
+download_google_cmr_pdfs(
+  pdf_dir,
+  date_indexed = FALSE,
+  all_dates = FALSE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{pdf_dir}{Path to the directory where the PDF files will be stored.}
@@ -13,8 +18,13 @@ download_google_cmr_pdfs(pdf_dir, date_indexed = FALSE, silent = FALSE)
 contained in the PDF file names. If the data is newer than the last
 date contained in the directory names in \code{pdf_dir}, it downloads
 the new PDFs into a new directory named by date. If not, it downloads
-nothing. If \code{FALSE} (the default), it simply downloads the PDFs
-to \code{pdf_dir} regardless of their date.}
+nothing. If \code{FALSE} (the default), it simply downloads the current
+PDFs to \code{pdf_dir} regardless of their date.}
+
+\item{all_dates}{Currently, Google still seems to keep the PDFs from
+previous dates around. If you set this to \code{TRUE}, the function will
+try to download old PDFs as well and stores them in directories named by
+date. Required \code{date_indexed == TRUE} and defaults to \code{FALSE}.}
 
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time

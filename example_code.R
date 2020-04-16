@@ -9,12 +9,18 @@ library(lubridate)
 library(tidycovid19)
 library(stringr)
 
-df <- download_acaps_npi_data()
-saveRDS(df, "cached_data/acaps_npi.RDS", version = 2)
+source("scrape_apple_mtr_url.R", echo = FALSE)
+
+acaps <- download_acaps_npi_data()
+saveRDS(acaps, "cached_data/acaps_npi.RDS", version = 2)
 wblist <- download_wbank_data(var_def = TRUE)
 saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
-df <- download_jhu_csse_covid19_data()
-saveRDS(df, "cached_data/jhu_csse_covid19.RDS", version = 2)
+jhu <- download_jhu_csse_covid19_data()
+saveRDS(jhu, "cached_data/jhu_csse_covid19.RDS", version = 2)
+
+amtr_url <- scrape_apple_mtr_url()
+amtr <- download_apple_mtr_data(amtr_url)
+saveRDS(amtr, "cached_data/apple_mtr.RDS")
 
 # The following assumes that you archive Google CMR PDFs in a local path
 # "google_cmr_pdfs"
@@ -27,12 +33,13 @@ if(length(local_cmr_dates) == 0) {
 } else last_local_cmr_date <- max(ymd(local_cmr_dates))
 
 google_cmr_date <- download_google_cmr_pdfs(
-  "google_cmr_pdfs", date_indexed = TRUE
+  "google_cmr_pdfs", date_indexed = TRUE, all_dates = TRUE
 )
 
-if (google_cmr_date > last_local_cmr_date) {
+if (google_cmr_date[length(google_cmr_date)] > last_local_cmr_date) {
   gcmrlist <- scrape_google_cmr_data(
-    pdf_dir = file.path("google_cmr_pdfs", google_cmr_date)
+    pdf_dir = "google_cmr_pdfs",
+    use_all_dates = TRUE
   )
   saveRDS(gcmrlist, "cached_data/google_cmr.RDS", version = 2)
 }
@@ -53,6 +60,10 @@ npis <- readRDS("cached_data/acaps_npi.RDS") %>%
     mutate(npi_date = ymd(date_implemented)) %>%
     rename(npi_type = category) %>%
     select(iso3c, npi_date, log_type, npi_type)
+
+amtr <- readRDS("cached_data/apple_mtr.RDS") %>%
+  select(-timestamp) %>%
+  rename_at(vars(-iso3c, -date), ~ paste0("apple_mtr_", .))
 
 gcmr_list <- readRDS("cached_data/google_cmr.RDS")
 
@@ -123,6 +134,7 @@ df <- cases %>%
     calc_npi_measure("Lockdown", "lockdown"),
     by = c("iso3c", "date")
   ) %>%
+  left_join(amtr, by = c("iso3c", "date")) %>%
   left_join(gcmr_cd, by = c("iso3c", "date")) %>%
   left_join(gtrends_cd, by = c("iso3c", "date")) %>%
   left_join(gtrends_c, by = "iso3c") %>%

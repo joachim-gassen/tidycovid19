@@ -81,6 +81,9 @@ Currently, the package offers the following functions to download data:
     as I view the ACAPS data to be better suited ([this blog post
     details
     why](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)).
+  - **NEW**: `download_apple_mtr_data()`: Downloads [Mobility Trends
+    Reports provided by Apple](https://www.apple.com/covid19/mobility)
+    related to Covid-19.
   - **NEW**: `download_google_cmr_pdfs()`/`scrape_google_cmr_data()`:
     Downloads and scrapes [Google COVID-19 Community Mobility
     Reports](https://www.google.com/covid19/mobility/). These reports

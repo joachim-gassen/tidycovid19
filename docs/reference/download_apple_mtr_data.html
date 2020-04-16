@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Download ACAPS non-pharmaceutical interventions data — download_acaps_npi_data • tidycovid19</title>
+<title>Download Apple Mobility Trend Reports Data — download_apple_mtr_data • tidycovid19</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,11 +30,10 @@
 
 
 
-<meta property="og:title" content="Download ACAPS non-pharmaceutical interventions data — download_acaps_npi_data" />
+<meta property="og:title" content="Download Apple Mobility Trend Reports Data — download_apple_mtr_data" />
 
-<meta property="og:description" content="Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
-from the ACAPS governmental measures database
-(https://www.acaps.org/covid19-government-measures-dataset)." />
+<meta property="og:description" content="Downloads Mobility Trends Reports provided by Apple related to Covid-19
+(https://www.apple.com/covid19/mobility)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,24 +114,34 @@ from the ACAPS governmental measures database
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Download ACAPS non-pharmaceutical interventions data</h1>
+    <h1>Download Apple Mobility Trend Reports Data</h1>
     
-    <div class="hidden name"><code>download_acaps_npi_data.Rd</code></div>
+    <div class="hidden name"><code>download_apple_mtr_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
-from the ACAPS governmental measures database
-(<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>).</p>
+    <p>Downloads Mobility Trends Reports provided by Apple related to Covid-19
+(<a href='https://www.apple.com/covid19/mobility'>https://www.apple.com/covid19/mobility</a>).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_acaps_npi_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_apple_mtr_data</span>(<span class='kw'>url</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>url</th>
+      <td><p>The URL of the Apple Mobility Trend Reports is burried in
+Java Script, making it non-trivial to parse. The Github repository
+of this package contains an R script that uses the 'RSelenium'
+package and headless browsing to scrape the URL. The scraped URL
+is included in the daily updated data contained in this repository.
+By default, the function uses this cached URL to retrieve the data.
+You can, however, pass your own URL by setting this variable.
+Defaults to <code>NULL</code> to trigger loading the cached URL.</p></td>
+    </tr>
     <tr>
       <th>silent</th>
       <td><p>Whether you want the function to send some status messages to
@@ -150,31 +159,20 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame containing the data, organized by intervention. It
-    includes a <code>timestamp</code> variable indicating the time of data
-    retrieval.</p>
+    <p>A data frame containing the data. It includes a <code>timestamp</code>
+    variable indicating the time of data retrieval.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_acaps_npi_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_apple_mtr_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>country</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>number_of_interventions</span> <span class='kw'>=</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/n.html'>n</a></span>()) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>number_of_interventions</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 193 x 2</span><span>
-#&gt;    country     number_of_interventions
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                         </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Sri Lanka                       127
-#&gt; </span><span style='color: #555555;'> 2</span><span> Barbados                        109
-#&gt; </span><span style='color: #555555;'> 3</span><span> Philippines                     109
-#&gt; </span><span style='color: #555555;'> 4</span><span> Australia                       100
-#&gt; </span><span style='color: #555555;'> 5</span><span> Thailand                         91
-#&gt; </span><span style='color: #555555;'> 6</span><span> Malaysia                         88
-#&gt; </span><span style='color: #555555;'> 7</span><span> Hungary                          66
-#&gt; </span><span style='color: #555555;'> 8</span><span> New Zealand                      66
-#&gt; </span><span style='color: #555555;'> 9</span><span> Angola                           63
-#&gt; </span><span style='color: #555555;'>10</span><span> Denmark                          59
-#&gt; </span><span style='color: #555555;'># … with 183 more rows</span><span></div><div class='input'>
-</div></span></pre>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>date</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarize</a></span>(
+    <span class='kw'>walking</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='no'>walking</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  ) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>date</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>walking</span>)) +
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='download_apple_mtr_data-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
