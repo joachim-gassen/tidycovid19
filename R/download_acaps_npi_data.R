@@ -61,12 +61,6 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   names(df) <-tolower(names(df))
   names(df)[16] <- "alternative_source"
 
-  # Some spelling inconsistencies:
-  df$category[df$category == "Movement Restriction"] <- "Movement restrictions"
-  df$category[df$category == "Movement Restrictions"] <- "Movement restrictions"
-  df$category[df$category == "Social and Economic Measures"] <- "Social and economic measures"
-  df$category[df$category == "Social Distancing"] <- "Social distancing"
-
   df <- df %>%
     dplyr::select(-.data$pcode) %>% # 2020-03-25 is all NA
     dplyr::filter(!is.na(.data$date_implemented),

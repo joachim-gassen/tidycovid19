@@ -113,6 +113,11 @@ calc_npi_measure <-function(type, var_name) {
 #             being as it contains only two Irish cases (parking for
 #             essential workers and leeway for pharamacisist)
 
+# 2020-04-16: The category "Social and economic measures" has been renamed
+#             to "Governance and socio-economic measures" in the ACAPS data.
+#             I reflect this name change by renaming the variable 'soc_econ'
+#             'gov_soc_econ'.
+
 df <- cases %>%
   left_join(
     calc_npi_measure("Social distancing", "soc_dist"),
@@ -127,7 +132,7 @@ df <- cases %>%
     by = c("iso3c", "date")
   ) %>%
   left_join(
-    calc_npi_measure("Social and economic measures", "soc_econ"),
+    calc_npi_measure("Governance and socio-economic measures", "gov_soc_econ"),
     by = c("iso3c", "date")
   ) %>%
   left_join(
@@ -142,12 +147,12 @@ df <- cases %>%
   group_by(iso3c) %>%
   mutate(
     has_npi = max(soc_dist) + max(mov_rest) +
-      max(.data$pub_health) + max(soc_econ) +
+      max(.data$pub_health) + max(gov_soc_econ) +
       max(lockdown) > 0,
     soc_dist = ifelse(has_npi, soc_dist, NA),
     mov_rest = ifelse(has_npi, mov_rest, NA),
     pub_health = ifelse(has_npi, pub_health, NA),
-    soc_econ = ifelse(has_npi, soc_econ, NA),
+    gov_soc_econ = ifelse(has_npi, gov_soc_econ, NA),
     lockdown = ifelse(has_npi, lockdown, NA)
   ) %>%
   select(-has_npi) %>%

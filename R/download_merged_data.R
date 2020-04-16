@@ -138,6 +138,11 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
   #             being as it contains only two Irish cases (parking for
   #             essential workers and leeway for pharamacisist)
 
+  # 2020-04-16: The category "Social and economic measures" has been renamed
+  #             to "Governance and socio-economic measures" in the ACAPS data.
+  #             I reflect this name change by renaming the variable 'soc_econ'
+  #             'gov_soc_econ'.
+
   df <- cases %>%
     dplyr::left_join(
       calc_npi_measure("Social distancing", "soc_dist"),
@@ -152,7 +157,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
       by = c("iso3c", "date")
     ) %>%
     dplyr::left_join(
-      calc_npi_measure("Social and economic measures", "soc_econ"),
+      calc_npi_measure("Governance and socio-economic measures", "gov_soc_econ"),
       by = c("iso3c", "date")
     ) %>%
     dplyr::left_join(
@@ -167,12 +172,12 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::group_by(.data$iso3c) %>%
     dplyr::mutate(
       has_npi = max(.data$soc_dist) + max(.data$mov_rest) +
-        max(.data$pub_health) + max(.data$soc_econ) +
+        max(.data$pub_health) + max(.data$gov_soc_econ) +
         max(.data$lockdown) > 0,
       soc_dist = ifelse(.data$has_npi, .data$soc_dist, NA),
       mov_rest = ifelse(.data$has_npi, .data$mov_rest, NA),
       pub_health = ifelse(.data$has_npi, .data$pub_health, NA),
-      soc_econ = ifelse(.data$has_npi, .data$soc_econ, NA),
+      gov_soc_econ = ifelse(.data$has_npi, .data$gov_soc_econ, NA),
       lockdown = ifelse(.data$has_npi, .data$lockdown, NA)
     ) %>%
     dplyr::select(-.data$has_npi) %>%
