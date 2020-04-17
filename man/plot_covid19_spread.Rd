@@ -7,14 +7,15 @@
 plot_covid19_spread(
   data = download_merged_data(cached = TRUE, silent = TRUE),
   type = "deaths",
-  min_cases = ifelse(type == "deaths", 100, 1000),
+  min_cases = ifelse(per_capita, ifelse(type == "deaths", 5, 50), ifelse(type ==
+    "deaths", 500, 5000)),
   min_by_ctry_obs = 7,
   edate_cutoff = 40,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "\%B \%d, \%Y"),
   cumulative = TRUE,
   change_ave = 7,
   per_capita = FALSE,
-  per_capita_x_axis = FALSE,
+  per_capita_x_axis = ifelse(per_capita, TRUE, FALSE),
   population_cutoff = 0,
   log_scale = TRUE,
   highlight = NULL,
@@ -58,7 +59,9 @@ based on World Bank data. Defaults to \code{FALSE}.}
 \item{per_capita_x_axis}{If \code{TRUE}, the 'event date' cutoff for the x
 axis set by \code{min_cases} is evaluated based on by capita
 measures (cases per 100,000  inhabitants). Only feasible when
-\code{per_capita} is \code{TRUE}. Defaults to \code{FALSE}.}
+\code{per_capita} is \code{TRUE}. Other than in older versions
+it now defaults to \code{TRUE} whenever \code{per_capita} is \code{TRUE}
+else \code{FALSE}.}
 
 \item{population_cutoff}{Do you want to restrict the plot to countries that
 exceed a certain population cutoff? Takes a value in millions and

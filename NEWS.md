@@ -1,5 +1,7 @@
 # tidycovid19 0.0.0.9000
 
+* Changed defaults in `plot_covid_spread()` to have more reasonable defaults for per capita plots.
+
 * Added code to download Google's Community Mobility Report data in CSV format
 
 * Removed Google PDF download and scraping code as Google made its data available via CSV files (Yeah!) 
