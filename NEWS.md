@@ -1,5 +1,9 @@
 # tidycovid19 0.0.0.9000
 
+* Added code to download Google's Community Mobility Report data in CSV format
+
+* Removed Google PDF download and scraping code as Google made its data available via CSV files (Yeah!) 
+
 * Included Apple Mobility Trends Reports data
 
 * `*_covid19_spread()`: Added additional options for per capita displays

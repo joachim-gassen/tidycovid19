@@ -42,9 +42,10 @@ and [here](https://github.com/mine-cetinkaya-rundel/covid19-r).
 
 Other than the packages mentioned above, the key objective of the
 {tidycovid19} package is to provide *transparent* access to *various*
-data sources, including data on governmental interventions. It does not
-contain any data per se. Instead, it provides functions to pull data
-from publicly available sources.
+data sources at the country-day level, including data on governmental
+interventions. It does not contain any data per se. Instead, it provides
+functions to pull data from publicly available authoritative sources.
+Also, it does not provide sub-country level data for the time being.
 
 For those interested in speedy downloads it alternatively provides the
 option to download from the cached data in this repo (stored in the
@@ -84,16 +85,13 @@ Currently, the package offers the following functions to download data:
   - **NEW**: `download_apple_mtr_data()`: Downloads [Mobility Trends
     Reports provided by Apple](https://www.apple.com/covid19/mobility)
     related to Covid-19.
-  - **NEW**: `download_google_cmr_pdfs()`/`scrape_google_cmr_data()`:
-    Downloads and scrapes [Google COVID-19 Community Mobility
-    Reports](https://www.google.com/covid19/mobility/). These reports
-    come in PDF format and contain information on the changes in
-    geographical moving patterns across georgraphic regions. As daily
-    data is only provided as line graphs in these documents, I scan
-    these graphs to provide country-day data. This process generates
-    noisy measures and is likely to break as soon Google is changing the
-    PDF format of the reports. The function `download_google_cmr_pdfs()`
-    downloads the PDF reports directly to a local directory.
+  - **NEW**: `download_google_cmr_data()`: Downloads [Google COVID-19
+    Community Mobility
+    Reports](https://www.google.com/covid19/mobility/) data. As of April
+    17, Google provides a nice and clean CSV file containing country-day
+    and region-day data. This makes the PDF scraping code that used to
+    be part of this package obsolete. If you are interested in it for
+    didactic reasons, you can still find it in the git hstory.
   - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
     for the term “coronavirus” (Thank you to Yan Ouaknine for bringing
@@ -158,7 +156,7 @@ server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
 ## Blog posts
 
-  - [**New**: A blog
+  - [A blog
     post](https://joachim-gassen.github.io/2020/04/scrape-google-covid19-cmr-data/)
     on the PDF scraping of the new Google Covid-19 Community Movement
     Reports.

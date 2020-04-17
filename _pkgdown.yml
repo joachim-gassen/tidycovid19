@@ -25,8 +25,7 @@ reference:
   - download_acaps_npi_data
   - download_oxford_npi_data
   - download_apple_mtr_data
-  - download_google_cmr_pdfs
-  - scrape_google_cmr_data
+  - download_google_cmr_data
   - download_google_trends_data
   - download_wbank_data
   - download_merged_data

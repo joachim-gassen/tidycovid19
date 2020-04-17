@@ -86,12 +86,10 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::rename_at(dplyr::vars(-.data$iso3c, -.data$date),
                      ~ paste0("apple_mtr_", .))
 
-  gcmr_list <- scrape_google_cmr_data(silent = silent)
-
-  gcmr_cd <- gcmr_list[[2]] %>%
+  gcmr <- download_google_cmr_data() %>%
     dplyr::select(-.data$timestamp) %>%
     dplyr::rename_at(dplyr::vars(-.data$iso3c, -.data$date),
-                      ~ paste0("gcmr_", .))
+                     ~ paste0("gcmr_", .))
 
   gtrends_list <- download_google_trends_data(search_term,
                                               c("country_day", "country"),
@@ -165,7 +163,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
       by = c("iso3c", "date")
     ) %>%
     dplyr::left_join(amtr, by = c("iso3c", "date")) %>%
-    dplyr::left_join(gcmr_cd, by = c("iso3c", "date")) %>%
+    dplyr::left_join(gcmr, by = c("iso3c", "date")) %>%
     dplyr::left_join(gtrends_cd, by = c("iso3c", "date")) %>%
     dplyr::left_join(gtrends_c, by = "iso3c") %>%
     dplyr::left_join(wbank, by = "iso3c") %>%

@@ -22,27 +22,8 @@ amtr_url <- scrape_apple_mtr_url()
 amtr <- download_apple_mtr_data(amtr_url)
 saveRDS(amtr, "cached_data/apple_mtr.RDS")
 
-# The following assumes that you archive Google CMR PDFs in a local path
-# "google_cmr_pdfs"
-local_cmr_dates <-   str_extract(
-  list.dirs("google_cmr_pdfs", full.names = FALSE, recursive = FALSE),
-  "\\d{4}-\\d{2}-\\d{2}"
-)
-if(length(local_cmr_dates) == 0) {
-  last_local_cmr_date <- ymd("2020-01-01")
-} else last_local_cmr_date <- max(ymd(local_cmr_dates))
-
-google_cmr_date <- download_google_cmr_pdfs(
-  "google_cmr_pdfs", date_indexed = TRUE, all_dates = TRUE
-)
-
-if (google_cmr_date[length(google_cmr_date)] > last_local_cmr_date) {
-  gcmrlist <- scrape_google_cmr_data(
-    pdf_dir = "google_cmr_pdfs",
-    use_all_dates = TRUE
-  )
-  saveRDS(gcmrlist, "cached_data/google_cmr.RDS", version = 2)
-}
+gcmr <- download_google_cmr_data()
+saveRDS(gcmr, "cached_data/google_cmr.RDS", version = 2)
 
 gtlist <- download_google_trends_data(
   type = c('country', 'country_day', 'region', 'city')
@@ -65,11 +46,9 @@ amtr <- readRDS("cached_data/apple_mtr.RDS") %>%
   select(-timestamp) %>%
   rename_at(vars(-iso3c, -date), ~ paste0("apple_mtr_", .))
 
-gcmr_list <- readRDS("cached_data/google_cmr.RDS")
-
-gcmr_cd <- gcmr_list[[2]] %>%
+gcmr <- readRDS("cached_data/google_cmr.RDS") %>%
   select(-timestamp) %>%
-  rename_at(dplyr::vars(-iso3c, -date), ~ paste0("gcmr_", .))
+  rename_at(vars(-iso3c, -date), ~ paste0("gcmr_", .))
 
 gtrends_list <- readRDS("cached_data/google_trends.RDS")
 
