@@ -19,7 +19,7 @@
 #' @param min_cases Defines the zero point of your X axis (the 'event date').
 #'     Defaults to 100 cases for deaths and 1,000 cases otherwise.
 #' @param min_by_ctry_obs Limits the plot to countries that have at least that
-#'     many days of dater since and including the event date. Defaults to 7.
+#'     many days of data since and including the event date. Defaults to 7.
 #' @param edate_cutoff The upper limit of the X axis in event days.
 #'     Defaults to 40.
 #' @param data_date_str A date string to include in the annotation of the plot

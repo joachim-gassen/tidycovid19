@@ -35,7 +35,7 @@ and "recovered".}
 Defaults to 100 cases for deaths and 1,000 cases otherwise.}
 
 \item{min_by_ctry_obs}{Limits the plot to countries that have at least that
-many days of dater since and including the event date. Defaults to 7.}
+many days of data since and including the event date. Defaults to 7.}
 
 \item{edate_cutoff}{The upper limit of the X axis in event days.
 Defaults to 40.}
