@@ -91,7 +91,8 @@ Currently, the package offers the following functions to download data:
     17, Google provides a nice and clean CSV file containing country-day
     and region-day data. This makes the PDF scraping code that used to
     be part of this package obsolete. If you are interested in it for
-    didactic reasons, you can still find it in the git hstory.
+    didactic reasons, you can still find it in the [git
+    hstory](https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R).
   - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
     for the term “coronavirus” (Thank you to Yan Ouaknine for bringing
