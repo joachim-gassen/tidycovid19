@@ -182,7 +182,7 @@ plot_covid19_spread(
   intervention = "lockdown"
 )
 
-# Show reduction in NPIs
+# --- Show reduction in NPIs ---------------------------------------------------
 
 merged <- readRDS("cached_data/merged.RDS")
 
@@ -289,3 +289,26 @@ df %>%
   filter(confirmed < lag(confirmed) |
            confirmed > lead(confirmed))
 
+# --- Use old PDF scraping code ------------------------------------------------
+
+# Install old package version that still contains the PDF scraping code
+# remotes::install_github("joachim-gassen/tidycovid19", ref = "0990bc6")
+
+library(tidycovid19)
+library(tidyverse)
+library(pdftools)
+library(png)
+
+pdf_url <- "https://www.gstatic.com/covid19/mobility/2020-04-05_BR_Mobility_Report_en.pdf"
+pdf_convert(pdf_url, pages = 1, filenames = "google_cmr_de_p1.png", verbose = FALSE)
+
+bitmaps <- tidycovid19:::extract_line_graph_bitmaps(pdf_url, 1)
+png_file <- tempfile("bitmap_", fileext = ".png")
+writePNG(bitmaps[[1]][[1]], "bitmap.png")
+
+df <- tidycovid19:::parse_line_graph_bitmap(bitmaps[[1]][[1]])
+
+# Make sure that you reinstall the current version of the package after you
+# are done exploring the PDF scraping code
+
+# remotes::install_github("joachim-gassen/tidycovid19")
