@@ -45,12 +45,12 @@ download_google_cmr_data <- function(silent = FALSE, cached = FALSE) {
     return(df)
   }
 
-  if (!silent) message("Start downloading Google CMR PDFs\n")
+  if (!silent) message("Start downloading Google Community Mobility Reports data\n")
 
   cmr_url <- "https://www.google.com/covid19/mobility/"
 
   url <- xml2::read_html(cmr_url) %>%
-    rvest::html_nodes(xpath = "/html/body/section/section[3]/div[2]/div/div[1]/p[2]/a[1]") %>%
+    rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[2]/a[1]") %>%
     rvest::html_attr('href')
 
   if(!silent) message(sprintf("Downloading '%s'.\n", url))
