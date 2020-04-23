@@ -184,22 +184,24 @@ plot_covid19_spread(
 
 # --- Show reduction in NPIs ---------------------------------------------------
 
-merged <- readRDS("cached_data/merged.RDS")
-
-ggplot(merged %>% filter(iso3c == "NOR"), aes(x = date, y = mov_res)) + geom_line()
-
 #remotes::install_github("joachim-gassen/tidycovid19")
 library(tidyverse)
 library(tidycovid19)
+
 acaps <- download_acaps_npi_data(cached = TRUE, silent = TRUE)
+merged <- download_merged_data(cahced = TRUE, silent = TRUE)
+
+# Example
+ggplot(merged %>% filter(iso3c == "CHN"), aes(x = date, y = mov_rest)) + geom_line()
+
 
 acaps %>%
-  filter(log_type == "Introduction / extension of measures") %>%
+  filter(log_type == "Phase-out measure") %>%
   rename(date = date_implemented) %>%
   select(iso3c, date, category) %>%
   ggplot(aes(x = date, fill = category)) +
   geom_bar(position = "stack") + theme_minimal() +
-  labs(title = "Implementation of Interventions over Calendar Time",
+  labs(title = "Phase-Out of Interventions over Calendar Time",
        x = "Date",
        y = "Number of interventions")
 
