@@ -44,7 +44,7 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
     url <- "https://data.humdata.org/dataset/acaps-covid19-government-measures-dataset"
 
   selector_path <- paste0(
-    "#data-resources-0 > div > ul > li > ",
+    "#data-resources-0 > div > ul > li:nth-child(2) > ",
     "div.hdx-btn-group.hdx-btn-group-fixed > ",
     "a.btn.btn-empty.btn-empty-blue.hdx-btn.resource-url-analytics.ga-download"
   )
