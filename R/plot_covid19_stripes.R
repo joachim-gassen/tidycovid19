@@ -210,7 +210,7 @@ plot_covid19_stripes <- function(
   caption_str <- paste(strwrap(paste(
     caption_str,
     "Code: https://github.com/joachim-gassen/tidycovid19."
-  ), width = 120), collapse = "\n")
+  ), width = 100), collapse = "\n")
 
   type_str <-
     dplyr::case_when(
@@ -236,14 +236,15 @@ plot_covid19_stripes <- function(
     sprintf("(averaged over %d days)", change_ave)
   )
 
-  title_str <- "Covid19 Stripes: Reported"
-  if (!cumulative) title_str <- paste(title_str, "daily change in")
+  title_str <- "Covid19 Stripes:"
   title_str <- paste(title_str, dplyr::case_when(
-    type == "deaths" ~ "deaths",
-    type == "confirmed" ~ "confirmed cases",
-    type == "recovered" ~ "recovered cases",
-    type == "active" ~ "active cases"
+    type == "deaths" ~ "Reported deaths",
+    type == "confirmed" ~ "Confirmed cases",
+    type == "recovered" ~ "Recovered cases",
+    type == "active" ~ "Active cases"
   ))
+  if (!cumulative) title_str <- paste(title_str, "(new cases per day)")
+  else title_str <- paste(title_str, "(cumulative)")
 
   p <- ggplot2::ggplot(
     df,
