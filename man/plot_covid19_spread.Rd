@@ -42,7 +42,7 @@ many days of data since and including the event date. Defaults to 7.}
 Defaults to 40.}
 
 \item{data_date_str}{A date string to include in the annotation of the plot
-giving the time when the data was pulled. Defaults to the time stemp of the
+giving the time when the data was pulled. Defaults to the timestamp of the
 data. Note that you might run into issues with the default when running
 this in a non-english locale. Consider setting it by hand then.}
 
@@ -94,9 +94,10 @@ A \link{ggplot2} object.
 Provides a flexible visualization of the country-level Covid-19 spread,
 inpired by the displays created by John Burn-Murdoch from the Financial
 Times. Uses data from the Johns Hopkins University CSSE team
-(\url{https://github.com/CSSEGISandData/COVID-19}) and the ACAPS governmental
+(\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 measures database
-(\url{https://www.acaps.org/covid19-government-measures-dataset}).
+(\url{https://www.acaps.org/covid19-government-measures-dataset}), and the
+World Bank (\url{https://data.worldbank.org}).
 If your are overwhelmed with the options of the plot, explore them with
 \code{shiny_covid19_spread()} and use the 'copy code for plot to clipboard'
 option.

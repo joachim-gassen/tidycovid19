@@ -121,9 +121,9 @@
 <li>
 <code><a href="reference/download_oxford_npi_data.html">download_oxford_npi_data()</a></code>: Downloads and tidies data from the <a href="https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker">Oxford Covid-19 Government Response Tracker</a>, an alternative data source for governmental interventions. Currently, I do not include the financial measures of this data set and also do not include its data in the merged data file (see below) as I view the ACAPS data to be better suited (<a href="https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/">this blog post details why</a>).</li>
 <li>
-<strong>NEW</strong>: <code><a href="reference/download_apple_mtr_data.html">download_apple_mtr_data()</a></code>: Downloads <a href="https://www.apple.com/covid19/mobility">Mobility Trends Reports provided by Apple</a> related to Covid-19.</li>
+<code><a href="reference/download_apple_mtr_data.html">download_apple_mtr_data()</a></code>: Downloads <a href="https://www.apple.com/covid19/mobility">Mobility Trends Reports provided by Apple</a> related to Covid-19.</li>
 <li>
-<strong>NEW</strong>: <code><a href="reference/download_google_cmr_data.html">download_google_cmr_data()</a></code>: Downloads <a href="https://www.google.com/covid19/mobility/">Google COVID-19 Community Mobility Reports</a> data. As of April 17, Google provides a nice and clean CSV file containing country-day and region-day data. This makes the PDF scraping code that used to be part of this package obsolete. If you are interested in it for didactic reasons, you can still find it in the <a href="https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R">git hstory</a>.</li>
+<code><a href="reference/download_google_cmr_data.html">download_google_cmr_data()</a></code>: Downloads <a href="https://www.google.com/covid19/mobility/">Google COVID-19 Community Mobility Reports</a> data. As of April 17, Google provides a nice and clean CSV file containing country-day and region-day data. This makes the PDF scraping code that used to be part of this package obsolete. If you are interested in it for didactic reasons, you can still find it in the <a href="https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R">git hstory</a>.</li>
 <li>
 <code><a href="reference/download_google_trends_data.html">download_google_trends_data()</a></code>: Downloads and tidies <a href="https://trends.google.com/trends/">Google Trends</a> data on the search volume for the term “coronavirus” (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries and over time within a given country.</li>
 <li>
@@ -140,12 +140,29 @@
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">merged &lt;-<span class="st"> </span><span class="kw"><a href="reference/download_merged_data.html">download_merged_data</a></span>(<span class="dt">cached =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">merged &lt;-<span class="st"> </span><span class="kw"><a href="reference/download_merged_data.html">download_merged_data</a></span>(<span class="dt">cached =</span> <span class="ot">TRUE</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="reference/plot_covid19_spread.html">plot_covid19_spread</a></span>(</a>
 <a class="sourceLine" id="cb1-7" data-line-number="7">  merged, <span class="dt">highlight =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>),</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="dt">intervention =</span> <span class="st">"lockdown"</span>, <span class="dt">edate_cutoff =</span> <span class="dv">40</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="dt">intervention =</span> <span class="st">"lockdown"</span>, <span class="dt">edate_cutoff =</span> <span class="dv">50</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9">)</a></code></pre></div>
 <p><img src="reference/figures/DemoPlot-1.png" width="700" style="display: block; margin: auto;"></p>
+<p><strong>NEW</strong>: Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>()</a></code></pre></div>
+<p><img src="reference/figures/Covid19Stripes-1.png" width="700" style="display: block; margin: auto;"></p>
+<p>Again, the function comes with many options. As an example, you can easily switch to a per capita display:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>(</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">per_capita =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">population_cutoff =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"magnitude"</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">)</a></code></pre></div>
+<p><img src="reference/figures/Covid19StripesPerCapita-1.png" width="700" style="display: block; margin: auto;"></p>
+<p>Or single out countries that you are interested in</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>(</a>
+<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">type =</span> <span class="st">"confirmed"</span>, </a>
+<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">countries =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"FRA"</span>, <span class="st">"GBR"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>),</a>
+<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"countries"</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5">)</a></code></pre></div>
+<p><img src="reference/figures/Covid19StripesSelCountries-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="shiny-app" class="section level2">
 <h2 class="hasAnchor">

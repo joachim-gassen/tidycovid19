@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize the spread of the Covid-19 pandemic — plot_covid19_spread • tidycovid19</title>
+<title>Plot Covid-19 Stripes — plot_covid19_stripes • tidycovid19</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,18 +30,13 @@
 
 
 
-<meta property="og:title" content="Visualize the spread of the Covid-19 pandemic — plot_covid19_spread" />
+<meta property="og:title" content="Plot Covid-19 Stripes — plot_covid19_stripes" />
 
 <meta property="og:description" content="Provides a flexible visualization of the country-level Covid-19 spread,
-inpired by the displays created by John Burn-Murdoch from the Financial
-Times. Uses data from the Johns Hopkins University CSSE team
-(https://github.com/CSSEGISandData/COVID-19), the ACAPS governmental
-measures database
-(https://www.acaps.org/covid19-government-measures-dataset), and the
-World Bank (https://data.worldbank.org).
-If your are overwhelmed with the options of the plot, explore them with
-shiny_covid19_spread() and use the 'copy code for plot to clipboard'
-option." />
+plotted by colored daily lines to generate a stripes display. Uses data
+from the Johns Hopkins University CSSE team
+(https://github.com/CSSEGISandData/COVID-19) and the World Bank
+(https://data.worldbank.org)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -122,43 +117,34 @@ option." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize the spread of the Covid-19 pandemic</h1>
+    <h1>Plot Covid-19 Stripes</h1>
     
-    <div class="hidden name"><code>plot_covid19_spread.Rd</code></div>
+    <div class="hidden name"><code>plot_covid19_stripes.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
     <p>Provides a flexible visualization of the country-level Covid-19 spread,
-inpired by the displays created by John Burn-Murdoch from the Financial
-Times. Uses data from the Johns Hopkins University CSSE team
-(<a href='https://github.com/CSSEGISandData/COVID-19'>https://github.com/CSSEGISandData/COVID-19</a>), the ACAPS governmental
-measures database
-(<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>), and the
-World Bank (<a href='https://data.worldbank.org'>https://data.worldbank.org</a>).
-If your are overwhelmed with the options of the plot, explore them with
-<code><a href='shiny_covid19_spread.html'>shiny_covid19_spread()</a></code> and use the 'copy code for plot to clipboard'
-option.</p>
+plotted by colored daily lines to generate a stripes display. Uses data
+from the Johns Hopkins University CSSE team
+(<a href='https://github.com/CSSEGISandData/COVID-19'>https://github.com/CSSEGISandData/COVID-19</a>) and the World Bank
+(<a href='https://data.worldbank.org'>https://data.worldbank.org</a>).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>plot_covid19_spread</span>(
+    <pre class="usage"><span class='fu'>plot_covid19_stripes</span>(
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"deaths"</span>,
   <span class='kw'>min_cases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>per_capita</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"deaths"</span>, <span class='fl'>5</span>, <span class='fl'>50</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>type</span> <span class='kw'>==</span>
     <span class='st'>"deaths"</span>, <span class='fl'>500</span>, <span class='fl'>5000</span>)),
-  <span class='kw'>min_by_ctry_obs</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>edate_cutoff</span> <span class='kw'>=</span> <span class='fl'>40</span>,
-  <span class='kw'>data_date_str</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span>(<span class='no'>data</span>$<span class='no'>timestamp</span>[<span class='fl'>1</span>]), <span class='st'>"%B %d, %Y"</span>),
-  <span class='kw'>cumulative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cumulative</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>change_ave</span> <span class='kw'>=</span> <span class='fl'>7</span>,
   <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>per_capita_x_axis</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>per_capita</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>),
   <span class='kw'>population_cutoff</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>log_scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>exclude_others</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
+  <span class='kw'>diverging_color_scale</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>countries</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sort_countries</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>data_date_str</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span>(<span class='no'>data</span>$<span class='no'>timestamp</span>[<span class='fl'>1</span>]), <span class='st'>"%B %d, %Y"</span>)
 )</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -178,32 +164,17 @@ and "recovered".</p></td>
     </tr>
     <tr>
       <th>min_cases</th>
-      <td><p>Defines the zero point of your X axis (the 'event date').
-Defaults to 100 cases for deaths and 1,000 cases otherwise.</p></td>
-    </tr>
-    <tr>
-      <th>min_by_ctry_obs</th>
-      <td><p>Limits the plot to countries that have at least that
-many days of data since and including the event date. Defaults to 7.</p></td>
-    </tr>
-    <tr>
-      <th>edate_cutoff</th>
-      <td><p>The upper limit of the X axis in event days.
-Defaults to 40.</p></td>
-    </tr>
-    <tr>
-      <th>data_date_str</th>
-      <td><p>A date string to include in the annotation of the plot
-giving the time when the data was pulled. Defaults to the timestamp of the
-data. Note that you might run into issues with the default when running
-this in a non-english locale. Consider setting it by hand then.</p></td>
+      <td><p>Only countries that have a maximum of <code>type</code> cases higher
+than <code>min_cases</code> during the data period are included in the plot.
+Uses reasonable defaults depending on <code>type</code> and
+<code>per_capita</code>.</p></td>
     </tr>
     <tr>
       <th>cumulative</th>
-      <td><p>If <code>TRUE</code> (the default) data is being plotted as
-cumulative (showing the total figures). If <code>FALSE</code>, (averaged) daily
-changes are plotted instead. See <code>change_ave</code> to set the averaging
-window.</p></td>
+      <td><p>If <code>TRUE</code>, data is being plotted as
+cumulative (showing the total figures). If <code>FALSE</code>, (the default)
+(averaged) daily changes are plotted instead. See <code>change_ave</code>
+to set the averaging window.</p></td>
     </tr>
     <tr>
       <th>change_ave</th>
@@ -215,47 +186,41 @@ window.</p></td>
 based on World Bank data. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
-      <th>per_capita_x_axis</th>
-      <td><p>If <code>TRUE</code>, the 'event date' cutoff for the x
-axis set by <code>min_cases</code> is evaluated based on by capita
-measures (cases per 100,000  inhabitants). Only feasible when
-<code>per_capita</code> is <code>TRUE</code>. Other than in older versions
-it now defaults to <code>TRUE</code> whenever <code>per_capita</code> is <code>TRUE</code>
-else <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
       <th>population_cutoff</th>
       <td><p>Do you want to restrict the plot to countries that
 exceed a certain population cutoff? Takes a value in millions and
 defaults to 0. Useful for per capita displays.</p></td>
     </tr>
     <tr>
-      <th>log_scale</th>
-      <td><p>Do you want the Y-axis to be log-scaled? Defaults to
-<code>TRUE</code>.</p></td>
+      <th>diverging_color_scale</th>
+      <td><p>Should be set to <code>TRUE</code> when a <code>type</code>
+is chosen that can have meaningful negative values (this is the case
+for "active" cases). Defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
-      <th>highlight</th>
+      <th>countries</th>
       <td><p>A character vector of ISO3c (ISO 3166-1 alpha-3) codes that
-identify countries that you want to highlight. Using the
-<code>gghighlight</code> package, these observations are highlighted by color
-and labeled while the other are grayed out. In <code>NULL</code> (the default),
-all countries are labeled. This can cause very cluttered plots.</p></td>
+you want to include. Note that including many countries can lead to
+long plotting times and might cause the plot to fail rendering when
+the display is to small.</p></td>
     </tr>
     <tr>
-      <th>exclude_others</th>
-      <td><p>If <code>TRUE</code>, unhighlighted countries are excluded
-from the plot. If <code>FALSE</code> (the default), unhighlighted countries
-are grayed out.</p></td>
+      <th>sort_countries</th>
+      <td><p>By default, countries are sorted alphabetically by
+ISO3c code. "start" will sort countries by when they first exceeded
+<code>min_cases</code>. "magnitude" will sort by decreasing maximum value
+for <code>type</code>. "countries" requires <code>countries</code> to be set and
+sorts the display in the order of the ISO3c codes provided.
+Alternatively, you can recode the <code>iso3c</code> in
+your data to a factor in the ordering that you prefer. See examples
+below.</p></td>
     </tr>
     <tr>
-      <th>intervention</th>
-      <td><p>If not default <code>NULL</code> then this identifies the
-intervention type that you want to be highlighted by a point marker.
-Valid intervention types are based on the ACAPS government measure data
-and include general lockdowns ('lockdown'), social distancing
-('soc_dist'), movement restrictions ('mov_rest'), public health measures
-('pub_health'), and social and economic measures ('soc_econ').</p></td>
+      <th>data_date_str</th>
+      <td><p>A date string to include in the annotation of the plot
+giving the time when the data was pulled. Defaults to the timestamp of the
+data. Note that you might run into issues with the default when running
+this in a non-english locale. Consider setting it by hand then.</p></td>
     </tr>
     </table>
     
@@ -265,13 +230,20 @@ and include general lockdowns ('lockdown'), social distancing
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>plot_covid19_spread</span>()</div><div class='img'><img src='plot_covid19_spread-1.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>plot_covid19_stripes</span>()</div><div class='img'><img src='plot_covid19_stripes-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>merged</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>plot_covid19_spread</span>(<span class='no'>merged</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='st'>"DEU"</span>, <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='st'>"lockdown"</span>)</div><div class='img'><img src='plot_covid19_spread-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>plot_covid19_spread</span>(<span class='no'>merged</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"recovered"</span>, <span class='kw'>min_by_ctry_obs</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>edate_cutoff</span> <span class='kw'>=</span> <span class='fl'>40</span>,
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ITA"</span>, <span class='st'>"ESP"</span>, <span class='st'>"FRA"</span>, <span class='st'>"DEU"</span>, <span class='st'>"USA"</span>), <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='st'>"soc_dist"</span>
-)</div><div class='img'><img src='plot_covid19_spread-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot_covid19_stripes</span>(<span class='no'>merged</span>, <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>population_cutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='plot_covid19_stripes-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot_covid19_stripes</span>(<span class='no'>merged</span>,
+  <span class='kw'>countries</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ITA"</span>, <span class='st'>"ESP"</span>, <span class='st'>"FRA"</span>, <span class='st'>"DEU"</span>, <span class='st'>"USA"</span>),
+  <span class='kw'>sort_countries</span> <span class='kw'>=</span> <span class='st'>"countries"</span>
+)</div><div class='img'><img src='plot_covid19_stripes-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>sortdf</span> <span class='kw'>&lt;-</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/reexports.html'>tibble</a></span>(
+  <span class='kw'>iso3c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>merged</span>$<span class='no'>iso3c</span>),
+  <span class='kw'>continent</span> <span class='kw'>=</span> <span class='kw pkg'>countrycode</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/countrycode/topics/countrycode'>countrycode</a></span>(<span class='no'>iso3c</span>, <span class='st'>"iso3c"</span>, <span class='st'>"continent"</span>)
+) <span class='kw'>%&gt;%</span> <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(<span class='no'>continent</span>, <span class='no'>iso3c</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>merged</span>
+<span class='no'>df</span>$<span class='no'>iso3c</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>factor</a></span>(<span class='no'>merged</span>$<span class='no'>iso3c</span>, <span class='no'>sortdf</span>$<span class='no'>iso3c</span>)
+<span class='fu'>plot_covid19_stripes</span>(<span class='no'>df</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"confirmed"</span>)</div><div class='img'><img src='plot_covid19_stripes-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

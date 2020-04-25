@@ -3,9 +3,10 @@
 #' Provides a flexible visualization of the country-level Covid-19 spread,
 #' inpired by the displays created by John Burn-Murdoch from the Financial
 #' Times. Uses data from the Johns Hopkins University CSSE team
-#' (\url{https://github.com/CSSEGISandData/COVID-19}) and the ACAPS governmental
+#' (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
 #' measures database
-#' (\url{https://www.acaps.org/covid19-government-measures-dataset}).
+#' (\url{https://www.acaps.org/covid19-government-measures-dataset}), and the
+#' World Bank (\url{https://data.worldbank.org}).
 #' If your are overwhelmed with the options of the plot, explore them with
 #' \code{shiny_covid19_spread()} and use the 'copy code for plot to clipboard'
 #' option.
@@ -23,7 +24,7 @@
 #' @param edate_cutoff The upper limit of the X axis in event days.
 #'     Defaults to 40.
 #' @param data_date_str A date string to include in the annotation of the plot
-#'     giving the time when the data was pulled. Defaults to the time stemp of the
+#'     giving the time when the data was pulled. Defaults to the timestamp of the
 #'     data. Note that you might run into issues with the default when running
 #'     this in a non-english locale. Consider setting it by hand then.
 #' @param cumulative If \code{TRUE} (the default) data is being plotted as
@@ -153,7 +154,9 @@ plot_covid19_spread <- function(
   if(!is.null(highlight) && (length(highlight) > 1 || highlight != "") && !any(highlight %in% df$iso3c))
     warning(paste(
       "Non-NULL 'highlight' value but no countries matched in data",
-      "(Did you specify correct ISO3c codes?)"
+      "(Did you specify correct ISO3c codes or do values for 'min_cases',",
+      "'min_by_ctry_obs' and/or 'edate_cutoff' lead to the exclusion",
+      "of your selected countries' data?)"
     ))
 
   if(!is.null(intervention) && ! intervention %in% names(df))

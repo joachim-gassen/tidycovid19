@@ -82,16 +82,15 @@ Currently, the package offers the following functions to download data:
     as I view the ACAPS data to be better suited ([this blog post
     details
     why](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)).
-  - **NEW**: `download_apple_mtr_data()`: Downloads [Mobility Trends
-    Reports provided by Apple](https://www.apple.com/covid19/mobility)
-    related to Covid-19.
-  - **NEW**: `download_google_cmr_data()`: Downloads [Google COVID-19
-    Community Mobility
-    Reports](https://www.google.com/covid19/mobility/) data. As of April
-    17, Google provides a nice and clean CSV file containing country-day
-    and region-day data. This makes the PDF scraping code that used to
-    be part of this package obsolete. If you are interested in it for
-    didactic reasons, you can still find it in the [git
+  - `download_apple_mtr_data()`: Downloads [Mobility Trends Reports
+    provided by Apple](https://www.apple.com/covid19/mobility) related
+    to Covid-19.
+  - `download_google_cmr_data()`: Downloads [Google COVID-19 Community
+    Mobility Reports](https://www.google.com/covid19/mobility/) data. As
+    of April 17, Google provides a nice and clean CSV file containing
+    country-day and region-day data. This makes the PDF scraping code
+    that used to be part of this package obsolete. If you are interested
+    in it for didactic reasons, you can still find it in the [git
     hstory](https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R).
   - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
@@ -123,14 +122,50 @@ customization options.
 
 library(tidycovid19)
 
-merged <- download_merged_data(cached = TRUE)
+merged <- download_merged_data(cached = TRUE, silent = TRUE)
 plot_covid19_spread(
   merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
-  intervention = "lockdown", edate_cutoff = 40
+  intervention = "lockdown", edate_cutoff = 50
 )
 ```
 
 <img src="man/figures/DemoPlot-1.png" style="display: block; margin: auto;" />
+
+**NEW**: Another option to visualize the spread of Covid-19, in
+particular if you want to compare many countries, is to produce a
+stripes-based visualization. Meet the Covid-19
+stripes:
+
+``` r
+plot_covid19_stripes()
+```
+
+<img src="man/figures/Covid19Stripes-1.png" style="display: block; margin: auto;" />
+
+Again, the function comes with many options. As an example, you can
+easily switch to a per capita display:
+
+``` r
+plot_covid19_stripes(
+  per_capita = TRUE, 
+  population_cutoff = TRUE, 
+  sort_countries = "magnitude"
+)
+```
+
+<img src="man/figures/Covid19StripesPerCapita-1.png" style="display: block; margin: auto;" />
+
+Or single out countries that you are interested in
+
+``` r
+plot_covid19_stripes(
+  type = "confirmed", 
+  countries = c("ITA", "ESP", "FRA", "GBR", "DEU", "USA"),
+  sort_countries = "countries"
+)
+```
+
+<img src="man/figures/Covid19StripesSelCountries-1.png" style="display: block; margin: auto;" />
 
 ## Shiny App
 
