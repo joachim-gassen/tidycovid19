@@ -16,7 +16,7 @@ License: MIT + file LICENSE
 Imports: 
     xml2, rvest, readxl, magrittr, dplyr, tidyr, countrycode, ggplot2, wbstats,
     gghighlight, gtrendsR, ggrepel, readr, rlang, scales, lubridate,
-    shiny, shinyWidgets, shinyjs, rclipboard, stringr, zoo, pdftools
+    shiny, shinyWidgets, shinyjs, rclipboard, stringr, zoo, gganimate
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0

@@ -1,8 +1,10 @@
 # tidycovid19 0.0.0.9000
 
+* Included `map_covid19()` to produce choropleth maps of the Covid-19 spread
+
 * Included `plot_covid19_stripes()` to produce Covid-19 stripe visuals (good if you want to compare many countries quickly)
 
-* Changed defaults in `plot_covid19_spread()` to have more reasonable defaults for per capita plots.
+* Changed defaults in `plot_covid19_spread()` to have more reasonable defaults for per capita plots
 
 * Added code to download Google's Community Mobility Report data in CSV format
 

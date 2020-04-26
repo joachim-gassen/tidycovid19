@@ -110,12 +110,16 @@ Currently, the package offers the following functions to download data:
 ## Visualization
 
 The focus of the package lies on data collection and not on
-visualization as there are already many great tools floating around. The
-function `plot_covid19_spread()` however, allows you to quickly
-visualize the spread of the virus in relation to governmental
-intervention measures. It is inpired by the insightful displays created
-by John Burn-Murdoch from the Financial Times and offers various
-customization options.
+visualization as there are already many great tools floating around.
+Rgeardless, there are three functions that allow you to visualize some
+od the key data that the package provides.
+
+### Plot Covid-19 Spread over Event Time
+
+The function `plot_covid19_spread()` allows you to quickly visualize the
+spread of the virus in relation to governmental intervention measures.
+It is inpired by the insightful displays created by John Burn-Murdoch
+from the Financial Times and offers various customization options.
 
 ``` r
 #remotes::install_github("joachim-gassen/tidycovid19")
@@ -130,6 +134,8 @@ plot_covid19_spread(
 ```
 
 <img src="man/figures/DemoPlot-1.png" style="display: block; margin: auto;" />
+
+### Plot Covid-19 Stripes
 
 **NEW**: Another option to visualize the spread of Covid-19, in
 particular if you want to compare many countries, is to produce a
@@ -166,6 +172,41 @@ plot_covid19_stripes(
 ```
 
 <img src="man/figures/Covid19StripesSelCountries-1.png" style="display: block; margin: auto;" />
+
+### Map Covid-19
+
+**NEW**: Finally, as Covid-19 has become a truly world-wide pandemic, I
+decided to also include a basic mapping function. `map_covid19()` allows
+you to map the spread of the virus at a certain date both world-wide
+…
+
+``` r
+map_covid19(merged, cumulative = TRUE)
+```
+
+<img src="man/figures/MapWorldWide-1.png" style="display: block; margin: auto;" />
+
+… or for certain
+regions.
+
+``` r
+map_covid19(merged, type = "confirmed", region = "Europe")
+```
+
+<img src="man/figures/MapEurope-1.png" style="display: block; margin: auto;" />
+
+If you have enough time (takes several minutes), you can also create an
+animation to visualize the spread of the virus over
+time.
+
+``` r
+map_covid19(merged, type = "confirmed", dates = unique(merged$date))
+```
+
+<img src="man/figures/AnimatedMapWorldWide-1.gif" style="display: block; margin: auto;" />
+
+Again, you can customize the data that you want to plot and of course
+you can also modify the plot itself by using normal `ggplot` syntax.
 
 ## Shiny App
 

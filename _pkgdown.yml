@@ -30,10 +30,11 @@ reference:
   - download_wbank_data
   - download_merged_data
 - title: Visualization functions
-  desc: Two customizable functions to display the spread of Covid-19
+  desc: Customizable functions to display the spread of Covid-19
   contents:
   - plot_covid19_spread
   - plot_covid19_stripes
+  - map_covid19
 - title: Shiny app
   desc: App for interactive customization of Covid 19 spread plots
   contents:

@@ -135,7 +135,11 @@
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h2>
-<p>The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. The function <code><a href="reference/plot_covid19_spread.html">plot_covid19_spread()</a></code> however, allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
+<p>The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. Rgeardless, there are three functions that allow you to visualize some od the key data that the package provides.</p>
+<div id="plot-covid-19-spread-over-event-time" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plot-covid-19-spread-over-event-time" class="anchor"></a>Plot Covid-19 Spread over Event Time</h3>
+<p>The function <code><a href="reference/plot_covid19_spread.html">plot_covid19_spread()</a></code> allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#remotes::install_github("joachim-gassen/tidycovid19")</span></a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
@@ -146,6 +150,10 @@
 <a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="dt">intervention =</span> <span class="st">"lockdown"</span>, <span class="dt">edate_cutoff =</span> <span class="dv">50</span></a>
 <a class="sourceLine" id="cb1-9" data-line-number="9">)</a></code></pre></div>
 <p><img src="reference/figures/DemoPlot-1.png" width="700" style="display: block; margin: auto;"></p>
+</div>
+<div id="plot-covid-19-stripes" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plot-covid-19-stripes" class="anchor"></a>Plot Covid-19 Stripes</h3>
 <p><strong>NEW</strong>: Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>()</a></code></pre></div>
 <p><img src="reference/figures/Covid19Stripes-1.png" width="700" style="display: block; margin: auto;"></p>
@@ -163,6 +171,21 @@
 <a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"countries"</span></a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">)</a></code></pre></div>
 <p><img src="reference/figures/Covid19StripesSelCountries-1.png" width="700" style="display: block; margin: auto;"></p>
+</div>
+<div id="map-covid-19" class="section level3">
+<h3 class="hasAnchor">
+<a href="#map-covid-19" class="anchor"></a>Map Covid-19</h3>
+<p><strong>NEW</strong>: Finally, as Covid-19 has become a truly world-wide pandemic, I decided to also include a basic mapping function. <code><a href="reference/map_covid19.html">map_covid19()</a></code> allows you to map the spread of the virus at a certain date both world-wide …</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">cumulative =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p><img src="reference/figures/MapWorldWide-1.png" width="700" style="display: block; margin: auto;"></p>
+<p>… or for certain regions.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">type =</span> <span class="st">"confirmed"</span>, <span class="dt">region =</span> <span class="st">"Europe"</span>)</a></code></pre></div>
+<p><img src="reference/figures/MapEurope-1.png" width="700" style="display: block; margin: auto;"></p>
+<p>If you have enough time (takes several minutes), you can also create an animation to visualize the spread of the virus over time.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">type =</span> <span class="st">"confirmed"</span>, <span class="dt">dates =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(merged<span class="op">$</span>date))</a></code></pre></div>
+<p><img src="reference/figures/AnimatedMapWorldWide-1.gif" style="display: block; margin: auto;"></p>
+<p>Again, you can customize the data that you want to plot and of course you can also modify the plot itself by using normal <code>ggplot</code> syntax.</p>
+</div>
 </div>
 <div id="shiny-app" class="section level2">
 <h2 class="hasAnchor">
