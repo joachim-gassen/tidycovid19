@@ -10,7 +10,7 @@
 #'     frame obtained by \link{download_merged_data} and defaults to
 #'     \code{download_merged_data(cached = TRUE, silent = TRUE)}.
 #' @param type The statistic that you want to plot. Needs to be either "confirmed",
-#'     "deaths", "revovered" or "active", defined as the difference of "confirmed"
+#'     "deaths", "recovered" or "active", defined as the difference of "confirmed"
 #'     and "recovered".
 #' @param min_cases Only countries that have a maximum of \code{type} cases higher
 #'     than \code{min_cases} during the data period are included in the plot.
