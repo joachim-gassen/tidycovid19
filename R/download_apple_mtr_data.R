@@ -65,7 +65,7 @@ download_apple_mtr_data <- function(url = NULL, silent = FALSE, cached = FALSE) 
 
   df <- raw_data %>%
     dplyr::filter(.data$geo_type == "country/region") %>%
-    dplyr::select(-.data$geo_type) %>%
+    dplyr::select(-.data$geo_type, -.data$alternative_name) %>%
     dplyr::group_by(.data$region, .data$transportation_type) %>%
     tidyr::pivot_longer(
       cols = -c(.data$region, .data$transportation_type),
