@@ -4,9 +4,15 @@
 \alias{download_oxford_npi_data}
 \title{Download Oxford non-pharmaceutical interventions data}
 \usage{
-download_oxford_npi_data(silent = FALSE, cached = FALSE)
+download_oxford_npi_data(type = "measures", silent = FALSE, cached = FALSE)
 }
 \arguments{
+\item{type}{The type of data that you want to retrieve. Can be any subset of
+\itemize{
+ \item{"measures": }{Government response measures, recoded to event-day structure}
+ \item{"index": }{The Strigency Indices as repored by the OxCGRT team}
+}}
+
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
 and thus defaults to \code{TRUE}.}
@@ -17,9 +23,9 @@ data from the authorative source. Downloading the cached version is
 faster and the cache is updated daily. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame containing the data, organized by intervention. It
-    includes a \code{timestamp} variable indicating the time of data
-    retrieval.
+If only one \code{type} was selected, a data frame containing the
+    data. Otherwise, a list containing the desired data frames ordered as
+    in \code{type}.
 }
 \description{
 Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
@@ -34,10 +40,12 @@ The Oxford data is currently not included in the data frame
     produced by \code{download_merged_data()} as the ACAPS NPI data seem
     to be of better quality overall. See
     \href{https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/}{this blog post}
+    and this
+    \href{https://github.com/OxCGRT/covid-policy-tracker/issues/1}{Github issue}
     for a discussion.
 }
 \examples{
-df <- download_oxford_npi_data(silent = TRUE, cached = TRUE)
+df <- download_oxford_npi_data(type = "measures", silent = TRUE, cached = TRUE)
 df \%>\%
   dplyr::group_by(country) \%>\%
   dplyr::summarise(number_of_interventions = dplyr::n()) \%>\%
