@@ -161,6 +161,11 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
     # in recent observations by carrying forward old values with no documented
     # method
 
+    # to make CHECK happy wrt the rowSums() call below
+    # is there a better way? rowSums(!is.na(.data))
+    # does not work
+    . <- NULL
+
     index <- raw_data %>%
       dplyr::rename(
         country = .data$CountryName,
@@ -173,7 +178,7 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
         .data$country, .data$iso3c, .data$date,
         .data$stringency_index, .data$legacy_stringency_index
       ) %>% dplyr::filter(rowSums(!is.na(.)) > 3) %>%
-      dplyr::arrange(iso3c, date)
+      dplyr::arrange(.data$iso3c, .data$date)
 
     lst <- list(measures = measures, index = index)
 
