@@ -234,11 +234,12 @@ map_covid19 <- function(
       ggplot2::theme_void() +
       ggplot2::theme(
         legend.position = "bottom",
-        plot.title = ggplot2::element_text(hjust = 0.5)
+        plot.title = ggplot2::element_text(hjust = 0.5),
+        plot.caption = ggplot2::element_text(hjust = 0.5)
       ) +
       ggplot2::labs(
         title = title_str,
-        annotate = caption_str
+        caption = caption_str
       )
 
     p
