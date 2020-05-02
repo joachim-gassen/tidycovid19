@@ -1,5 +1,5 @@
-# Some examples - not part of the package
-
+# Some example code on how to use the {tidycovid19}
+# Not part of the package of the package itself
 
 # --- Code to generate the cached data -----------------------------------------
 
@@ -30,8 +30,8 @@ gtlist <- download_google_trends_data(
 )
 saveRDS(gtlist, "cached_data/google_trends.RDS", version = 2)
 
-oxford <- download_oxford_npi_data()
-saveRDS(oxford, "cached_data/oxford_npi.RDS", version = 2)
+oxlist <- download_oxford_npi_data(type = c("measures", "index"))
+saveRDS(oxlist, "cached_data/oxford_npi.RDS", version = 2)
 
 # Code from download_merged_data() to avoid reloading the data
 
@@ -291,6 +291,29 @@ df %>%
   filter(confirmed < lag(confirmed) |
            confirmed > lead(confirmed))
 
+# --- Check Deaths per Capita for China ----------------------------------------
+
+library(tidyverse)
+library(tidycovid19)
+
+merged_data <- download_merged_data(cached = T, silent = T)
+chn_deaths <- max(merged_data$deaths[merged_data$iso3c == "CHN"])
+chn_population <- unique(merged_data$population[merged_data$iso3c == "CHN"])
+
+c(chn_deaths, chn_population, 1e5*chn_deaths/chn_population)
+
+5*chn_population/1e5
+
+countries <- "CHN"
+print(plot_covid19_spread(merged_data,
+                          highlight = countries,
+                          type = "deaths",
+                          per_capita = TRUE,
+                          exclude_others = TRUE,
+                          min_cases = 0.1))
+
+# ggsave("pic.png")
+
 # --- Use old PDF scraping code ------------------------------------------------
 
 # Install old package version that still contains the PDF scraping code
@@ -314,3 +337,172 @@ df <- tidycovid19:::parse_line_graph_bitmap(bitmaps[[1]][[1]])
 # are done exploring the PDF scraping code
 
 # remotes::install_github("joachim-gassen/tidycovid19")
+
+
+# --- Plotly Maps --------------------------------------------------------------
+
+library(tidyverse)
+library(plotly)
+library(tidycovid19)
+
+merged_data <- download_merged_data(cached = TRUE, silent = TRUE)
+
+g <- list(
+  showframe = FALSE,
+  projection = list(type = 'Mercator')
+)
+
+plot_geo(merged_data %>% filter(date == "2020-04-22")) %>%
+  add_trace(
+    z = ~log10(1 + deaths), color = ~log10(1 + deaths), colors = 'Blues',
+    text = ~country, locations = ~iso3c
+  ) %>%
+  colorbar(
+    len = 0.3,
+    tickvals = c(2, 3, 4, 5),
+    ticktext = c('100', '1,000', '10,000', '100,000')
+  ) %>%
+  layout(
+    geo = list(
+      showframe = FALSE,
+      projection = list(type = 'Mercator')
+    ),
+    title = "Confirmed deaths as of April 22, 2020"
+  )
+
+# --- Covid-19 Stripes ---------------------------------------------------------
+
+library(tidyverse)
+library(tidycovid19)
+
+merged_data <- download_merged_data(cached = T, silent = T)
+
+df <- merged_data %>%
+  group_by(iso3c) %>%
+  mutate(
+    delta = deaths - lag(deaths),
+    daily_deaths = 1 + zoo::rollmean(delta, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(max(deaths) > 500) %>%
+  filter(deaths > 0 & !is.na(daily_deaths)) %>%
+  select(iso3c, date, daily_deaths)
+
+ggplot(df, aes(x = date, color = daily_deaths)) +
+  geom_segment(aes(xend = date), size = 2, y = 0, yend = 1) +
+  scale_color_continuous(
+    name = "Daily Deaths",
+    type = "viridis",
+    trans = "log10",
+    breaks = c(10,100,1000)
+  ) +
+  facet_grid(rows = vars(iso3c)) +
+  theme_minimal() +
+  guides(color=guide_colourbar(title.vjust = 0.8)) +
+  theme(
+    legend.position="bottom",
+    strip.text.y.right = element_text(angle = 0),
+    panel.spacing = unit(0, "lines")
+  )
+
+sortdf <- dplyr::tibble(
+  iso3c = unique(merged_data$iso3c),
+  continent = countrycode::countrycode(iso3c, "iso3c", "continent")
+) %>% dplyr::arrange(continent, iso3c)
+
+df <- merged_data
+df$iso3c <- factor(merged_data$iso3c, sortdf$iso3c)
+
+plot_covid19_stripes(df)
+
+p <- plot_covid19_stripes(
+  min_cases = 100,
+  type = "confirmed",
+  sort_countries = "start"
+)
+ggplot2::ggsave(
+  p, filename = "~/Dropbox/large_covid19_stripes.png",
+  width = 6, height = 18, dpi = 300
+)
+
+merged_data %>%
+  group_by(date) %>%
+  summarise_at(vars(deaths, confirmed, recovered, population),
+               sum, na.rm = TRUE) %>%
+  mutate(iso3c = "Earth", country = "Earth") %>%
+  ungroup() -> earth
+
+p <- plot_covid19_stripes(earth, type = "deaths", data_date_str = "April 25, 2020")
+ggplot2::ggsave(
+  p, filename = "~/Dropbox/covid19_stripes_world.png",
+  width = 6, height = 6/1.91, dpi = 300
+)
+
+# --- gganimate colorpleth maps ------------------------------------------------
+
+# See https://medium.com/the-die-is-forecast/animating-choropleth-maps-with-ggnaimate-visualizing-coup-risk-and-rainfall-forecasts-every-month-4c525a589567
+# for inspiration
+
+library(tidyverse)
+library(maps)
+library(gganimate)
+library(gifski) #good rendering engine for gganimate!
+library(tidycovid19)
+library(countrycode)
+
+merged_data <- download_merged_data(cached = T, silent = T)
+
+ddeaths <- merged_data %>%
+  group_by(iso3c) %>%
+  mutate(
+    delta = deaths - lag(deaths),
+    daily_deaths = 1 + zoo::rollmean(delta, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(deaths > 0 & !is.na(daily_deaths)) %>%
+  select(iso3c, date, daily_deaths)
+
+
+tibble(
+  date = unique(ddeaths$date)
+) %>% arrange(date)
+
+world_map <- map_data("world") %>%
+  mutate(iso3c = countrycode(region, origin = "country.name",
+                             destination = "iso3c")) %>%
+  filter(region != "Antarctica")
+
+days_in_data <- unique(ddeaths$date)
+regions_on_map <- unique(world_map$region)
+
+reg_dates <- expand_grid(regions_on_map, days_in_data) %>%
+  rename(region = regions_on_map, date = days_in_data) %>%
+  arrange(region, date)
+
+df <- world_map %>%
+  left_join(reg_dates, by = c("region")) %>%
+  left_join(ddeaths, by = c("iso3c", "date"))
+
+# current_df <- df[is.na(df$date) | df$date == "2020-04-23", ]
+p <- ggplot(df, aes(long, lat)) +
+  geom_polygon(aes(group = group, fill = daily_deaths)) +
+  scale_fill_continuous(
+    name = "Daily reported deaths (averaged over 7 days)",
+    type = "viridis",
+    trans = "log10",
+    na.value = "gray80",
+    guide = guide_colorbar(
+      direction = "horizontal",
+      barheight = unit(2, units = "mm"),
+      barwidth = unit(100, units = "mm"),
+      draw.ulim = FALSE,
+      title.position = 'top',
+      title.hjust = 0.5,
+      title.vjust = 0.5
+    )
+  ) +
+  coord_quickmap() +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  labs(title = "Daily reported deaths: {frame_time}") +
+  transition_time(date)
+
+map_anim <- animate(p, fps = 5, height = 574, width = 875)
