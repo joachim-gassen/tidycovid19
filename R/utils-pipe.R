@@ -14,5 +14,14 @@
 # can go here
 
 #' @importFrom rlang ":=" .data
+
+# Add some imports to packages used in the shiny app code so
+# that R CMD check is happy.
+
+#' @importFrom rclipboard rclipboardSetup
+#' @importFrom shinyjs useShinyjs
+#' @importFrom shinyWidgets addSpinner
+#' @importFrom ggrepel geom_text_repel
+
 #' @usage lhs \%>\% rhs
 NULL
