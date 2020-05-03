@@ -4,9 +4,20 @@
 \alias{download_jhu_csse_covid19_data}
 \title{Download Johns Hopkins University CSSE data on Covid-19}
 \usage{
-download_jhu_csse_covid19_data(silent = FALSE, cached = FALSE)
+download_jhu_csse_covid19_data(
+  type = "country",
+  silent = FALSE,
+  cached = FALSE
+)
 }
 \arguments{
+\item{type}{The type of data that you want to retrieve. Can be any subset of
+\itemize{
+ \item{"country": }{Data at the country level (the default).}
+ \item{"country_region": }{Data at the country region level (only available for Australia, Canada, China and some oversea areas).}
+ \item{"us_county": }{Data at the U.S. county level.}
+}}
+
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
 and thus defaults to \code{TRUE}.}
@@ -17,16 +28,16 @@ data from the authorative source. Downloading the cached version is
 faster and the cache is updated daily. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame containing the data, organized by country and date. It
-    includes a \code{timestamp} variable indicating the time of data
-    retrieval.
+If only one \code{type} was selected, a data frame containing the
+    data. Otherwise, a list containing the desired data frames ordered as
+    in \code{type}.
 }
 \description{
 Downloads Johns Hopkins University CSSE data on the spread of the
 SARS-CoV-2 virus and the Covid-19 pandemic
 (\url{https://github.com/CSSEGISandData/COVID-19}).
 The data for confirmed cases, reported deaths and recoveries are merged into
-one data frame, aggregated at the country level, converted to long format and
+one data frame, converted to long format and
 joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
 \link{countrycode} package.
 }
@@ -35,6 +46,17 @@ df <- download_jhu_csse_covid19_data(silent = TRUE, cached = TRUE)
 df \%>\%
   dplyr::group_by(country) \%>\%
   dplyr::summarise(confirmed_cases = max(confirmed, na.rm = TRUE)) \%>\%
-  dplyr::arrange(-confirmed_cases)
+  dplyr::arrange(-confirmed_cases) \%>\%
+  dplyr::top_n(10)
+
+df <- download_jhu_csse_covid19_data(
+  type = "us_county", silent = TRUE, cached = TRUE
+)
+df \%>\%
+  dplyr::filter(!is.na(state)) \%>\%
+  dplyr::group_by(state) \%>\%
+  dplyr::summarise(deaths = max(deaths, na.rm = TRUE)) \%>\%
+  dplyr::arrange(-deaths) \%>\%
+  dplyr::top_n(10)
 
 }

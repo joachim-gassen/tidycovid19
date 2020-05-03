@@ -4,9 +4,16 @@
 \alias{download_google_cmr_data}
 \title{Download Google Community Mobility Reports Data}
 \usage{
-download_google_cmr_data(silent = FALSE, cached = FALSE)
+download_google_cmr_data(type = "country", silent = FALSE, cached = FALSE)
 }
 \arguments{
+\item{type}{The type of data that you want to retrieve. Can be any subset of
+\itemize{
+ \item{"country": }{Movement trends by country.}
+ \item{"country_region": }{Movement trends by country regions as classified by Google (only available for some countries).}
+ \item{"us_county": }{Movement trends at the U.S. county level.}
+}}
+
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
 and thus defaults to \code{TRUE}.}
@@ -17,7 +24,9 @@ data from the authorative source. Downloading the cached version is
 faster and the cache is updated daily. Defaults to \code{FALSE}.}
 }
 \value{
-The data, tidied at the country level
+If only one \code{type} was selected, a data frame containing the
+    data. Otherwise, a list containing the desired data frames ordered as
+    in \code{type}.
 }
 \description{
 Downloads Google Community Mobility Report data
@@ -38,5 +47,16 @@ df \%>\%
   ) \%>\%
   ggplot2::ggplot(ggplot2::aes(x = date, y = retail_recreation)) +
   ggplot2::geom_line()
+
+df <- download_google_cmr_data(type = "country_region", silent = TRUE, cached = TRUE)
+df \%>\%
+  dplyr::filter(iso3c == "USA") \%>\%
+  dplyr::select(-iso3c) \%>\%
+  dplyr::group_by(region) \%>\%
+  dplyr::summarise(`Retail and Recreation Effect` =
+     max(retail_recreation, na.rm = TRUE) -
+     min(retail_recreation, na.rm = TRUE)) \%>\%
+  dplyr::rename(`U.S. State` = region) \%>\%
+  dplyr::arrange(-`Retail and Recreation Effect`)
 
 }

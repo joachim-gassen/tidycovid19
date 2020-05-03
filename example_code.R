@@ -15,15 +15,22 @@ acaps <- download_acaps_npi_data()
 saveRDS(acaps, "cached_data/acaps_npi.RDS", version = 2)
 wblist <- download_wbank_data(var_def = TRUE)
 saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
-jhu <- download_jhu_csse_covid19_data()
-saveRDS(jhu, "cached_data/jhu_csse_covid19.RDS", version = 2)
+jhu_list <- download_jhu_csse_covid19_data(
+  type = c("country", "country_region", "us_county")
+)
+saveRDS(jhu_list, "cached_data/jhu_csse_covid19.RDS", version = 2)
 
 amtr_url <- scrape_apple_mtr_url()
-amtr <- download_apple_mtr_data(amtr_url)
-saveRDS(amtr, "cached_data/apple_mtr.RDS")
+amtr_list <- download_apple_mtr_data(
+  amtr_url,
+  type = c("country", "country_region", "country_city")
+)
+saveRDS(amtr_list, "cached_data/apple_mtr.RDS")
 
-gcmr <- download_google_cmr_data()
-saveRDS(gcmr, "cached_data/google_cmr.RDS", version = 2)
+gcmr_list <- download_google_cmr_data(
+  type = c("country", "country_region", "us_county")
+)
+saveRDS(gcmr_list, "cached_data/google_cmr.RDS", version = 2)
 
 gtlist <- download_google_trends_data(
   type = c('country', 'country_day', 'region', 'city')
@@ -35,7 +42,9 @@ saveRDS(oxlist, "cached_data/oxford_npi.RDS", version = 2)
 
 # Code from download_merged_data() to avoid reloading the data
 
-cases <- readRDS("cached_data/jhu_csse_covid19.RDS") %>%
+jhu_list <- readRDS("cached_data/jhu_csse_covid19.RDS")
+
+cases <- jhu_list[[1]] %>%
     select(-timestamp)
 
 npis <- readRDS("cached_data/acaps_npi.RDS") %>%
@@ -43,11 +52,15 @@ npis <- readRDS("cached_data/acaps_npi.RDS") %>%
     rename(npi_type = category) %>%
     select(iso3c, npi_date, log_type, npi_type)
 
-amtr <- readRDS("cached_data/apple_mtr.RDS") %>%
+amtr_list <- readRDS("cached_data/apple_mtr.RDS")
+
+amtr <- amtr_list[[1]] %>%
   select(-timestamp) %>%
   rename_at(vars(-iso3c, -date), ~ paste0("apple_mtr_", .))
 
-gcmr <- readRDS("cached_data/google_cmr.RDS") %>%
+gcmr_list <- readRDS("cached_data/google_cmr.RDS")
+
+gcmr <- gcmr_list[[1]] %>%
   select(-timestamp) %>%
   rename_at(vars(-iso3c, -date), ~ paste0("gcmr_", .))
 

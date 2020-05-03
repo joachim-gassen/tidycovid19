@@ -7,3 +7,4 @@
 ^_pkgdown\.yml$
 ^google_cmr_pdfs.*$
 ^scrape_apple_mtr_url\.R$
+^data-raw$

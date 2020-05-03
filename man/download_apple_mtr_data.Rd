@@ -4,9 +4,21 @@
 \alias{download_apple_mtr_data}
 \title{Download Apple Mobility Trend Reports Data}
 \usage{
-download_apple_mtr_data(url = NULL, silent = FALSE, cached = FALSE)
+download_apple_mtr_data(
+  type = "country",
+  url = NULL,
+  silent = FALSE,
+  cached = FALSE
+)
 }
 \arguments{
+\item{type}{The type of data that you want to retrieve. Can be any subset of
+\itemize{
+ \item{"country": }{Mobility trends by country.}
+ \item{"country_region": }{Mobility trends by country regions as classified by Apple (only available for some countries).}
+ \item{"country_city": }{Mobility trends by city as classified by Apple (only available for some countries).}
+}}
+
 \item{url}{The URL of the Apple Mobility Trend Reports is burried in
 Java Script, making it non-trivial to parse. The Github repository
 of this package contains an R script that uses the 'RSelenium'
@@ -41,6 +53,12 @@ df \%>\%
     walking = mean(walking, na.rm = TRUE)
   ) \%>\%
   ggplot2::ggplot(ggplot2::aes(x = date, y = walking)) +
+  ggplot2::geom_line()
+
+df <- download_apple_mtr_data(type = "country_city", silent = TRUE, cached = TRUE)
+df \%>\%
+  dplyr::filter(iso3c == "DEU") \%>\%
+  ggplot2::ggplot(ggplot2::aes(x = date, y = driving, color = city)) +
   ggplot2::geom_line()
 
 }

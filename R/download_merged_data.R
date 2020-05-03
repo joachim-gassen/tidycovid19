@@ -71,7 +71,10 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
   if(cached) {
     if (!silent) message("Downloading cached version of merged data...", appendLF = FALSE)
     df <-readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/merged.RDS")))
-    if (!silent) message(sprintf("done. Timestamp is %s", df$timestamp[1]))
+    if (!silent) {
+      message(sprintf("done. Timestamp is %s", df$timestamp[1]))
+      data_info("merged")
+    }
     return(df)
   }
   cases <- download_jhu_csse_covid19_data(silent) %>%
@@ -182,6 +185,10 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::ungroup() %>%
     dplyr::mutate(timestamp = Sys.time())
 
-  if (!silent) message("done!")
+  if (!silent) {
+    message("done!")
+    data_info("merged")
+  }
+
   df
 }

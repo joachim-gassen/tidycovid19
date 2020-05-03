@@ -9,6 +9,12 @@
 #' interested parties to assess responses to social distancing guidance
 #' related to Covid-19.
 #'
+#' @param type The type of data that you want to retrieve. Can be any subset of
+#' \itemize{
+#'  \item{"country": }{Movement trends by country.}
+#'  \item{"country_region": }{Movement trends by country regions as classified by Google (only available for some countries).}
+#'  \item{"us_county": }{Movement trends at the U.S. county level.}
+#' }
 #' @param silent Whether you want the function to send some status messages to
 #'     the console. Might be informative as downloading will take some time
 #'     and thus defaults to \code{TRUE}.
@@ -17,7 +23,9 @@
 #'     data from the authorative source. Downloading the cached version is
 #'     faster and the cache is updated daily. Defaults to \code{FALSE}.
 #'
-#' @return The data, tidied at the country level
+#' @return If only one \code{type} was selected, a data frame containing the
+#'     data. Otherwise, a list containing the desired data frames ordered as
+#'     in \code{type}.
 #'
 #' @examples
 #' df <- download_google_cmr_data(silent = TRUE, cached = TRUE)
@@ -29,59 +37,118 @@
 #'   ggplot2::ggplot(ggplot2::aes(x = date, y = retail_recreation)) +
 #'   ggplot2::geom_line()
 #'
+#' df <- download_google_cmr_data(type = "country_region", silent = TRUE, cached = TRUE)
+#' df %>%
+#'   dplyr::filter(iso3c == "USA") %>%
+#'   dplyr::select(-iso3c) %>%
+#'   dplyr::group_by(region) %>%
+#'   dplyr::summarise(`Retail and Recreation Effect` =
+#'      max(retail_recreation, na.rm = TRUE) -
+#'      min(retail_recreation, na.rm = TRUE)) %>%
+#'   dplyr::rename(`U.S. State` = region) %>%
+#'   dplyr::arrange(-`Retail and Recreation Effect`)
+#'
 #' @export
-download_google_cmr_data <- function(silent = FALSE, cached = FALSE) {
+download_google_cmr_data <- function(type = "country", silent = FALSE,
+                                     cached = FALSE) {
   if (length(silent) > 1 || !is.logical(silent)) stop(
     "'silent' needs to be a single logical value"
   )
   if (length(cached) > 1 || !is.logical(cached)) stop(
     "'cached' needs to be a single logical value"
   )
+  if (!all(type %in% c('country', 'country_region', 'us_county')))
+    stop(
+      "'type' needs to be a vector containing any set of 'country', 'country_region', and 'us_county'."
+    )
 
   if(cached) {
     if (!silent) message("Downloading cached version of Google's Community Mobility Reports data...", appendLF = FALSE)
-    df <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/google_cmr.RDS")))
-    if (!silent) message(sprintf("done. Timestamp is %s", df$timestamp[1]))
-    return(df)
+    lst <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/google_cmr.RDS")))
+    lst <- lst[match(type, c('country', 'country_region', 'us_county'))]
+    if (!silent) message(sprintf("done. Timestamp is %s", lst[[1]]$timestamp[1]))
+  } else {
+    if (!silent) message("Start downloading Google Community Mobility Reports data\n")
+
+    cmr_url <- "https://www.google.com/covid19/mobility/"
+
+    url <- xml2::read_html(cmr_url) %>%
+      rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[3]/a[1]") %>%
+      rvest::html_attr('href')
+
+    if(!silent) message(sprintf("Downloading '%s'.\n", url))
+    raw_data <- readr::read_csv(url, col_types = readr::cols(), guess_max = 224147)
+
+    clean_cmr_data <- function(df) {
+      df %>% dplyr::rename(
+        retail_recreation = .data$retail_and_recreation_percent_change_from_baseline,
+        grocery_pharmacy = .data$grocery_and_pharmacy_percent_change_from_baseline,
+        parks = .data$parks_percent_change_from_baseline,
+        transit_stations = .data$transit_stations_percent_change_from_baseline,
+        workplaces = .data$workplaces_percent_change_from_baseline,
+        residential = .data$residential_percent_change_from_baseline
+      ) %>%
+        dplyr::mutate_at(
+          dplyr::vars(
+            .data$retail_recreation, .data$grocery_pharmacy, .data$parks,
+            .data$transit_stations, .data$workplaces, .data$residential
+          ), ~ round(./100, 2)) %>%
+        dplyr::mutate(
+          iso3c = countrycode::countrycode(.data$country_region_code,
+                                           origin = "iso2c",
+                                           destination = "iso3c"),
+          date = lubridate::ymd(.data$date),
+          timestamp = Sys.time()
+        ) %>%
+        dplyr::select(.data$iso3c, dplyr::starts_with("sub_region"), .data$date,
+                      dplyr::everything(), -.data$country_region_code)
+    }
+
+    country <- raw_data %>%
+      dplyr::filter(is.na(.data$sub_region_1), is.na(.data$sub_region_2)) %>%
+      dplyr::select(
+        -.data$sub_region_1,
+        -.data$sub_region_2,
+        -.data$country_region
+      ) %>% clean_cmr_data()
+
+    country_region <- raw_data %>%
+      dplyr::filter(!is.na(.data$sub_region_1), is.na(.data$sub_region_2)) %>%
+      dplyr::select(
+        -.data$sub_region_2,
+        -.data$country_region
+      ) %>% clean_cmr_data() %>%
+      dplyr::rename(
+        region = .data$sub_region_1
+      )
+
+    us_county <- raw_data %>%
+      dplyr::filter(!is.na(.data$sub_region_2)) %>%
+      dplyr::select(
+        -.data$country_region
+      ) %>% clean_cmr_data() %>%
+      dplyr::rename(
+        state = .data$sub_region_1,
+        county = .data$sub_region_2
+      ) %>%
+      dplyr::select(-.data$iso3c)
+
+    lst <- list(
+      country = country,
+      country_region = country_region,
+      us_county = us_county
+    )
+
+    lst <- lst[match(type, c('country', 'country_region', 'us_county'))]
+
+    if (!silent) {
+      message("Done downloading Google Community Mobility Reports data\n")
+    }
   }
 
-  if (!silent) message("Start downloading Google Community Mobility Reports data\n")
+  if (!silent) {
+    data_info("google_cmr")
+  }
 
-  cmr_url <- "https://www.google.com/covid19/mobility/"
-
-  url <- xml2::read_html(cmr_url) %>%
-    rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[3]/a[1]") %>%
-    rvest::html_attr('href')
-
-  if(!silent) message(sprintf("Downloading '%s'.\n", url))
-  raw_data <- readr::read_csv(url, col_types = readr::cols(), guess_max = 224147)
-
-  df <- raw_data %>%
-    dplyr::filter(is.na(.data$sub_region_1), is.na(.data$sub_region_2)) %>%
-    dplyr::select(
-      -.data$sub_region_1,
-      -.data$sub_region_2,
-      -.data$country_region
-    ) %>%
-    dplyr::rename(
-      retail_recreation = .data$retail_and_recreation_percent_change_from_baseline,
-      grocery_pharmacy = .data$grocery_and_pharmacy_percent_change_from_baseline,
-      parks = .data$parks_percent_change_from_baseline,
-      transit_stations = .data$transit_stations_percent_change_from_baseline,
-      workplaces = .data$workplaces_percent_change_from_baseline,
-      residential = .data$residential_percent_change_from_baseline
-    ) %>%
-    dplyr::mutate_at(dplyr::vars(3:8), ~ round(./100, 2)) %>%
-    dplyr::mutate(
-      iso3c = countrycode::countrycode(.data$country_region_code,
-                                       origin = "iso2c",
-                                       destination = "iso3c"),
-      date = lubridate::ymd(date),
-      timestamp = Sys.time()
-    ) %>%
-    dplyr::select(.data$iso3c, .data$date,
-                  dplyr::everything(), -.data$country_region_code)
-
-  if (!silent) message("Done downloading Google Community Mobility Reports data\n")
-  df
+  if (length(type) == 1) lst[[1]] else lst
 }

@@ -6,3 +6,4 @@
 README_cache
 *.DS_Store
 google_cmr_pdfs
+data-raw/apple_mtr_region_ggmap_data.RData

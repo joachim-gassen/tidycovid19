@@ -138,11 +138,19 @@ related to Covid-19.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_google_cmr_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_google_cmr_data</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"country"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>type</th>
+      <td><p>The type of data that you want to retrieve. Can be any subset of</p><ul>
+<li><p>"country": Movement trends by country.</p></li>
+<li><p>"country_region": Movement trends by country regions as classified by Google (only available for some countries).</p></li>
+<li><p>"us_county": Movement trends at the U.S. county level.</p></li>
+</ul></td>
+    </tr>
     <tr>
       <th>silent</th>
       <td><p>Whether you want the function to send some status messages to
@@ -160,7 +168,9 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The data, tidied at the country level</p>
+    <p>If only one <code>type</code> was selected, a data frame containing the
+    data. Otherwise, a list containing the desired data frames ordered as
+    in <code>type</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -172,7 +182,30 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   ) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='no'>date</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>retail_recreation</span>)) +
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_path.html'>geom_line</a></span>()</div><div class='img'><img src='download_google_cmr_data-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_google_cmr_data</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"country_region"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>df</span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>iso3c</span> <span class='kw'>==</span> <span class='st'>"USA"</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(-<span class='no'>iso3c</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>region</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>`Retail and Recreation Effect`</span> <span class='kw'>=</span>
+     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>retail_recreation</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>) -
+     <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>min</a></span>(<span class='no'>retail_recreation</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>rename</a></span>(<span class='kw'>`U.S. State`</span> <span class='kw'>=</span> <span class='no'>region</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>`Retail and Recreation Effect`</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 51 x 2</span><span>
+#&gt;    `U.S. State`         `Retail and Recreation Effect`
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                                         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Vermont                                       0.97 
+#&gt; </span><span style='color: #555555;'> 2</span><span> Maine                                         0.93 
+#&gt; </span><span style='color: #555555;'> 3</span><span> Minnesota                                     0.92 
+#&gt; </span><span style='color: #555555;'> 4</span><span> South Dakota                                  0.92 
+#&gt; </span><span style='color: #555555;'> 5</span><span> Michigan                                      0.91 
+#&gt; </span><span style='color: #555555;'> 6</span><span> New Jersey                                    0.9  
+#&gt; </span><span style='color: #555555;'> 7</span><span> Wisconsin                                     0.890
+#&gt; </span><span style='color: #555555;'> 8</span><span> Iowa                                          0.87 
+#&gt; </span><span style='color: #555555;'> 9</span><span> District of Columbia                          0.86 
+#&gt; </span><span style='color: #555555;'>10</span><span> Mississippi                                   0.86 
+#&gt; </span><span style='color: #555555;'># … with 41 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

@@ -39,3 +39,8 @@ reference:
   desc: App for interactive customization of Covid 19 spread plots
   contents:
   - shiny_covid19_spread
+- title: Data sets
+  desc: Dats sets describing the data source and the variables contained in the merged data frame.
+  contents:
+  - tidycovid19_data_sources
+  - tidycovid19_variable_definitions

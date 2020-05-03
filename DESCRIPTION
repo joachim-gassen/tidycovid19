@@ -12,11 +12,12 @@ Description: This package facilitates the download of current Covid-19 related
     country-level data provided by the World Bank. These data can be downloaded 
     separately or in one merged data frame. In addition, the package features a 
     function and shiny app to visualize the country-level spread of Covid-19. 
+Depends: R (>= 2.10)
 License: MIT + file LICENSE
 Imports: 
     xml2, rvest, readxl, magrittr, dplyr, tidyr, countrycode, ggplot2, wbstats,
     gghighlight, gtrendsR, ggrepel, readr, rlang, scales, lubridate,
-    shiny, shinyWidgets, shinyjs, rclipboard, stringr, zoo, gganimate
+    shiny, shinyWidgets, shinyjs, rclipboard, stringr, zoo, gganimate, maps
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0

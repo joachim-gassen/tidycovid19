@@ -142,7 +142,8 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
       dplyr::group_by(.data$iso3c, .data$npi_type) %>%
       dplyr::filter((.data$npi_measure != 0) |
                       ((.data$npi_measure == 0) &
-                         dplyr::lag(.data$npi_measure != 0)))
+                         dplyr::lag(.data$npi_measure != 0))) %>%
+      dplyr::mutate(timestamp = Sys.time())
 
     # 2020-04-30
     # The fiscal measures data used to be too messy to use.
@@ -178,11 +179,19 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
         .data$country, .data$iso3c, .data$date,
         .data$stringency_index, .data$legacy_stringency_index
       ) %>% dplyr::filter(rowSums(!is.na(.)) > 3) %>%
-      dplyr::arrange(.data$iso3c, .data$date)
+      dplyr::arrange(.data$iso3c, .data$date) %>%
+      dplyr::mutate(timestamp = Sys.time())
 
     lst <- list(measures = measures, index = index)
 
-    if (!silent) message("Done downloading Oxford NPI data\n")
+    if (!silent) {
+      message("Done downloading Oxford NPI data\n")
+    }
   }
+
+  if (!silent) {
+    data_info("oxford_npi")
+  }
+
   if (length(type) == 1) lst[[type]] else lst
 }

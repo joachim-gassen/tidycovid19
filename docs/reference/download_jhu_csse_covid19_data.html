@@ -36,7 +36,7 @@
 SARS-CoV-2 virus and the Covid-19 pandemic
 (https://github.com/CSSEGISandData/COVID-19).
 The data for confirmed cases, reported deaths and recoveries are merged into
-one data frame, aggregated at the country level, converted to long format and
+one data frame, converted to long format and
 joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
 countrycode package." />
 <meta name="twitter:card" content="summary" />
@@ -130,17 +130,29 @@ countrycode package." />
 SARS-CoV-2 virus and the Covid-19 pandemic
 (<a href='https://github.com/CSSEGISandData/COVID-19'>https://github.com/CSSEGISandData/COVID-19</a>).
 The data for confirmed cases, reported deaths and recoveries are merged into
-one data frame, aggregated at the country level, converted to long format and
+one data frame, converted to long format and
 joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
 countrycode package.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>download_jhu_csse_covid19_data</span>(<span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+    <pre class="usage"><span class='fu'>download_jhu_csse_covid19_data</span>(
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"country"</span>,
+  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>type</th>
+      <td><p>The type of data that you want to retrieve. Can be any subset of</p><ul>
+<li><p>"country": Data at the country level (the default).</p></li>
+<li><p>"country_region": Data at the country region level (only available for Australia, Canada, China and some oversea areas).</p></li>
+<li><p>"us_county": Data at the U.S. county level.</p></li>
+</ul></td>
+    </tr>
     <tr>
       <th>silent</th>
       <td><p>Whether you want the function to send some status messages to
@@ -158,9 +170,9 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame containing the data, organized by country and date. It
-    includes a <code>timestamp</code> variable indicating the time of data
-    retrieval.</p>
+    <p>If only one <code>type</code> was selected, a data frame containing the
+    data. Otherwise, a list containing the desired data frames ordered as
+    in <code>type</code>.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -168,20 +180,41 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 <span class='no'>df</span> <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>country</span>) <span class='kw'>%&gt;%</span>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>confirmed_cases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>confirmed</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>confirmed_cases</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 182 x 2</span><span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>confirmed_cases</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/top_n.html'>top_n</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='message'>Selecting by confirmed_cases</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 2</span><span>
 #&gt;    country        confirmed_cases
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> US                      </span><span style='text-decoration: underline;'>938</span><span>154
-#&gt; </span><span style='color: #555555;'> 2</span><span> Spain                   </span><span style='text-decoration: underline;'>223</span><span>759
-#&gt; </span><span style='color: #555555;'> 3</span><span> Italy                   </span><span style='text-decoration: underline;'>195</span><span>351
-#&gt; </span><span style='color: #555555;'> 4</span><span> France                  </span><span style='text-decoration: underline;'>161</span><span>644
-#&gt; </span><span style='color: #555555;'> 5</span><span> Germany                 </span><span style='text-decoration: underline;'>156</span><span>513
-#&gt; </span><span style='color: #555555;'> 6</span><span> United Kingdom          </span><span style='text-decoration: underline;'>149</span><span>569
-#&gt; </span><span style='color: #555555;'> 7</span><span> Turkey                  </span><span style='text-decoration: underline;'>107</span><span>773
-#&gt; </span><span style='color: #555555;'> 8</span><span> Iran                     </span><span style='text-decoration: underline;'>89</span><span>328
-#&gt; </span><span style='color: #555555;'> 9</span><span> China                    </span><span style='text-decoration: underline;'>83</span><span>909
-#&gt; </span><span style='color: #555555;'>10</span><span> Russia                   </span><span style='text-decoration: underline;'>74</span><span>588
-#&gt; </span><span style='color: #555555;'># … with 172 more rows</span><span></div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 1</span><span> US                     1</span><span style='text-decoration: underline;'>132</span><span>539
+#&gt; </span><span style='color: #555555;'> 2</span><span> Spain                   </span><span style='text-decoration: underline;'>216</span><span>582
+#&gt; </span><span style='color: #555555;'> 3</span><span> Italy                   </span><span style='text-decoration: underline;'>209</span><span>328
+#&gt; </span><span style='color: #555555;'> 4</span><span> United Kingdom          </span><span style='text-decoration: underline;'>183</span><span>500
+#&gt; </span><span style='color: #555555;'> 5</span><span> France                  </span><span style='text-decoration: underline;'>169</span><span>053
+#&gt; </span><span style='color: #555555;'> 6</span><span> Germany                 </span><span style='text-decoration: underline;'>164</span><span>967
+#&gt; </span><span style='color: #555555;'> 7</span><span> Turkey                  </span><span style='text-decoration: underline;'>124</span><span>375
+#&gt; </span><span style='color: #555555;'> 8</span><span> Russia                  </span><span style='text-decoration: underline;'>124</span><span>054
+#&gt; </span><span style='color: #555555;'> 9</span><span> Brazil                   </span><span style='text-decoration: underline;'>97</span><span>100
+#&gt; </span><span style='color: #555555;'>10</span><span> Iran                     </span><span style='text-decoration: underline;'>96</span><span>448</div><div class='input'>
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_jhu_csse_covid19_data</span>(
+  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"us_county"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+)
+<span class='no'>df</span> <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(!<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/NA'>is.na</a></span>(<span class='no'>state</span>)) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span>(<span class='no'>state</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span>(<span class='kw'>deaths</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>deaths</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>deaths</span>) <span class='kw'>%&gt;%</span>
+  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/top_n.html'>top_n</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='message'>Selecting by deaths</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 10 x 2</span><span>
+#&gt;    state         deaths
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> New York       </span><span style='text-decoration: underline;'>18</span><span>491
+#&gt; </span><span style='color: #555555;'> 2</span><span> Michigan        </span><span style='text-decoration: underline;'>1</span><span>884
+#&gt; </span><span style='color: #555555;'> 3</span><span> Illinois        </span><span style='text-decoration: underline;'>1</span><span>743
+#&gt; </span><span style='color: #555555;'> 4</span><span> New Jersey      </span><span style='text-decoration: underline;'>1</span><span>265
+#&gt; </span><span style='color: #555555;'> 5</span><span> California      </span><span style='text-decoration: underline;'>1</span><span>209
+#&gt; </span><span style='color: #555555;'> 6</span><span> Massachusetts    923
+#&gt; </span><span style='color: #555555;'> 7</span><span> Connecticut      865
+#&gt; </span><span style='color: #555555;'> 8</span><span> Pennsylvania     638
+#&gt; </span><span style='color: #555555;'> 9</span><span> Washington       457
+#&gt; </span><span style='color: #555555;'>10</span><span> Louisiana        439</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

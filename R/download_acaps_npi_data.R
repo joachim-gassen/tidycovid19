@@ -35,7 +35,10 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   if(cached) {
     if (!silent) message("Downloading cached version of ACAPS NPI data...", appendLF = FALSE)
     df <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/acaps_npi.RDS")))
-    if (!silent) message(sprintf("done. Timestamp is %s", df$timestamp[1]))
+    if (!silent) {
+      message(sprintf("done. Timestamp is %s", df$timestamp[1]))
+      data_info("acaps_npi")
+    }
     return(df)
   }
 
@@ -68,6 +71,10 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
     dplyr::rename(iso3c = .data$iso) %>%
     dplyr::mutate(timestamp = Sys.time())
 
-  if (!silent) message("Done downloading ACAPS NPI data\n")
+  if (!silent) {
+    message("Done downloading ACAPS NPI data\n")
+    data_info("acaps_npi")
+  }
+
   df
 }

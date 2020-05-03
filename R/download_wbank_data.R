@@ -150,6 +150,11 @@ download_wbank_data <- function(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     data_def <- wb_data_def[c(1,3,4,5,7:nrow(wb_data_def)), ]
     if (!silent) message("Done downloading World Bank data\n")
   }
+
+  if (!silent) {
+    data_info("wbank")
+  }
+
   if(var_def) list(df, data_def) else df
 }
 
