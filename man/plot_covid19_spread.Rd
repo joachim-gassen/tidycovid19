@@ -8,9 +8,9 @@ plot_covid19_spread(
   data = download_merged_data(cached = TRUE, silent = TRUE),
   type = "deaths",
   min_cases = ifelse(per_capita, ifelse(type == "deaths", 5, 50), ifelse(type ==
-    "deaths", 500, 5000)),
+    "deaths", 1000, 10000)),
   min_by_ctry_obs = 7,
-  edate_cutoff = 40,
+  edate_cutoff = 50,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "\%B \%d, \%Y"),
   cumulative = TRUE,
   change_ave = 7,

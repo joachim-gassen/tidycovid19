@@ -53,17 +53,17 @@ ui <- fluidPage(
       sliderInput(
         "min_cases",
         "Number of cases to mark day zero on X-axis",
-        min = 1, max = max(1000, po$min_cases), value = po$min_cases
+        min = 0, max = max(20000, po$min_cases), step = 50, value = po$min_cases
       ),
       sliderInput(
         "min_by_ctry_obs",
         "Required number of days to include country",
-        min = 1, max = max(30, po$min_by_ctry_obs), value = po$min_by_ctry_obs
+        min = 0, max = max(30, po$min_by_ctry_obs), value = po$min_by_ctry_obs
       ),
       sliderInput(
         "edate_cutoff",
         "How many days do you want to display?",
-        min = 10, max = max(90, po$edate_cutoff), value = po$edate_cutoff
+        min = 10, max = max(120, po$edate_cutoff), value = po$edate_cutoff
       ),
       hr(),
       checkboxInput(
