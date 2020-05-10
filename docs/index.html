@@ -128,7 +128,7 @@
 <li>
 <code><a href="reference/download_google_cmr_data.html">download_google_cmr_data()</a></code>: Downloads <a href="https://www.google.com/covid19/mobility/">Google COVID-19 Community Mobility Reports</a> data. As of April 17, Google provides a nice and clean CSV file containing country-day and region-day data. This makes the PDF scraping code that used to be part of this package obsolete. If you are interested in it for didactic reasons, you can still find it in the <a href="https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R">git hstory</a>. This data is available at the country, regional and U.S. county level.</li>
 <li>
-<code><a href="reference/download_google_trends_data.html">download_google_trends_data()</a></code>: Downloads and tidies <a href="https://trends.google.com/trends/">Google Trends</a> data on the search volume for the term “coronavirus” (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries and over time within a given country. The data is available at the country, regional and city level but avialability varies across countries as Google Trends provides only more granular data for regions with high search volumes.</li>
+<code><a href="reference/download_google_trends_data.html">download_google_trends_data()</a></code>: Downloads and tidies <a href="https://trends.google.com/trends/">Google Trends</a> data on the search volume for the term “coronavirus” (Thank you to Yan Ouaknine for bringing up that idea!). This data can be used to assess the public attention to Covid-19 across countries and over time within a given country. The data is available at the country, regional and city level but availability varies across countries as Google Trends provides only more granular data for regions with high search volumes.</li>
 <li>
 <code><a href="reference/download_wbank_data.html">download_wbank_data()</a></code>: Downloads and tidies additional country level information provided by the <a href="https://data.worldbank.org">World Bank</a> using the {wbstats} package. These data allow researchers to calculate per capita measures of the virus spread and to assess the association of macro-economic variables with the development of the virus.</li>
 <li>
@@ -320,7 +320,7 @@
 <div id="plot-covid-19-spread-over-event-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot-covid-19-spread-over-event-time" class="anchor"></a>Plot Covid-19 Spread over Event Time</h3>
-<p>The function <code><a href="reference/plot_covid19_spread.html">plot_covid19_spread()</a></code> allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
+<p>The function <code><a href="reference/plot_covid19_spread.html">plot_covid19_spread()</a></code> allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inspired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#remotes::install_github("joachim-gassen/tidycovid19")</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
@@ -381,10 +381,11 @@
 <h2 class="hasAnchor">
 <a href="#blog-posts" class="anchor"></a>Blog posts</h2>
 <ul>
+<li><p><strong>NEW:</strong> <a href="https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/">An intro blog post</a> providing a quick walk-through of the package.</p></li>
 <li><p><a href="https://joachim-gassen.github.io/2020/04/tidycovid19-new-viz-and-npi_lifting/">A blog post</a> on the new visuals of the package.</p></li>
+<li><p><a href="https://joachim-gassen.github.io/2020/04/covid19-explore-your-visualier-dof/">A blog post</a> on the visualizer degrees of freedom that are inherent in a plot of the Covid-19 spread.</p></li>
 <li><p><a href="https://joachim-gassen.github.io/2020/04/scrape-google-covid19-cmr-data/">A blog post</a> on the PDF scraping of the new Google Covid-19 Community Movement Reports.</p></li>
 <li><p><a href="https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/">A somewhat dated blog post</a> comparing the ACAPS and Oxford data on governmental interventions.</p></li>
-<li><p><a href="https://joachim-gassen.github.io/2020/03/meet-tidycovid19-yet-another-covid-19-related-r-package/">An intro blog post</a> containing not much more information then this README.</p></li>
 <li><p><a href="https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/">An older blog post</a> that showcases some descriptive visuals to see what one can do with the data retrieved by this package.</p></li>
 </ul>
 </div>

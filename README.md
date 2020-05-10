@@ -109,7 +109,7 @@ Currently, the package offers the following functions to download data:
     up that idea\!). This data can be used to assess the public
     attention to Covid-19 across countries and over time within a given
     country. The data is available at the country, regional and city
-    level but avialability varies across countries as Google Trends
+    level but availability varies across countries as Google Trends
     provides only more granular data for regions with high search
     volumes.
   - `download_wbank_data()`: Downloads and tidies additional country
@@ -215,7 +215,7 @@ of the key data that the package provides.
 
 The function `plot_covid19_spread()` allows you to quickly visualize the
 spread of the virus in relation to governmental intervention measures.
-It is inpired by the insightful displays created by John Burn-Murdoch
+It is inspired by the insightful displays created by John Burn-Murdoch
 from the Financial Times and offers various customization options.
 
 ``` r
@@ -330,9 +330,18 @@ server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
 ## Blog posts
 
+  - **NEW:** [An intro blog
+    post](https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/)
+    providing a quick walk-through of the package.
+
   - [A blog
     post](https://joachim-gassen.github.io/2020/04/tidycovid19-new-viz-and-npi_lifting/)
     on the new visuals of the package.
+
+  - [A blog
+    post](https://joachim-gassen.github.io/2020/04/covid19-explore-your-visualier-dof/)
+    on the visualizer degrees of freedom that are inherent in a plot of
+    the Covid-19 spread.
 
   - [A blog
     post](https://joachim-gassen.github.io/2020/04/scrape-google-covid19-cmr-data/)
@@ -342,10 +351,6 @@ server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
   - [A somewhat dated blog
     post](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)
     comparing the ACAPS and Oxford data on governmental interventions.
-
-  - [An intro blog
-    post](https://joachim-gassen.github.io/2020/03/meet-tidycovid19-yet-another-covid-19-related-r-package/)
-    containing not much more information then this README.
 
   - [An older blog
     post](https://joachim-gassen.github.io/2020/03/merge-covid-19-data-with-governmental-interventions-data/)
