@@ -2,8 +2,10 @@
 #'
 #' Merges data from the Johns Hopkins University CSSE team on the spread of the
 #' SARS-CoV-2 virus and the Covid-19 pandemic
-#' (\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
-#' measures database
+#' (\url{https://github.com/CSSEGISandData/COVID-19}),
+#' case data provided by the ECDC
+#' (\url{https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide}),
+#' the ACAPS governmental measures database
 #' (\url{https://www.acaps.org/covid19-government-measures-dataset}),
 #' Mobility Trends Reports provided by Apple related to Covid-19
 #' (\url{https://www.apple.com/covid19/mobility}),
@@ -12,6 +14,8 @@
 #' Google Trends Covid-19 related search volume
 #' (\url{https://trends.google.com/trends/}), and the World Bank
 #' (\url{https://data.worldbank.org}) intro a country-day data frame.
+#' Variable definitions are provided by the data frame
+#' \code{tidycovid19_variable_definitions}.
 #'
 #' @param wbank_vars Specify the World Bank data items that you want to retrieve.
 #' @param wbank_labels Give somewhat more informative World Bank variable names
@@ -77,8 +81,36 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     }
     return(df)
   }
-  cases <- download_jhu_csse_covid19_data(silent) %>%
+  jhu_cases <- download_jhu_csse_covid19_data(silent) %>%
+    dplyr::select(-.data$timestamp, -.data$country)
+
+  ecdc <- download_ecdc_covid19_data(silent) %>%
+    dplyr::select(-.data$timestamp, -.data$country_territory) %>%
+    dplyr::filter(!.data$iso3c %in% c("XKX", "N/A"))
+
+  ecdc_acc <- expand.grid(
+    date = lubridate::as_date(min(ecdc$date):max(ecdc$date)),
+    iso3c = unique(ecdc$iso3c),
+    stringsAsFactors = FALSE
+  ) %>% dplyr::select(.data$iso3c, .data$date) %>%
+    dplyr::left_join(ecdc, by = c("iso3c", "date")) %>%
+    dplyr::mutate(
+      cases = ifelse(is.na(.data$cases), 0, .data$cases),
+      deaths = ifelse(is.na(.data$deaths), 0, .data$deaths)
+    ) %>%
+    dplyr::group_by(.data$iso3c) %>%
+    dplyr::mutate(
+      ecdc_cases = cumsum(.data$cases),
+      ecdc_deaths = cumsum(.data$deaths)
+    ) %>%
+    dplyr::filter(.data$ecdc_cases > 0 | .data$ecdc_deaths > 0) %>%
+    dplyr::select(.data$iso3c, .data$date,
+                  .data$ecdc_cases, .data$ecdc_deaths) %>%
+    dplyr::ungroup()
+
+  owid_testing <- download_owid_testing_data(silent) %>%
     dplyr::select(-.data$timestamp)
+
   npis <- download_acaps_npi_data(silent) %>%
     dplyr::mutate(npi_date = lubridate::ymd(.data$date_implemented)) %>%
     dplyr::rename(npi_type = .data$category) %>%
@@ -112,7 +144,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
 
   calc_npi_measure <-function(type, var_name) {
     my_npi <- npis %>% dplyr::filter(.data$npi_type == type)
-    cases %>%
+    merged_base %>%
       dplyr::left_join(
         my_npi %>%
           dplyr::rename(date = .data$npi_date) %>%
@@ -144,7 +176,16 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
   #             I reflect this name change by renaming the variable 'soc_econ'
   #             'gov_soc_econ'.
 
-  df <- cases %>%
+  merged_base <- jhu_cases %>%
+    dplyr::full_join(ecdc_acc, by = c("iso3c", "date")) %>%
+    dplyr::arrange(.data$iso3c, .data$date) %>%
+    dplyr::mutate(
+      country = countrycode::countrycode(.data$iso3c, "iso3c", "country.name")
+    ) %>%
+    dplyr::select(.data$iso3c, .data$country, dplyr::everything())
+
+  df <- merged_base
+    dplyr::left_join(owid_testing, by = c("iso3c", "date")) %>%
     dplyr::left_join(
       calc_npi_measure("Social distancing", "soc_dist"),
       by = c("iso3c", "date")

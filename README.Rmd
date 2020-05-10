@@ -45,7 +45,9 @@ Currently, the package offers the following functions to download data:
 
 - `download_jhu_csse_covid19_data()`: Downloads and tidies [Covid-19 data from the Johns Hopkins University CSSE Github Repo](https://github.com/CSSEGISandData/COVID-19). This data has developed to a standard resource for researchers and the general audience 
 interested in assessing the global spreading of the virus. The data is provided at country  and sub-country levels.
-- `download_acaps_npi_data()`: Downloads and tidies the [Government measures dataset provided by the Assessment Capacities Project (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset). These relatively new data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus. 
+- **NEW**: `download_ecdc_covid19_data()`: Downloads and tidies [Covid-19 case data provided by the European Centre for Disease Prevention and Control](https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide). The data is updated daily and contains the latest available public data on the number of new Covid-19 cases reported per day and per country.
+- **NEW**: `download_owid_testing_data()`: Downloads and tidies [testing data collected by the 'Our World in Data' team](https://ourworldindata.org/covid-testing). This team systematically collects data on Covid-19 testing from multiple national sources.
+- `download_acaps_npi_data()`: Downloads and tidies the [Government measures dataset provided by the Assessment Capacities Project (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset). These data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus. 
 - `download_oxford_npi_data()`: Downloads and tidies data from the [Oxford Covid-19 Government Response Tracker](https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker), an alternative data source for governmental interventions. Currently, I do not include the financial measures of this data set and also do not include its data in the merged data file (see below) as I view the ACAPS data to be better suited ([this blog post details why](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)). 
 - `download_apple_mtr_data()`: Downloads [Mobility Trends Reports provided by Apple](https://www.apple.com/covid19/mobility) related to Covid-19. The data is provided at country  and sub-country levels.
 - `download_google_cmr_data()`: Downloads [Google COVID-19 Community Mobility Reports](https://www.google.com/covid19/mobility/) data. As of April 17, Google provides a nice and clean CSV file containing country-day and region-day data. This makes the PDF scraping code that used to be part of this package obsolete. If you are interested in it for didactic reasons, you can still find it in the [git hstory](https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R). This data is available at the country, regional and U.S. county level.
@@ -54,9 +56,46 @@ interested in assessing the global spreading of the virus. The data is provided 
 - `download_merged_data()`: Downloads all data sources and creates a merged country-day panel.
 
 
+## How to Use the Package
+
+The idea is simple. Load the data using the functions above and code away. So, for example:
+
+``` {r Example}
+# Suggestion by AndreaPi (issue #19)
+
+library(tidyverse)
+library(tidycovid19)
+library(zoo)
+
+df <- download_merged_data(cached = TRUE, silent = TRUE)
+
+df %>%
+  filter(iso3c == "ITA") %>%
+  mutate(
+    new_cases = confirmed - lag(confirmed),
+    ave_new_cases = rollmean(new_cases, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(!is.na(new_cases), !is.na(ave_new_cases)) %>%
+  ggplot(aes(x = date)) +
+  geom_bar(aes(y = new_cases), stat = "identity", fill = "lightblue") +
+  geom_line(aes(y = ave_new_cases), color ="red") +
+  theme_minimal()
+```
+
+The data comes with two meta data sets that describe the data. The data frame `tidycovid19_data_sources` provides short descriptions and links for each data source used by the package. The data frame `tidycovid19_variable_defintions` provides variable definitions for each variable included in the merged country-day data frame provided by `download_merged_data()`:
+
+```{r VarDefs}
+df <- tidycovid19_variable_definitions %>%
+  select(var_name, var_def)
+kable(df) %>% kableExtra::kable_styling()
+```
+
+There are more examples on how to code in the code file in the main directory with the revealing name `code_examples.R`. Explore and reuse!
+
+
 ## Visualization
 
-The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. Rgeardless, there are three functions that allow you to visualize some od the key data that the package provides.
+The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. Regardless, there are three functions that allow you to visualize some of the key data that the package provides.
 
 
 ### Plot Covid-19 Spread over Event Time
@@ -70,15 +109,15 @@ library(tidycovid19)
 
 merged <- download_merged_data(cached = TRUE, silent = TRUE)
 plot_covid19_spread(
-  merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
-  intervention = "lockdown", edate_cutoff = 50
+  merged, highlight = c("ITA", "ESP", "GBR", "FRA", "DEU", "USA"),
+  intervention = "lockdown", edate_cutoff = 60
 )
 ```
 
 
 ### Plot Covid-19 Stripes
 
-**NEW**: Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:
+Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:
 
 ```{r Covid19Stripes}
 plot_covid19_stripes()
@@ -106,7 +145,7 @@ plot_covid19_stripes(
 
 ### Map Covid-19
 
-**NEW**: Finally, as Covid-19 has become a truly world-wide pandemic, I decided to also include a basic mapping function. `map_covid19()` allows you to map the spread of the virus at a certain date both world-wide ...
+Finally, as Covid-19 has become a truly world-wide pandemic, I decided to also include a basic mapping function. `map_covid19()` allows you to map the spread of the virus at a certain date both world-wide ...
 
 ```{r MapWorldWide}
 map_covid19(merged, cumulative = TRUE)

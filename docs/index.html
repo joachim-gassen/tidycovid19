@@ -116,7 +116,11 @@
 <li>
 <code><a href="reference/download_jhu_csse_covid19_data.html">download_jhu_csse_covid19_data()</a></code>: Downloads and tidies <a href="https://github.com/CSSEGISandData/COVID-19">Covid-19 data from the Johns Hopkins University CSSE Github Repo</a>. This data has developed to a standard resource for researchers and the general audience interested in assessing the global spreading of the virus. The data is provided at country and sub-country levels.</li>
 <li>
-<code><a href="reference/download_acaps_npi_data.html">download_acaps_npi_data()</a></code>: Downloads and tidies the <a href="https://www.acaps.org/covid19-government-measures-dataset">Government measures dataset provided by the Assessment Capacities Project (ACAPS)</a>. These relatively new data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus.</li>
+<strong>NEW</strong>: <code><a href="reference/download_ecdc_covid19_data.html">download_ecdc_covid19_data()</a></code>: Downloads and tidies <a href="https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide">Covid-19 case data provided by the European Centre for Disease Prevention and Control</a>. The data is updated daily and contains the latest available public data on the number of new Covid-19 cases reported per day and per country.</li>
+<li>
+<strong>NEW</strong>: <code><a href="reference/download_owid_testing_data.html">download_owid_testing_data()</a></code>: Downloads and tidies <a href="https://ourworldindata.org/covid-testing">testing data collected by the ‘Our World in Data’ team</a>. This team systematically collects data on Covid-19 testing from multiple national sources.</li>
+<li>
+<code><a href="reference/download_acaps_npi_data.html">download_acaps_npi_data()</a></code>: Downloads and tidies the <a href="https://www.acaps.org/covid19-government-measures-dataset">Government measures dataset provided by the Assessment Capacities Project (ACAPS)</a>. These data allow researchers to study the effect of non-pharmaceutical interventions on the development of the virus.</li>
 <li>
 <code><a href="reference/download_oxford_npi_data.html">download_oxford_npi_data()</a></code>: Downloads and tidies data from the <a href="https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker">Oxford Covid-19 Government Response Tracker</a>, an alternative data source for governmental interventions. Currently, I do not include the financial measures of this data set and also do not include its data in the merged data file (see below) as I view the ACAPS data to be better suited (<a href="https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/">this blog post details why</a>).</li>
 <li>
@@ -131,57 +135,235 @@
 <code><a href="reference/download_merged_data.html">download_merged_data()</a></code>: Downloads all data sources and creates a merged country-day panel.</li>
 </ul>
 </div>
+<div id="how-to-use-the-package" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-to-use-the-package" class="anchor"></a>How to Use the Package</h2>
+<p>The idea is simple. Load the data using the functions above and code away. So, for example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Suggestion by AndreaPi (issue #19)</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidyverse)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(zoo)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">df &lt;-<span class="st"> </span><span class="kw"><a href="reference/download_merged_data.html">download_merged_data</a></span>(<span class="dt">cached =</span> <span class="ot">TRUE</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">df <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(iso3c <span class="op">==</span><span class="st"> "ITA"</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="st">  </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">    <span class="dt">new_cases =</span> confirmed <span class="op">-</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/lag">lag</a></span>(confirmed),</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13">    <span class="dt">ave_new_cases =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/zoo/topics/rollmean">rollmean</a></span>(new_cases, <span class="dv">7</span>, <span class="dt">na.pad=</span><span class="ot">TRUE</span>, <span class="dt">align=</span><span class="st">"right"</span>)</a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">  ) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/filter">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(new_cases), <span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(ave_new_cases)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> date)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="st">  </span><span class="kw">geom_bar</span>(<span class="kw">aes</span>(<span class="dt">y =</span> new_cases), <span class="dt">stat =</span> <span class="st">"identity"</span>, <span class="dt">fill =</span> <span class="st">"lightblue"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> ave_new_cases), <span class="dt">color =</span><span class="st">"red"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="st">  </span><span class="kw">theme_minimal</span>()</a></code></pre></div>
+<p><img src="reference/figures/Example-1.png" width="700" style="display: block; margin: auto;"></p>
+<p>The data comes with two meta data sets that describe the data. The data frame <code>tidycovid19_data_sources</code> provides short descriptions and links for each data source used by the package. The data frame <code>tidycovid19_variable_defintions</code> provides variable definitions for each variable included in the merged country-day data frame provided by <code><a href="reference/download_merged_data.html">download_merged_data()</a></code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">df &lt;-<span class="st"> </span>tidycovid19_variable_definitions <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span><span class="kw">select</span>(var_name, var_def)</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw">kable</span>(df) <span class="op">%&gt;%</span><span class="st"> </span>kableExtra<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/kableExtra/topics/kable_styling">kable_styling</a></span>()</a></code></pre></div>
+<table class="table table">
+<thead><tr class="header">
+<th align="left">var_name</th>
+<th align="left">var_def</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">iso3c</td>
+<td align="left">Country name</td>
+</tr>
+<tr class="even">
+<td align="left">country</td>
+<td align="left">ISO3c country code as defined by ISO 3166-1 alpha-3</td>
+</tr>
+<tr class="odd">
+<td align="left">date</td>
+<td align="left">Calendar date</td>
+</tr>
+<tr class="even">
+<td align="left">confirmed</td>
+<td align="left">Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)</td>
+</tr>
+<tr class="odd">
+<td align="left">deaths</td>
+<td align="left">Covid-19-related deaths as reported by JHU CSSE (accumulated)</td>
+</tr>
+<tr class="even">
+<td align="left">recovered</td>
+<td align="left">Covid-19 recoveries as reported by JHU CSSE (accumulated)</td>
+</tr>
+<tr class="odd">
+<td align="left">ecdc_cases</td>
+<td align="left">Covid-19 cases as reported by ECDC (accumulated)</td>
+</tr>
+<tr class="even">
+<td align="left">ecdc_deaths</td>
+<td align="left">Covid-19-related deaths as reported by ECDC (accumulated)</td>
+</tr>
+<tr class="odd">
+<td align="left">total_tests</td>
+<td align="left">Accumulated test counts as reported by Our World in Data</td>
+</tr>
+<tr class="even">
+<td align="left">tests_units</td>
+<td align="left">Definition of what constitutes a ‘test’</td>
+</tr>
+<tr class="odd">
+<td align="left">soc_dist</td>
+<td align="left">Number of social distancing measures reported up to date by ACAPS, net of lifted restrictions</td>
+</tr>
+<tr class="even">
+<td align="left">mov_rest</td>
+<td align="left">Number of movement restrictions reported up to date by ACAPS, net of lifted restrictions</td>
+</tr>
+<tr class="odd">
+<td align="left">pub_health</td>
+<td align="left">Number of public health measures reported up to date by ACAPS, net of lifted restrictions</td>
+</tr>
+<tr class="even">
+<td align="left">gov_soc_econ</td>
+<td align="left">Number of social and economic measures reported up to date by ACAPS, net of lifted restrictions</td>
+</tr>
+<tr class="odd">
+<td align="left">lockdown</td>
+<td align="left">Number of lockdown measures reported up to date by ACAPS, net of lifted restrictions</td>
+</tr>
+<tr class="even">
+<td align="left">apple_mtr_driving</td>
+<td align="left">Apple Maps usage for driving directions, as percentage*100 relative to the baseline of Jan 13, 2020</td>
+</tr>
+<tr class="odd">
+<td align="left">apple_mtr_walking</td>
+<td align="left">Apple Maps usage for walking directions, as percentage*100 relative to the baseline of Jan 13, 2020</td>
+</tr>
+<tr class="even">
+<td align="left">apple_mtr_transit</td>
+<td align="left">Apple Maps usage for public transit directions, as percentage*100 relative to the baseline of Jan 13, 2020</td>
+</tr>
+<tr class="odd">
+<td align="left">gcmr_retail_recreation</td>
+<td align="left">Google Community Mobility Reports data for the frequency that people visit retail and recreation places expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020</td>
+</tr>
+<tr class="even">
+<td align="left">gcmr_grocery_pharmacy</td>
+<td align="left">Google Community Mobility Reports data for the frequency that people visit grocery stores and pharmacies expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020</td>
+</tr>
+<tr class="odd">
+<td align="left">gcmr_parks</td>
+<td align="left">Google Community Mobility Reports data for the frequency that people visit parks expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020</td>
+</tr>
+<tr class="even">
+<td align="left">gcmr_transit_stations</td>
+<td align="left">Google Community Mobility Reports data for the frequency that people visit transit stations expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020</td>
+</tr>
+<tr class="odd">
+<td align="left">gcmr_workplaces</td>
+<td align="left">Google Community Mobility Reports data for the frequency that people visit workplaces expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020</td>
+</tr>
+<tr class="even">
+<td align="left">gcmr_residential</td>
+<td align="left">Google Community Mobility Reports data for the frequency that people visit residential places expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020</td>
+</tr>
+<tr class="odd">
+<td align="left">gtrends_score</td>
+<td align="left">Google search volume for the term ‘coronavirus’, relative across time with the country maximum scaled to 100</td>
+</tr>
+<tr class="even">
+<td align="left">gtrends_country_score</td>
+<td align="left">Country-level Google search volume for the term ‘coronavirus’ over a period starting Jan 1, 2020, relative across countries with the country having the highest search volume scaled to 100 (time-stable)</td>
+</tr>
+<tr class="odd">
+<td align="left">region</td>
+<td align="left">Country region as classified by the World Bank (time-stable)</td>
+</tr>
+<tr class="even">
+<td align="left">income</td>
+<td align="left">Country income group as classified by the World Bank (time-stable)</td>
+</tr>
+<tr class="odd">
+<td align="left">population</td>
+<td align="left">Country population as reported by the World Bank (original identifier ‘SP.POP.TOTL’, time-stable)</td>
+</tr>
+<tr class="even">
+<td align="left">land_area_skm</td>
+<td align="left">Country land mass in square kilometers as reported by the World Bank (original identifier ‘AG.LND.TOTL.K2’, time-stable)</td>
+</tr>
+<tr class="odd">
+<td align="left">pop_density</td>
+<td align="left">Country population density as reported by the World Bank (original identifier ‘EN.POP.DNST’, time-stable)</td>
+</tr>
+<tr class="even">
+<td align="left">pop_largest_city</td>
+<td align="left">Population in the largest metropolian area of the country as reported by the World Bank (original identifier ‘EN.URB.LCTY’, time-stable)</td>
+</tr>
+<tr class="odd">
+<td align="left">life_expectancy</td>
+<td align="left">Average life expectancy at birth of country citizens in years as reported by the World Bank (original identifier ‘SP.DYN.LE00.IN’, time-stable)</td>
+</tr>
+<tr class="even">
+<td align="left">gdp_capita</td>
+<td align="left">Country gross domestic product per capita, measured in 2010 US-$ as reported by the World Bank (original identifier ‘NY.GDP.PCAP.KD’, time-stable)</td>
+</tr>
+<tr class="odd">
+<td align="left">timestamp</td>
+<td align="left">Date and time where data has been collected from authoritative sources</td>
+</tr>
+</tbody>
+</table>
+<p>There are more examples on how to code in the code file in the main directory with the revealing name <code>code_examples.R</code>. Explore and reuse!</p>
+</div>
 <div id="visualization" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visualization" class="anchor"></a>Visualization</h2>
-<p>The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. Rgeardless, there are three functions that allow you to visualize some od the key data that the package provides.</p>
+<p>The focus of the package lies on data collection and not on visualization as there are already many great tools floating around. Regardless, there are three functions that allow you to visualize some of the key data that the package provides.</p>
 <div id="plot-covid-19-spread-over-event-time" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot-covid-19-spread-over-event-time" class="anchor"></a>Plot Covid-19 Spread over Event Time</h3>
 <p>The function <code><a href="reference/plot_covid19_spread.html">plot_covid19_spread()</a></code> allows you to quickly visualize the spread of the virus in relation to governmental intervention measures. It is inpired by the insightful displays created by John Burn-Murdoch from the Financial Times and offers various customization options.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co">#remotes::install_github("joachim-gassen/tidycovid19")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">merged &lt;-<span class="st"> </span><span class="kw"><a href="reference/download_merged_data.html">download_merged_data</a></span>(<span class="dt">cached =</span> <span class="ot">TRUE</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="reference/plot_covid19_spread.html">plot_covid19_spread</a></span>(</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">  merged, <span class="dt">highlight =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>),</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">  <span class="dt">intervention =</span> <span class="st">"lockdown"</span>, <span class="dt">edate_cutoff =</span> <span class="dv">50</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co">#remotes::install_github("joachim-gassen/tidycovid19")</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tidycovid19)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">merged &lt;-<span class="st"> </span><span class="kw"><a href="reference/download_merged_data.html">download_merged_data</a></span>(<span class="dt">cached =</span> <span class="ot">TRUE</span>, <span class="dt">silent =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="reference/plot_covid19_spread.html">plot_covid19_spread</a></span>(</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">  merged, <span class="dt">highlight =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"GBR"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>),</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="dt">intervention =</span> <span class="st">"lockdown"</span>, <span class="dt">edate_cutoff =</span> <span class="dv">60</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">)</a></code></pre></div>
 <p><img src="reference/figures/DemoPlot-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="plot-covid-19-stripes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plot-covid-19-stripes" class="anchor"></a>Plot Covid-19 Stripes</h3>
-<p><strong>NEW</strong>: Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>()</a></code></pre></div>
+<p>Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>()</a></code></pre></div>
 <p><img src="reference/figures/Covid19Stripes-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Again, the function comes with many options. As an example, you can easily switch to a per capita display:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>(</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dt">per_capita =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dt">population_cutoff =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"magnitude"</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>(</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="dt">per_capita =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">population_cutoff =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"magnitude"</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5">)</a></code></pre></div>
 <p><img src="reference/figures/Covid19StripesPerCapita-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>Or single out countries that you are interested in</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>(</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">type =</span> <span class="st">"confirmed"</span>, </a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">countries =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"FRA"</span>, <span class="st">"GBR"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>),</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"countries"</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/plot_covid19_stripes.html">plot_covid19_stripes</a></span>(</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="dt">type =</span> <span class="st">"confirmed"</span>, </a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="dt">countries =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"ITA"</span>, <span class="st">"ESP"</span>, <span class="st">"FRA"</span>, <span class="st">"GBR"</span>, <span class="st">"DEU"</span>, <span class="st">"USA"</span>),</a>
+<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="dt">sort_countries =</span> <span class="st">"countries"</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">)</a></code></pre></div>
 <p><img src="reference/figures/Covid19StripesSelCountries-1.png" width="700" style="display: block; margin: auto;"></p>
 </div>
 <div id="map-covid-19" class="section level3">
 <h3 class="hasAnchor">
 <a href="#map-covid-19" class="anchor"></a>Map Covid-19</h3>
-<p><strong>NEW</strong>: Finally, as Covid-19 has become a truly world-wide pandemic, I decided to also include a basic mapping function. <code><a href="reference/map_covid19.html">map_covid19()</a></code> allows you to map the spread of the virus at a certain date both world-wide …</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">cumulative =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>Finally, as Covid-19 has become a truly world-wide pandemic, I decided to also include a basic mapping function. <code><a href="reference/map_covid19.html">map_covid19()</a></code> allows you to map the spread of the virus at a certain date both world-wide …</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">cumulative =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="reference/figures/MapWorldWide-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>… or for certain regions.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">type =</span> <span class="st">"confirmed"</span>, <span class="dt">region =</span> <span class="st">"Europe"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">type =</span> <span class="st">"confirmed"</span>, <span class="dt">region =</span> <span class="st">"Europe"</span>)</a></code></pre></div>
 <p><img src="reference/figures/MapEurope-1.png" width="700" style="display: block; margin: auto;"></p>
 <p>If you have enough time (takes several minutes), you can also create an animation to visualize the spread of the virus over time.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">type =</span> <span class="st">"confirmed"</span>, <span class="dt">dates =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(merged<span class="op">$</span>date))</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/map_covid19.html">map_covid19</a></span>(merged, <span class="dt">type =</span> <span class="st">"confirmed"</span>, <span class="dt">dates =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unique">unique</a></span>(merged<span class="op">$</span>date))</a></code></pre></div>
 <p><img src="reference/figures/AnimatedMapWorldWide-1.gif" style="display: block; margin: auto;"></p>
 <p>Again, you can customize the data that you want to plot and of course you can also modify the plot itself by using normal <code>ggplot</code> syntax.</p>
 </div>

@@ -8,7 +8,8 @@ df <- download_merged_data(cached = T, silent = F)
 tidycovid19_variable_definitions <- data.frame(
   var_name = names(df),
   var_source = c(
-    rep(NA, 3), rep("jhu_ccse", 3), rep("acaps_npi", 5),
+    rep(NA, 3), rep("jhu_ccse", 3), rep("ecdc_covid19", 2),
+    rep("owid_testing", 2), rep("acaps_npi", 5),
     rep("apple_mtr", 3), rep("google_cmr", 6), rep("google_trends", 2),
     rep("wbank", 8), NA
   ),
@@ -16,9 +17,13 @@ tidycovid19_variable_definitions <- data.frame(
     "Country name",
     "ISO3c country code as defined by ISO 3166-1 alpha-3",
     "Calendar date",
-    "Confirmed Covid-19 cases as reported by JHU CSSE",
-    "Covid-19-related deaths as reported by JHU CSSE",
-    "Covid-19 recoveries as reported by JHU CSSE",
+    "Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)",
+    "Covid-19-related deaths as reported by JHU CSSE (accumulated)",
+    "Covid-19 recoveries as reported by JHU CSSE (accumulated)",
+    "Covid-19 cases as reported by ECDC (accumulated)",
+    "Covid-19-related deaths as reported by ECDC (accumulated)",
+    "Accumulated test counts as reported by Our World in Data",
+    "Definition of what constitutes a 'test'",
     "Number of social distancing measures reported up to date by ACAPS, net of lifted restrictions",
     "Number of movement restrictions reported up to date by ACAPS, net of lifted restrictions",
     "Number of public health measures reported up to date by ACAPS, net of lifted restrictions",
@@ -33,7 +38,7 @@ tidycovid19_variable_definitions <- data.frame(
        "retail and recreation places", "grocery stores and pharmacies",
        "parks", "transit stations", "workplaces", "residential places"
       ),
-      "expressed as a percentage change relative to the baseline period Jan 3 - Feb 6, 2020"
+      "expressed as a percentage*100 change relative to the baseline period Jan 3 - Feb 6, 2020"
     ),
     "Google search volume for the term 'coronavirus', relative across time with the country maximum scaled to 100",
     "Country-level Google search volume for the term 'coronavirus' over a period starting Jan 1, 2020, relative across countries with the country having the highest search volume scaled to 100 (time-stable)",

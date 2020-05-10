@@ -88,11 +88,6 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
         workplaces = .data$workplaces_percent_change_from_baseline,
         residential = .data$residential_percent_change_from_baseline
       ) %>%
-        dplyr::mutate_at(
-          dplyr::vars(
-            .data$retail_recreation, .data$grocery_pharmacy, .data$parks,
-            .data$transit_stations, .data$workplaces, .data$residential
-          ), ~ round(./100, 2)) %>%
         dplyr::mutate(
           iso3c = countrycode::countrycode(.data$country_region_code,
                                            origin = "iso2c",

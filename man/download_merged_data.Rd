@@ -40,8 +40,10 @@ A data frame containing the data, organized by country and date. It
 \description{
 Merges data from the Johns Hopkins University CSSE team on the spread of the
 SARS-CoV-2 virus and the Covid-19 pandemic
-(\url{https://github.com/CSSEGISandData/COVID-19}), the ACAPS governmental
-measures database
+(\url{https://github.com/CSSEGISandData/COVID-19}),
+case data provided by the ECDC
+(\url{https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide}),
+the ACAPS governmental measures database
 (\url{https://www.acaps.org/covid19-government-measures-dataset}),
 Mobility Trends Reports provided by Apple related to Covid-19
 (\url{https://www.apple.com/covid19/mobility}),
@@ -50,6 +52,8 @@ Google COVID-19 Community Mobility Reports
 Google Trends Covid-19 related search volume
 (\url{https://trends.google.com/trends/}), and the World Bank
 (\url{https://data.worldbank.org}) intro a country-day data frame.
+Variable definitions are provided by the data frame
+\code{tidycovid19_variable_definitions}.
 }
 \details{
 See the documentation of the separate download functions of the

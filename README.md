@@ -65,10 +65,22 @@ Currently, the package offers the following functions to download data:
     developed to a standard resource for researchers and the general
     audience interested in assessing the global spreading of the virus.
     The data is provided at country and sub-country levels.
+  - **NEW**: `download_ecdc_covid19_data()`: Downloads and tidies
+    [Covid-19 case data provided by the European Centre for Disease
+    Prevention and
+    Control](https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide).
+    The data is updated daily and contains the latest available public
+    data on the number of new Covid-19 cases reported per day and per
+    country.
+  - **NEW**: `download_owid_testing_data()`: Downloads and tidies
+    [testing data collected by the ‘Our World in Data’
+    team](https://ourworldindata.org/covid-testing). This team
+    systematically collects data on Covid-19 testing from multiple
+    national sources.
   - `download_acaps_npi_data()`: Downloads and tidies the [Government
     measures dataset provided by the Assessment Capacities Project
     (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset).
-    These relatively new data allow researchers to study the effect of
+    These data allow researchers to study the effect of
     non-pharmaceutical interventions on the development of the virus.
   - `download_oxford_npi_data()`: Downloads and tidies data from the
     [Oxford Covid-19 Government Response
@@ -109,12 +121,95 @@ Currently, the package offers the following functions to download data:
   - `download_merged_data()`: Downloads all data sources and creates a
     merged country-day panel.
 
+## How to Use the Package
+
+The idea is simple. Load the data using the functions above and code
+away. So, for example:
+
+``` r
+# Suggestion by AndreaPi (issue #19)
+
+library(tidyverse)
+library(tidycovid19)
+library(zoo)
+
+df <- download_merged_data(cached = TRUE, silent = TRUE)
+
+df %>%
+  filter(iso3c == "ITA") %>%
+  mutate(
+    new_cases = confirmed - lag(confirmed),
+    ave_new_cases = rollmean(new_cases, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(!is.na(new_cases), !is.na(ave_new_cases)) %>%
+  ggplot(aes(x = date)) +
+  geom_bar(aes(y = new_cases), stat = "identity", fill = "lightblue") +
+  geom_line(aes(y = ave_new_cases), color ="red") +
+  theme_minimal()
+```
+
+<img src="man/figures/Example-1.png" style="display: block; margin: auto;" />
+
+The data comes with two meta data sets that describe the data. The data
+frame `tidycovid19_data_sources` provides short descriptions and links
+for each data source used by the package. The data frame
+`tidycovid19_variable_defintions` provides variable definitions for each
+variable included in the merged country-day data frame provided by
+`download_merged_data()`:
+
+``` r
+df <- tidycovid19_variable_definitions %>%
+  select(var_name, var_def)
+kable(df) %>% kableExtra::kable_styling()
+```
+
+| var\_name                | var\_def                                                                                                                                                                                                  |
+| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| iso3c                    | Country name                                                                                                                                                                                              |
+| country                  | ISO3c country code as defined by ISO 3166-1 alpha-3                                                                                                                                                       |
+| date                     | Calendar date                                                                                                                                                                                             |
+| confirmed                | Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)                                                                                                                                            |
+| deaths                   | Covid-19-related deaths as reported by JHU CSSE (accumulated)                                                                                                                                             |
+| recovered                | Covid-19 recoveries as reported by JHU CSSE (accumulated)                                                                                                                                                 |
+| ecdc\_cases              | Covid-19 cases as reported by ECDC (accumulated)                                                                                                                                                          |
+| ecdc\_deaths             | Covid-19-related deaths as reported by ECDC (accumulated)                                                                                                                                                 |
+| total\_tests             | Accumulated test counts as reported by Our World in Data                                                                                                                                                  |
+| tests\_units             | Definition of what constitutes a ‘test’                                                                                                                                                                   |
+| soc\_dist                | Number of social distancing measures reported up to date by ACAPS, net of lifted restrictions                                                                                                             |
+| mov\_rest                | Number of movement restrictions reported up to date by ACAPS, net of lifted restrictions                                                                                                                  |
+| pub\_health              | Number of public health measures reported up to date by ACAPS, net of lifted restrictions                                                                                                                 |
+| gov\_soc\_econ           | Number of social and economic measures reported up to date by ACAPS, net of lifted restrictions                                                                                                           |
+| lockdown                 | Number of lockdown measures reported up to date by ACAPS, net of lifted restrictions                                                                                                                      |
+| apple\_mtr\_driving      | Apple Maps usage for driving directions, as percentage\*100 relative to the baseline of Jan 13, 2020                                                                                                      |
+| apple\_mtr\_walking      | Apple Maps usage for walking directions, as percentage\*100 relative to the baseline of Jan 13, 2020                                                                                                      |
+| apple\_mtr\_transit      | Apple Maps usage for public transit directions, as percentage\*100 relative to the baseline of Jan 13, 2020                                                                                               |
+| gcmr\_retail\_recreation | Google Community Mobility Reports data for the frequency that people visit retail and recreation places expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020         |
+| gcmr\_grocery\_pharmacy  | Google Community Mobility Reports data for the frequency that people visit grocery stores and pharmacies expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020        |
+| gcmr\_parks              | Google Community Mobility Reports data for the frequency that people visit parks expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                                |
+| gcmr\_transit\_stations  | Google Community Mobility Reports data for the frequency that people visit transit stations expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                     |
+| gcmr\_workplaces         | Google Community Mobility Reports data for the frequency that people visit workplaces expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                           |
+| gcmr\_residential        | Google Community Mobility Reports data for the frequency that people visit residential places expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                   |
+| gtrends\_score           | Google search volume for the term ‘coronavirus’, relative across time with the country maximum scaled to 100                                                                                              |
+| gtrends\_country\_score  | Country-level Google search volume for the term ‘coronavirus’ over a period starting Jan 1, 2020, relative across countries with the country having the highest search volume scaled to 100 (time-stable) |
+| region                   | Country region as classified by the World Bank (time-stable)                                                                                                                                              |
+| income                   | Country income group as classified by the World Bank (time-stable)                                                                                                                                        |
+| population               | Country population as reported by the World Bank (original identifier ‘SP.POP.TOTL’, time-stable)                                                                                                         |
+| land\_area\_skm          | Country land mass in square kilometers as reported by the World Bank (original identifier ‘AG.LND.TOTL.K2’, time-stable)                                                                                  |
+| pop\_density             | Country population density as reported by the World Bank (original identifier ‘EN.POP.DNST’, time-stable)                                                                                                 |
+| pop\_largest\_city       | Population in the largest metropolian area of the country as reported by the World Bank (original identifier ‘EN.URB.LCTY’, time-stable)                                                                  |
+| life\_expectancy         | Average life expectancy at birth of country citizens in years as reported by the World Bank (original identifier ‘SP.DYN.LE00.IN’, time-stable)                                                           |
+| gdp\_capita              | Country gross domestic product per capita, measured in 2010 US-$ as reported by the World Bank (original identifier ‘NY.GDP.PCAP.KD’, time-stable)                                                        |
+| timestamp                | Date and time where data has been collected from authoritative sources                                                                                                                                    |
+
+There are more examples on how to code in the code file in the main
+directory with the revealing name `code_examples.R`. Explore and reuse\!
+
 ## Visualization
 
 The focus of the package lies on data collection and not on
 visualization as there are already many great tools floating around.
-Rgeardless, there are three functions that allow you to visualize some
-od the key data that the package provides.
+Regardless, there are three functions that allow you to visualize some
+of the key data that the package provides.
 
 ### Plot Covid-19 Spread over Event Time
 
@@ -130,8 +225,8 @@ library(tidycovid19)
 
 merged <- download_merged_data(cached = TRUE, silent = TRUE)
 plot_covid19_spread(
-  merged, highlight = c("ITA", "ESP", "FRA", "DEU", "USA"),
-  intervention = "lockdown", edate_cutoff = 50
+  merged, highlight = c("ITA", "ESP", "GBR", "FRA", "DEU", "USA"),
+  intervention = "lockdown", edate_cutoff = 60
 )
 ```
 
@@ -139,9 +234,9 @@ plot_covid19_spread(
 
 ### Plot Covid-19 Stripes
 
-**NEW**: Another option to visualize the spread of Covid-19, in
-particular if you want to compare many countries, is to produce a
-stripes-based visualization. Meet the Covid-19
+Another option to visualize the spread of Covid-19, in particular if you
+want to compare many countries, is to produce a stripes-based
+visualization. Meet the Covid-19
 stripes:
 
 ``` r
@@ -177,9 +272,9 @@ plot_covid19_stripes(
 
 ### Map Covid-19
 
-**NEW**: Finally, as Covid-19 has become a truly world-wide pandemic, I
-decided to also include a basic mapping function. `map_covid19()` allows
-you to map the spread of the virus at a certain date both world-wide
+Finally, as Covid-19 has become a truly world-wide pandemic, I decided
+to also include a basic mapping function. `map_covid19()` allows you to
+map the spread of the virus at a certain date both world-wide
 …
 
 ``` r

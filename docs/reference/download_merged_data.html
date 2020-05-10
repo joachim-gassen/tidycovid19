@@ -34,8 +34,10 @@
 
 <meta property="og:description" content="Merges data from the Johns Hopkins University CSSE team on the spread of the
 SARS-CoV-2 virus and the Covid-19 pandemic
-(https://github.com/CSSEGISandData/COVID-19), the ACAPS governmental
-measures database
+(https://github.com/CSSEGISandData/COVID-19),
+case data provided by the ECDC
+(https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide),
+the ACAPS governmental measures database
 (https://www.acaps.org/covid19-government-measures-dataset),
 Mobility Trends Reports provided by Apple related to Covid-19
 (https://www.apple.com/covid19/mobility),
@@ -43,7 +45,9 @@ Google COVID-19 Community Mobility Reports
 (https://www.google.com/covid19/mobility/),
 Google Trends Covid-19 related search volume
 (https://trends.google.com/trends/), and the World Bank
-(https://data.worldbank.org) intro a country-day data frame." />
+(https://data.worldbank.org) intro a country-day data frame.
+Variable definitions are provided by the data frame
+tidycovid19_variable_definitions." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -133,8 +137,10 @@ Google Trends Covid-19 related search volume
     
     <p>Merges data from the Johns Hopkins University CSSE team on the spread of the
 SARS-CoV-2 virus and the Covid-19 pandemic
-(<a href='https://github.com/CSSEGISandData/COVID-19'>https://github.com/CSSEGISandData/COVID-19</a>), the ACAPS governmental
-measures database
+(<a href='https://github.com/CSSEGISandData/COVID-19'>https://github.com/CSSEGISandData/COVID-19</a>),
+case data provided by the ECDC
+(<a href='https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide'>https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide</a>),
+the ACAPS governmental measures database
 (<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>),
 Mobility Trends Reports provided by Apple related to Covid-19
 (<a href='https://www.apple.com/covid19/mobility'>https://www.apple.com/covid19/mobility</a>),
@@ -142,7 +148,9 @@ Google COVID-19 Community Mobility Reports
 (<a href='https://www.google.com/covid19/mobility/'>https://www.google.com/covid19/mobility/</a>),
 Google Trends Covid-19 related search volume
 (<a href='https://trends.google.com/trends/'>https://trends.google.com/trends/</a>), and the World Bank
-(<a href='https://data.worldbank.org'>https://data.worldbank.org</a>) intro a country-day data frame.</p>
+(<a href='https://data.worldbank.org'>https://data.worldbank.org</a>) intro a country-day data frame.
+Variable definitions are provided by the data frame
+<code>tidycovid19_variable_definitions</code>.</p>
     
     </div>
 
@@ -213,7 +221,7 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
                                              <span class='kw'>y</span> <span class='kw'>=</span> <span class='no'>soc_dist_measures</span>)) +
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span>() +
   <span class='kw pkg'>ggrepel</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/ggrepel/topics/geom_text_repel'>geom_label_repel</a></span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span>(<span class='kw'>label</span> <span class='kw'>=</span> <span class='no'>iso3c</span>)) +
-  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span>(<span class='kw'>trans</span><span class='kw'>=</span><span class='st'>'log10'</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw pkg'>scales</span><span class='kw ns'>::</span><span class='no'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span>)</div><div class='img'><img src='download_merged_data-1.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span>(<span class='kw'>trans</span><span class='kw'>=</span><span class='st'>'log10'</span>, <span class='kw'>labels</span> <span class='kw'>=</span> <span class='kw pkg'>scales</span><span class='kw ns'>::</span><span class='no'><a href='https://scales.r-lib.org//reference/label_number.html'>comma</a></span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing missing values (geom_point).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 5 rows containing missing values (geom_label_repel).</span></div><div class='img'><img src='download_merged_data-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

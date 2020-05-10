@@ -1,10 +1,18 @@
 # tidycovid19 0.0.0.9000
 
+* 2020-05-10: Added ECDC Covid-19 case data
+
+* 2020-05-10: Added OWID testing data
+
+* 2020-05-10: Changed Google CMR data to percentage*100 for consistency
+
+* 2020-05-10: Added additional coding examples in `example_code.R`
+
 * 2020-05-03: Added long overdue data documentation
 
 * 2020-05-03: Provided option to download regional and U.S. county JHU CSSE data
 
-* 2020-05-03: Provided option to download regional and U.S. county JHU CSSE data
+* 2020-05-03: Provided option to download regional and U.S. county Google CMR data
 
 * 2020-05-03: Provided option to download regional Apple MTR data
 
