@@ -287,7 +287,7 @@ map_covid19(merged, cumulative = TRUE)
 regions.
 
 ``` r
-map_covid19(merged, type = "confirmed", region = "Europe")
+map_covid19(merged, type = "confirmed", region = "Europe") 
 ```
 
 <img src="man/figures/MapEurope-1.png" style="display: block; margin: auto;" />

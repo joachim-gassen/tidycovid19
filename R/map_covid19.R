@@ -178,7 +178,7 @@ map_covid19 <- function(
 
     if (is.list(region) || region != "World") {
       if (is.list(region) && names(region) == c("x", "y")) rl <- region
-      else if (region == "Europe") rl <- list(x = c(-22, 50), y = c(30, 80))
+      else if (region == "Europe") rl <- list(x = c(-22, 50), y = c(33, 70))
       else if (region == "Africa") rl <- list(x = c(-20, 50), y = c(-35, 35))
       else if (region == "Asia") rl <- list(x = c(25, 190), y = c(-25, 80))
       else if (region == "Oceania") rl <- list(x = c(90, 180), y = c(-50, 25))
@@ -189,7 +189,7 @@ map_covid19 <- function(
         "'Europe', 'North America', 'Oceania', 'South America' or",
         "a named list (x,y) containing longitude and latidtude limits."
       ))
-      p <- p + ggplot2::coord_fixed(xlim = rl$x, ylim = rl$y)
+      p <- p + ggplot2::coord_quickmap(xlim = rl$x, ylim = rl$y)
     } else p + ggplot2::coord_quickmap()
 
     if (diverging_color_scale) {

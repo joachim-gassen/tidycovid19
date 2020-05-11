@@ -154,7 +154,7 @@ map_covid19(merged, cumulative = TRUE)
 ... or for certain regions.
 
 ```{r MapEurope}
-map_covid19(merged, type = "confirmed", region = "Europe")
+map_covid19(merged, type = "confirmed", region = "Europe") 
 ```
 
 If you have enough time (takes several minutes), you can also create an animation to visualize the spread of the virus over time.

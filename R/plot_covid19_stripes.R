@@ -87,8 +87,19 @@ plot_covid19_stripes <- function(
   if(change_ave < 0)
     stop ("'change_ave' needs to be a positive integer")
 
+  if (population_cutoff > 0 || per_capita)
+    message(paste(
+      "Population data required. Observations for the following jurisdictions",
+      "will be dropped as the World Bank is not providing population data for",
+      "them: ", paste(unique(data$iso3c[is.na(data$population)]), collapse = ", ")
+    ))
+
+  if (population_cutoff > 0) {
+    data <- data %>%
+      dplyr::filter(.data$population > 1e6*population_cutoff)
+  }
+
   data <- data %>%
-    dplyr::filter(.data$population > 1e6*population_cutoff) %>%
     dplyr::mutate(
       active = .data$confirmed - .data$recovered,
       orig_type = !! rlang::sym(type)
