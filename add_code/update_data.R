@@ -16,7 +16,7 @@ saveRDS(jhu_list, "cached_data/jhu_csse_covid19.RDS", version = 2)
 ecdc <- download_ecdc_covid19_data()
 saveRDS(ecdc, "cached_data/ecdc_covid19.RDS", version = 2)
 
-owid_testing <- download_owid_tests_data()
+owid_testing <- download_owid_testing_data()
 saveRDS(owid_testing, "cached_data/owid_testing.RDS", version = 2)
 
 acaps <- download_acaps_npi_data()
@@ -52,7 +52,7 @@ jhu_list <- readRDS("cached_data/jhu_csse_covid19.RDS")
 
 ecdc <- readRDS("cached_data/ecdc_covid19.RDS") %>%
   select(-timestamp, -country_territory) %>%
-  filter(!iso3c %in% c("XKX", "N/A"))
+  filter(!is.na(iso3c) & !iso3c %in% c("XKX", "N/A"))
 
 ecdc_acc <- expand.grid(
   date = lubridate::as_date(min(ecdc$date):max(ecdc$date)),
@@ -149,7 +149,7 @@ merged_base <- jhu_cases %>%
   mutate(country = countrycode::countrycode(iso3c, "iso3c", "country.name")) %>%
   select(iso3c, country, everything())
 
-merged_base %>%
+merged <- merged_base %>%
   left_join(owid_testing, by = c("iso3c", "date")) %>%
   left_join(
     calc_npi_measure("Social distancing", "soc_dist"),

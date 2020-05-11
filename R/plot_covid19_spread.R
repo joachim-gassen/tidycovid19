@@ -100,8 +100,19 @@ plot_covid19_spread <- function(
       "if 'per_capita' is set to 'TRUE'"
     ))
 
+  if (population_cutoff > 0 || per_capita || per_capita_x_axis)
+  message(paste(
+    "Population data required. Observations for the following jurisdictions",
+    "will be dropped as the World Bank is not providing population data for",
+    "them: ", paste(unique(data$iso3c[is.na(data$population)]), collapse = ", ")
+  ))
+
+  if (population_cutoff > 0) {
+    data <- data %>%
+      dplyr::filter(.data$population > 1e6*population_cutoff)
+  }
+
   data <- data %>%
-    dplyr::filter(.data$population > 1e6*population_cutoff) %>%
     dplyr::mutate(active = .data$confirmed - .data$recovered)
 
   if (!cumulative)
