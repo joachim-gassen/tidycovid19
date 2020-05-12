@@ -15,7 +15,7 @@
 #'     frame obtained by \link{download_merged_data} and defaults to
 #'     \code{download_merged_data(cached = TRUE, silent = TRUE)}.
 #' @param type The statistic that you want to plot. Needs to be either "confirmed",
-#'     "deaths", "revovered" or "active", defined as the difference of "confirmed"
+#'     "deaths", "recovered" or "active", defined as the difference of "confirmed"
 #'     and "recovered".
 #' @param min_cases Defines the zero point of your X axis (the 'event date').
 #'     Defaults to 100 cases for deaths and 1,000 cases otherwise.
