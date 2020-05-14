@@ -10,7 +10,7 @@
 #'     frame obtained by \link{download_merged_data} and defaults to
 #'     \code{download_merged_data(cached = TRUE, silent = TRUE)}.
 #' @param type The statistic that you want to plot. Needs to be either "confirmed",
-#'     "deaths", "revovered" or "active", defined as the difference of "confirmed"
+#'     "deaths", "recovered" or "active", defined as the difference of "confirmed"
 #'     and "recovered".
 #' @param min_cases Only countries that have a maximum of \code{type} cases higher
 #'     than \code{min_cases} during the data period are included in the plot.
@@ -136,7 +136,8 @@ plot_covid19_stripes <- function(
                   .data$orig_type, !! rlang::sym(type))
 
   if(!diverging_color_scale) {
-    df[df[, type] <= 0, type] <- min(df[df[, type] > 0, type])
+    # force the comparisons to be booleans to avoid "'i' must have one dimension, not 2." error
+    df[as.logical(df[, type] <= 0), type] <- min(df[as.logical(df[, type] > 0), type])
   }
 
   if(!is.null(countries) && (length(countries) > 1 || countries != "")
