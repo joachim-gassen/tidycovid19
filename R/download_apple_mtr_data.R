@@ -76,40 +76,61 @@ download_apple_mtr_data <- function(type = "country", url = NULL, silent = FALSE
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
     raw_data <- readr::read_csv(url, col_types = readr::cols()) %>%
-      dplyr::left_join(apple_mtr_region_iso3c_link,
-                       by = c("geo_type", "region", "alternative_name")) %>%
-      dplyr::select(.data$iso3c, dplyr::everything())
+      rename(sub_region = `sub-region`)
+
+    raw_data$iso3c <- NA
 
     raw_data$iso3c[raw_data$geo_type == "country/region"] <-
       countrycode::countrycode(raw_data$region[raw_data$geo_type == "country/region"],
                                origin = "country.name",
                                destination = "iso3c")
 
+    raw_data$iso3c[raw_data$geo_type != "country/region"] <-
+      countrycode::countrycode(raw_data$country[raw_data$geo_type != "country/region"],
+                               origin = "country.name",
+                               destination = "iso3c")
+
     clean_mtr_data <- function(df) {
-      df %>%
-        dplyr::select(-.data$geo_type, -.data$alternative_name) %>%
-        dplyr::group_by(.data$iso3c, .data$region, .data$transportation_type) %>%
-        tidyr::pivot_longer(
+      city <-  "sub_region" %in% names(df)
+      df <- df %>%
+        dplyr::select(-.data$geo_type, -.data$alternative_name, -.data$country) %>%
+        dplyr::group_by(.data$iso3c, .data$region, .data$transportation_type)
+
+      if (city) {
+        df <- df %>% tidyr::pivot_longer(
+            cols = -c(.data$iso3c, .data$region, .data$sub_region,
+                      .data$transportation_type),
+            names_to = "date",
+            values_to = "values"
+          )
+      } else {
+        df <- df %>%         tidyr::pivot_longer(
           cols = -c(.data$iso3c, .data$region, .data$transportation_type),
           names_to = "date",
           values_to = "values"
-        ) %>%
-        dplyr::mutate(date = lubridate::ymd(date)) %>%
+        )
+      }
+      df <- df %>% dplyr::mutate(date = lubridate::ymd(date)) %>%
         tidyr::pivot_wider(
           names_from = .data$transportation_type,
           values_from = .data$values
         ) %>%
         dplyr::ungroup() %>%
-        dplyr::mutate(timestamp = Sys.time()) %>%
-        dplyr::arrange(.data$iso3c, .data$region, .data$date)
+        dplyr::mutate(timestamp = Sys.time())
+
+      if (city) df %>% dplyr::arrange(.data$iso3c, .data$region,
+                                      .data$sub_region, .data$date)
+      else df %>% dplyr::arrange(.data$iso3c, .data$region, .data$date)
     }
 
     country <- raw_data %>%
       dplyr::filter(.data$geo_type == "country/region") %>%
+      dplyr::select(-.data$sub_region) %>%
       clean_mtr_data() %>%
       dplyr::select(-.data$region)
 
     country_region <- raw_data %>%
+      dplyr::select(-.data$sub_region) %>%
       dplyr::filter(.data$geo_type == "sub-region") %>%
       clean_mtr_data()
 
