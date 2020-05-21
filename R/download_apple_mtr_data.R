@@ -76,7 +76,7 @@ download_apple_mtr_data <- function(type = "country", url = NULL, silent = FALSE
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
     raw_data <- readr::read_csv(url, col_types = readr::cols()) %>%
-      rename(sub_region = `sub-region`)
+      dplyr::rename(sub_region = .data$`sub-region`)
 
     raw_data$iso3c <- NA
 
@@ -104,7 +104,7 @@ download_apple_mtr_data <- function(type = "country", url = NULL, silent = FALSE
             values_to = "values"
           )
       } else {
-        df <- df %>%         tidyr::pivot_longer(
+        df <- df %>% tidyr::pivot_longer(
           cols = -c(.data$iso3c, .data$region, .data$transportation_type),
           names_to = "date",
           values_to = "values"
