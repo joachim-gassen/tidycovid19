@@ -81,10 +81,10 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     }
     return(df)
   }
-  jhu_cases <- download_jhu_csse_covid19_data(silent) %>%
+  jhu_cases <- download_jhu_csse_covid19_data(silent = silent) %>%
     dplyr::select(-.data$timestamp, -.data$country)
 
-  ecdc <- download_ecdc_covid19_data(silent) %>%
+  ecdc <- download_ecdc_covid19_data(silent = silent) %>%
     dplyr::select(-.data$timestamp, -.data$country_territory) %>%
     dplyr::filter(!is.na(.data$iso3c) & !.data$iso3c %in% c("XKX", "N/A"))
 
@@ -108,27 +108,27 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
                   .data$ecdc_cases, .data$ecdc_deaths) %>%
     dplyr::ungroup()
 
-  owid_testing <- download_owid_testing_data(silent) %>%
+  owid_testing <- download_owid_testing_data(silent = silent) %>%
     dplyr::select(-.data$timestamp)
 
-  npis <- download_acaps_npi_data(silent) %>%
+  npis <- download_acaps_npi_data(silent = silent) %>%
     dplyr::mutate(npi_date = lubridate::ymd(.data$date_implemented)) %>%
     dplyr::rename(npi_type = .data$category) %>%
     dplyr::select(.data$iso3c, .data$npi_date, .data$log_type, .data$npi_type)
 
-  amtr <- download_apple_mtr_data() %>%
+  amtr <- download_apple_mtr_data(silent = silent) %>%
     dplyr::select(-.data$timestamp) %>%
     dplyr::rename_at(dplyr::vars(-.data$iso3c, -.data$date),
                      ~ paste0("apple_mtr_", .))
 
-  gcmr <- download_google_cmr_data() %>%
+  gcmr <- download_google_cmr_data(silent = silent) %>%
     dplyr::select(-.data$timestamp) %>%
     dplyr::rename_at(dplyr::vars(-.data$iso3c, -.data$date),
                      ~ paste0("gcmr_", .))
 
   gtrends_list <- download_google_trends_data(search_term,
                                               c("country_day", "country"),
-                                              silent)
+                                              silent = silent)
 
   gtrends_cd <- gtrends_list[[1]] %>%
     dplyr::select(-.data$timestamp)
@@ -184,7 +184,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     ) %>%
     dplyr::select(.data$iso3c, .data$country, dplyr::everything())
 
-  df <- merged_base
+  df <- merged_base %>%
     dplyr::left_join(owid_testing, by = c("iso3c", "date")) %>%
     dplyr::left_join(
       calc_npi_measure("Social distancing", "soc_dist"),

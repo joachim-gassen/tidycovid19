@@ -14,9 +14,9 @@
 #' @param data The data frame to base the plot on. Should be a merged data
 #'     frame obtained by \link{download_merged_data} and defaults to
 #'     \code{download_merged_data(cached = TRUE, silent = TRUE)}.
-#' @param type The statistic that you want to plot. Needs to be either "confirmed",
-#'     "deaths", "recovered" or "active", defined as the difference of "confirmed"
-#'     and "recovered".
+#' @param type The statistic that you want to plot. Needs to be either
+#'     "confirmed", "deaths", "recovered" or "active", defined as the difference
+#'     of "confirmed", "deaths" and "recovered".
 #' @param min_cases Defines the zero point of your X axis (the 'event date').
 #'     Defaults to 100 cases for deaths and 1,000 cases otherwise.
 #' @param min_by_ctry_obs Limits the plot to countries that have at least that
@@ -113,7 +113,7 @@ plot_covid19_spread <- function(
   }
 
   data <- data %>%
-    dplyr::mutate(active = .data$confirmed - .data$recovered)
+    dplyr::mutate(active = .data$confirmed - .data$recovered - .data$deaths)
 
   if (!cumulative)
     data <- data %>%

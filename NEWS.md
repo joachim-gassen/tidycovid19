@@ -1,5 +1,7 @@
 # tidycovid19 0.0.0.9000
 
+* 2020-05-21: Changed definition of active cases
+
 * 2020-05-10: Added ECDC Covid-19 case data
 
 * 2020-05-10: Added OWID testing data

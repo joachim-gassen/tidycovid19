@@ -184,16 +184,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/top_n.html'>top_n</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='message'>Selecting by confirmed_cases</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 2</span><span>
 #&gt;    country        confirmed_cases
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> US                     1</span><span style='text-decoration: underline;'>309</span><span>550
-#&gt; </span><span style='color: #555555;'> 2</span><span> Spain                   </span><span style='text-decoration: underline;'>223</span><span>578
-#&gt; </span><span style='color: #555555;'> 3</span><span> Italy                   </span><span style='text-decoration: underline;'>218</span><span>268
-#&gt; </span><span style='color: #555555;'> 4</span><span> United Kingdom          </span><span style='text-decoration: underline;'>216</span><span>525
-#&gt; </span><span style='color: #555555;'> 5</span><span> Russia                  </span><span style='text-decoration: underline;'>198</span><span>676
-#&gt; </span><span style='color: #555555;'> 6</span><span> France                  </span><span style='text-decoration: underline;'>176</span><span>782
-#&gt; </span><span style='color: #555555;'> 7</span><span> Germany                 </span><span style='text-decoration: underline;'>171</span><span>324
-#&gt; </span><span style='color: #555555;'> 8</span><span> Brazil                  </span><span style='text-decoration: underline;'>156</span><span>061
-#&gt; </span><span style='color: #555555;'> 9</span><span> Turkey                  </span><span style='text-decoration: underline;'>137</span><span>115
-#&gt; </span><span style='color: #555555;'>10</span><span> Iran                    </span><span style='text-decoration: underline;'>106</span><span>220</div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 1</span><span> US                     1</span><span style='text-decoration: underline;'>528</span><span>568
+#&gt; </span><span style='color: #555555;'> 2</span><span> Russia                  </span><span style='text-decoration: underline;'>299</span><span>941
+#&gt; </span><span style='color: #555555;'> 3</span><span> Brazil                  </span><span style='text-decoration: underline;'>271</span><span>885
+#&gt; </span><span style='color: #555555;'> 4</span><span> United Kingdom          </span><span style='text-decoration: underline;'>250</span><span>138
+#&gt; </span><span style='color: #555555;'> 5</span><span> Spain                   </span><span style='text-decoration: underline;'>232</span><span>037
+#&gt; </span><span style='color: #555555;'> 6</span><span> Italy                   </span><span style='text-decoration: underline;'>226</span><span>699
+#&gt; </span><span style='color: #555555;'> 7</span><span> France                  </span><span style='text-decoration: underline;'>180</span><span>933
+#&gt; </span><span style='color: #555555;'> 8</span><span> Germany                 </span><span style='text-decoration: underline;'>177</span><span>778
+#&gt; </span><span style='color: #555555;'> 9</span><span> Turkey                  </span><span style='text-decoration: underline;'>151</span><span>615
+#&gt; </span><span style='color: #555555;'>10</span><span> Iran                    </span><span style='text-decoration: underline;'>124</span><span>603</div><div class='input'>
 <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_jhu_csse_covid19_data</span>(
   <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"us_county"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
 )
@@ -205,16 +205,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/top_n.html'>top_n</a></span>(<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='message'>Selecting by deaths</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 10 x 2</span><span>
 #&gt;    state         deaths
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> New York       </span><span style='text-decoration: underline;'>19</span><span>818
-#&gt; </span><span style='color: #555555;'> 2</span><span> Illinois        </span><span style='text-decoration: underline;'>2</span><span>264
-#&gt; </span><span style='color: #555555;'> 3</span><span> Michigan        </span><span style='text-decoration: underline;'>2</span><span>082
-#&gt; </span><span style='color: #555555;'> 4</span><span> California      </span><span style='text-decoration: underline;'>1</span><span>515
-#&gt; </span><span style='color: #555555;'> 5</span><span> New Jersey      </span><span style='text-decoration: underline;'>1</span><span>414
-#&gt; </span><span style='color: #555555;'> 6</span><span> Massachusetts   </span><span style='text-decoration: underline;'>1</span><span>169
-#&gt; </span><span style='color: #555555;'> 7</span><span> Connecticut     </span><span style='text-decoration: underline;'>1</span><span>017
-#&gt; </span><span style='color: #555555;'> 8</span><span> Pennsylvania     891
-#&gt; </span><span style='color: #555555;'> 9</span><span> Washington       491
-#&gt; </span><span style='color: #555555;'>10</span><span> Florida          482</div><div class='input'>
+#&gt; </span><span style='color: #555555;'> 1</span><span> New York       </span><span style='text-decoration: underline;'>20</span><span>887
+#&gt; </span><span style='color: #555555;'> 2</span><span> Illinois        </span><span style='text-decoration: underline;'>2</span><span>980
+#&gt; </span><span style='color: #555555;'> 3</span><span> Michigan        </span><span style='text-decoration: underline;'>2</span><span>275
+#&gt; </span><span style='color: #555555;'> 4</span><span> California      </span><span style='text-decoration: underline;'>1</span><span>913
+#&gt; </span><span style='color: #555555;'> 5</span><span> New Jersey      </span><span style='text-decoration: underline;'>1</span><span>566
+#&gt; </span><span style='color: #555555;'> 6</span><span> Massachusetts   </span><span style='text-decoration: underline;'>1</span><span>436
+#&gt; </span><span style='color: #555555;'> 7</span><span> Connecticut     </span><span style='text-decoration: underline;'>1</span><span>160
+#&gt; </span><span style='color: #555555;'> 8</span><span> Pennsylvania    </span><span style='text-decoration: underline;'>1</span><span>109
+#&gt; </span><span style='color: #555555;'> 9</span><span> Florida          578
+#&gt; </span><span style='color: #555555;'>10</span><span> Washington       534</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

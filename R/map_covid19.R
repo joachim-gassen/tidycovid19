@@ -9,9 +9,9 @@
 #' @param data The data frame to base the plot on. Should be a merged data
 #'     frame obtained by \link{download_merged_data} and defaults to
 #'     \code{download_merged_data(cached = TRUE, silent = TRUE)}.
-#' @param type The statistic that you want to plot. Needs to be either "confirmed",
-#'     "deaths", "revovered" or "active", defined as the difference of "confirmed"
-#'     and "recovered".
+#' @param type The statistic that you want to plot. Needs to be either
+#'     "confirmed", "deaths", "recovered" or "active", defined as the difference
+#'     of "confirmed", "deaths" and "recovered".
 #' @param cumulative If \code{TRUE}, data is being plotted as
 #'     cumulative (showing the total figures). If \code{FALSE}, (the default)
 #'     (averaged) daily changes are plotted instead. See \code{change_ave}
@@ -72,7 +72,7 @@ map_covid19 <- function(
 
   data <- data %>%
     dplyr::mutate(
-      active = .data$confirmed - .data$recovered,
+      active = .data$confirmed - .data$recovered - .data$deaths,
       orig_type = !! rlang::sym(type)
     )
 

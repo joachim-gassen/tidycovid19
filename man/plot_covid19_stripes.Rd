@@ -24,9 +24,9 @@ plot_covid19_stripes(
 frame obtained by \link{download_merged_data} and defaults to
 \code{download_merged_data(cached = TRUE, silent = TRUE)}.}
 
-\item{type}{The statistic that you want to plot. Needs to be either "confirmed",
-"deaths", "revovered" or "active", defined as the difference of "confirmed"
-and "recovered".}
+\item{type}{The statistic that you want to plot. Needs to be either
+"confirmed", "deaths", "recovered" or "active", defined as the difference
+of "confirmed", "deaths" and "recovered".}
 
 \item{min_cases}{Only countries that have a maximum of \code{type} cases higher
 than \code{min_cases} during the data period are included in the plot.

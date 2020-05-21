@@ -22,9 +22,9 @@ map_covid19(
 frame obtained by \link{download_merged_data} and defaults to
 \code{download_merged_data(cached = TRUE, silent = TRUE)}.}
 
-\item{type}{The statistic that you want to plot. Needs to be either "confirmed",
-"deaths", "revovered" or "active", defined as the difference of "confirmed"
-and "recovered".}
+\item{type}{The statistic that you want to plot. Needs to be either
+"confirmed", "deaths", "recovered" or "active", defined as the difference
+of "confirmed", "deaths" and "recovered".}
 
 \item{cumulative}{If \code{TRUE}, data is being plotted as
 cumulative (showing the total figures). If \code{FALSE}, (the default)

@@ -158,9 +158,9 @@ frame obtained by <a href='download_merged_data.html'>download_merged_data</a> a
     </tr>
     <tr>
       <th>type</th>
-      <td><p>The statistic that you want to plot. Needs to be either "confirmed",
-"deaths", "revovered" or "active", defined as the difference of "confirmed"
-and "recovered".</p></td>
+      <td><p>The statistic that you want to plot. Needs to be either
+"confirmed", "deaths", "recovered" or "active", defined as the difference
+of "confirmed", "deaths" and "recovered".</p></td>
     </tr>
     <tr>
       <th>min_cases</th>
@@ -232,7 +232,7 @@ this in a non-english locale. Consider setting it by hand then.</p></td>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>plot_covid19_stripes</span>()</div><div class='img'><img src='plot_covid19_stripes-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='no'>merged</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>plot_covid19_stripes</span>(<span class='no'>merged</span>, <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>population_cutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='img'><img src='plot_covid19_stripes-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot_covid19_stripes</span>(<span class='no'>merged</span>, <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>population_cutoff</span> <span class='kw'>=</span> <span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='message'>Population data required. Observations for the following jurisdictions will be dropped as the World Bank is not providing population data for them:  ESH, GGY, JEY, MSR, TWN, VAT</span></div><div class='img'><img src='plot_covid19_stripes-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>plot_covid19_stripes</span>(<span class='no'>merged</span>,
   <span class='kw'>countries</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ITA"</span>, <span class='st'>"ESP"</span>, <span class='st'>"FRA"</span>, <span class='st'>"DEU"</span>, <span class='st'>"USA"</span>),
   <span class='kw'>sort_countries</span> <span class='kw'>=</span> <span class='st'>"countries"</span>
