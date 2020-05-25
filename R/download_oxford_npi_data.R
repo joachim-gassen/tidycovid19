@@ -172,12 +172,15 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
         country = .data$CountryName,
         iso3c = .data$CountryCode,
         stringency_index = .data$StringencyIndex,
-        legacy_stringency_index = .data$LegacyStringencyIndex
+        stringency_legacy_index = .data$StringencyLegacyIndex,
+        government_response_index = .data$GovernmentResponseIndex,
+        containment_health_index = .data$ContainmentHealthIndex
       ) %>%
       dplyr::mutate(date = lubridate::ymd(.data$Date)) %>%
       dplyr::select(
         .data$country, .data$iso3c, .data$date,
-        .data$stringency_index, .data$legacy_stringency_index
+        .data$stringency_index, .data$stringency_legacy_index,
+        .data$government_response_index, .data$containment_health_index
       ) %>% dplyr::filter(rowSums(!is.na(.)) > 3) %>%
       dplyr::arrange(.data$iso3c, .data$date) %>%
       dplyr::mutate(timestamp = Sys.time())
