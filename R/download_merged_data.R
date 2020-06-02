@@ -137,7 +137,8 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::rename(gtrends_country_score = .data$gtrends_score) %>%
     dplyr::select(-.data$timestamp)
 
-  wbank <- download_wbank_data(wbank_vars, wbank_labels, silent) %>%
+  wbank <- download_wbank_data(vars = wbank_vars, labels = wbank_labels,
+                               silent = silent) %>%
     dplyr::select(-.data$country, -.data$timestamp)
 
   if (!silent) message("Merging data ...", appendLF = FALSE)
