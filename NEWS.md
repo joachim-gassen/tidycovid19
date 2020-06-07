@@ -1,5 +1,7 @@
 # tidycovid19 0.0.0.9000
 
+* 2020-06-07: Added some options to `download_google_trends_data()` to allow the download of Google Trends data for selected countries and a wider set of countries. Also included an option to omit the sleeping delay between Google Trends queries (usage not encouraged). 
+
 * 2020-05-21: Changed definition of active cases
 
 * 2020-05-10: Added ECDC Covid-19 case data

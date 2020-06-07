@@ -13,6 +13,18 @@
 #'  \item{"region": }{Relative search activity at the country level, reporting by region.}
 #'  \item{"city": }{Relative search activity at the country level, reporting by city.}
 #' }
+#'     Defaults to 'country_day'.
+#' @param countries A character vector of ISO3c country codes that you want
+#'     to pull detailed data for. By default (\code{countries = NULL}) the
+#'     code pulls detailed data for all countries the the global Google Trend
+#'     request returns.
+#' @param low_search_volume Whether you want the include countries with low
+#'     search volume. This increases the list of countries that are pulled
+#'     considerably and also the risk that you hit a Google Trend search limit.
+#'     Use with care. Defaults to \code{FALSE}.
+#' @param pause Whether you want the code to pause for a 2 to 5 seconds period
+#'     between Google Trend API calls. As Google Trends has an unknown rate
+#'     limit, this is probably a good idea and thus defaults to \code{TRUE}.
 #' @param silent Whether you want the function to send some status messages to
 #'     the console. Might be informative as downloading will take some time
 #'     and thus defaults to \code{TRUE}.
@@ -53,6 +65,9 @@
 #' @export
 download_google_trends_data <- function(search_term = "coronavirus",
                                     type = "country_day",
+                                    countries = NULL,
+                                    low_search_volume = FALSE,
+                                    pause = TRUE,
                                     silent = FALSE, cached = FALSE) {
   if (!is.character(search_term) || length(search_term) != 1) stop(
     "'serach_term' needs to be a single character value."
@@ -68,6 +83,12 @@ download_google_trends_data <- function(search_term = "coronavirus",
   if (length(cached) > 1 || !is.logical(cached)) stop(
     "'cached' needs to be a single logical value"
   )
+  if (length(low_search_volume) > 1 || !is.logical(low_search_volume)) stop(
+    "'low_search_volume' needs to be a single logical value"
+  )
+  if (length(pause) > 1 || !is.logical(pause)) stop(
+    "'pause' needs to be a single logical value"
+  )
 
   if(cached) {
     if (search_term != "coronavirus")
@@ -76,6 +97,18 @@ download_google_trends_data <- function(search_term = "coronavirus",
         "You need to use 'cached' == FALSE when you want to",
         "retrieve customized Google Trends data."
       ))
+    if (!is.null(countries))
+      stop(paste(
+        "'cached' == TRUE but 'countries' != 'NULL'.",
+        "You need to use 'cached' == FALSE when you want to",
+        "retrieve data for specific countries."
+      ))
+    if (low_search_volume)
+      stop(paste(
+        "'cached' == TRUE but 'low_search_volume' == TRUE.",
+        "You need to use 'cached' == FALSE when you want to",
+        "retrieve data for low search volume countries."
+      ))
     if (!silent) message("Downloading cached version of Google Trends data...", appendLF = FALSE)
     lst <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/google_trends.RDS")))
     lst <- lst[match(type, c('country', 'country_day', 'region', 'city'))]
@@ -83,7 +116,8 @@ download_google_trends_data <- function(search_term = "coronavirus",
   } else {
     time <- paste("2020-01-01", lubridate::today(tzone = "US/Pacific"))
 
-    trends_global <- gtrendsR::gtrends(search_term, time = time)
+    trends_global <- gtrendsR::gtrends(search_term, time = time,
+                                       low_search_volume = low_search_volume)
 
     trends_global$interest_by_country %>%
       dplyr::filter(!is.na(.data$hits)) %>%
@@ -103,9 +137,9 @@ download_google_trends_data <- function(search_term = "coronavirus",
       gl <- gtrendsR::gtrends(search_term, geo = iso2c, time = time)
       if (!silent) message("done!")
 
-      # Be nice to Google and sleep a little
+      # Be nice to Google and sleep a little if 'pause' == 'TRUE'
 
-      Sys.sleep(stats::runif(1, min = 2, max = 5))
+      if (pause) Sys.sleep(stats::runif(1, min = 2, max = 5))
       c(iso2c = iso2c, gl)
     }
 
@@ -156,7 +190,11 @@ download_google_trends_data <- function(search_term = "coronavirus",
     }
 
     extract_tibble_from_list <- function(type, lst) {
-      if (type == 'country') return(gtrends_global %>% dplyr::select(-.data$iso2c))
+      if (type == 'country') return(
+        gtrends_global %>%
+          dplyr::select(-.data$iso2c) %>%
+          dplyr::filter(!is.na(.data$iso3c))
+      )
       pos <- dplyr::case_when(
         type == "country_day" ~ 1,
         type == "region" ~ 2,
@@ -167,10 +205,21 @@ download_google_trends_data <- function(search_term = "coronavirus",
       df <- do.call(rbind, tibble_list) %>%
         dplyr::mutate(iso3c = countrycode::countrycode(.data$iso2c, origin = "iso2c",
                                                        destination = "iso3c")) %>%
-        dplyr::select(.data$iso3c, 2:4)
+        dplyr::select(.data$iso3c, 2:4) %>%
+        dplyr::filter(!is.na(.data$iso3c))
     }
 
-    gt_ctry_lists <- lapply(gtrends_global$iso2c, pull_gt_country_data)
+    if (!is.null(countries)) {
+      stopifnot(is.character(countries))
+      ctries_iso2c <- countrycode::countrycode(
+        countries, origin = "iso3c",
+        destination = "iso2c"
+      )
+      gt_ctry_lists <- lapply(ctries_iso2c, pull_gt_country_data)
+    } else {
+      gt_ctry_lists <- lapply(gtrends_global$iso2c, pull_gt_country_data)
+    }
+
     gt_parsed_list <- lapply(gt_ctry_lists, parse_gt_list)
 
     lst <- lapply(type, extract_tibble_from_list, lst = gt_parsed_list)

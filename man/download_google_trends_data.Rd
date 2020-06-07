@@ -7,6 +7,9 @@
 download_google_trends_data(
   search_term = "coronavirus",
   type = "country_day",
+  countries = NULL,
+  low_search_volume = FALSE,
+  pause = TRUE,
   silent = FALSE,
   cached = FALSE
 )
@@ -20,7 +23,22 @@ download_google_trends_data(
  \item{"country_day": }{Relative search activity at the country level, reporting by country.}
  \item{"region": }{Relative search activity at the country level, reporting by region.}
  \item{"city": }{Relative search activity at the country level, reporting by city.}
-}}
+}
+    Defaults to 'country_day'.}
+
+\item{countries}{A character vector of ISO3c country codes that you want
+to pull detailed data for. By default (\code{countries = NULL}) the
+code pulls detailed data for all countries the the global Google Trend
+request returns.}
+
+\item{low_search_volume}{Whether you want the include countries with low
+search volume. This increases the list of countries that are pulled
+considerably and also the risk that you hit a Google Trend search limit.
+Use with care. Defaults to \code{FALSE}.}
+
+\item{pause}{Whether you want the code to pause for a 2 to 5 seconds period
+between Google Trend API calls. As Google Trends has an unknown rate
+limit, this is probably a good idea and thus defaults to \code{TRUE}.}
 
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
