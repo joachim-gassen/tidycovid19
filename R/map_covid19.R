@@ -275,8 +275,8 @@ map_covid19 <- function(
 
     ani_args <- list(p, ...)
     if (!"fps" %in% names(ani_args)) ani_args <- c(ani_args, fps = 5)
-    if (!"width" %in% names(ani_args)) ani_args <- c(ani_args, width = 1024)
-    if (!"height" %in% names(ani_args)) ani_args <- c(ani_args, height = 768)
+    if (!"width" %in% names(ani_args)) ani_args <- c(ani_args, width = 1400)
+    if (!"height" %in% names(ani_args)) ani_args <- c(ani_args, height = 865)
 
     return(do.call(gganimate::animate, ani_args))
   }

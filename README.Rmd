@@ -109,8 +109,8 @@ library(tidycovid19)
 
 merged <- download_merged_data(cached = TRUE, silent = TRUE)
 plot_covid19_spread(
-  merged, highlight = c("ITA", "ESP", "GBR", "FRA", "DEU", "USA"),
-  intervention = "lockdown", edate_cutoff = 60
+  merged, highlight = c("ITA", "ESP", "GBR", "FRA", "DEU", "USA", "BRA", "MEX"),
+  intervention = "lockdown"
 )
 ```
 
@@ -119,13 +119,13 @@ plot_covid19_spread(
 
 Another option to visualize the spread of Covid-19, in particular if you want to compare many countries, is to produce a stripes-based visualization. Meet the Covid-19 stripes:
 
-```{r Covid19Stripes}
+```{r Covid19Stripes, fig.height=8}
 plot_covid19_stripes()
 ```
 
 Again, the function comes with many options. As an example, you can easily switch to a per capita display:
 
-```{r Covid19StripesPerCapita}
+```{r Covid19StripesPerCapita, fig.height=8}
 plot_covid19_stripes(
   per_capita = TRUE, 
   population_cutoff = TRUE, 
@@ -138,7 +138,7 @@ Or single out countries that you are interested in
 ```{r Covid19StripesSelCountries}
 plot_covid19_stripes(
   type = "confirmed", 
-  countries = c("ITA", "ESP", "FRA", "GBR", "DEU", "USA"),
+  countries = c("ITA", "ESP", "FRA", "GBR", "DEU", "USA", "BRA", "MEX"),
   sort_countries = "countries"
 )
 ```

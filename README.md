@@ -225,8 +225,8 @@ library(tidycovid19)
 
 merged <- download_merged_data(cached = TRUE, silent = TRUE)
 plot_covid19_spread(
-  merged, highlight = c("ITA", "ESP", "GBR", "FRA", "DEU", "USA"),
-  intervention = "lockdown", edate_cutoff = 60
+  merged, highlight = c("ITA", "ESP", "GBR", "FRA", "DEU", "USA", "BRA", "MEX"),
+  intervention = "lockdown"
 )
 ```
 
@@ -263,7 +263,7 @@ Or single out countries that you are interested in
 ``` r
 plot_covid19_stripes(
   type = "confirmed", 
-  countries = c("ITA", "ESP", "FRA", "GBR", "DEU", "USA"),
+  countries = c("ITA", "ESP", "FRA", "GBR", "DEU", "USA", "BRA", "MEX"),
   sort_countries = "countries"
 )
 ```

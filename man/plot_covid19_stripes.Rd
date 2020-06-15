@@ -8,7 +8,7 @@ plot_covid19_stripes(
   data = download_merged_data(cached = TRUE, silent = TRUE),
   type = "deaths",
   min_cases = ifelse(per_capita, ifelse(type == "deaths", 5, 50), ifelse(type ==
-    "deaths", 500, 5000)),
+    "deaths", 1000, 10000)),
   cumulative = FALSE,
   change_ave = 7,
   per_capita = FALSE,
