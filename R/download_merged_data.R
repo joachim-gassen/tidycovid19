@@ -86,7 +86,8 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
 
   ecdc <- download_ecdc_covid19_data(silent = silent) %>%
     dplyr::select(-.data$timestamp, -.data$country_territory) %>%
-    dplyr::filter(!is.na(.data$iso3c) & !.data$iso3c %in% c("XKX", "N/A"))
+    dplyr::filter(!is.na(.data$iso3c) &
+                    !.data$iso3c %in% c("XKX", "N/A", "MSF", "CNG1925"))
 
   ecdc_acc <- expand.grid(
     date = lubridate::as_date(min(ecdc$date):max(ecdc$date)),
