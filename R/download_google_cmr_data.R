@@ -77,7 +77,8 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
       rvest::html_attr('href')
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
-    raw_data <- readr::read_csv(url, col_types = readr::cols(), guess_max = 224147)
+    raw_data <- readr::read_csv(url, col_types = "cccccccnnnnnn")
+    raw_data$date <- lubridate::ymd(raw_data$date)
 
     clean_cmr_data <- function(df) {
       df %>% dplyr::rename(
