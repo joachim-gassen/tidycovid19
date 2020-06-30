@@ -52,7 +52,8 @@ jhu_list <- readRDS("cached_data/jhu_csse_covid19.RDS")
 
 ecdc <- readRDS("cached_data/ecdc_covid19.RDS") %>%
   select(-timestamp, -country_territory) %>%
-  filter(!is.na(iso3c) & !iso3c %in% c("XKX", "N/A"))
+  dplyr::filter(!is.na(.data$iso3c) &
+                  !.data$iso3c %in% c("XKX", "N/A", "MSF", "CNG1925"))
 
 ecdc_acc <- expand.grid(
   date = lubridate::as_date(min(ecdc$date):max(ecdc$date)),
