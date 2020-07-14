@@ -43,7 +43,10 @@ download_owid_testing_data <- function(silent = FALSE, cached = FALSE) {
     return(df)
   }
 
-  data_raw <- readr::read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv", col_types = readr::cols())
+  data_raw <- readr::read_csv(
+    "https://covid.ourworldindata.org/data/owid-covid-data.csv",
+    col_types = readr::cols(), guess_max = 50000
+  )
 
   testing_data <- data_raw %>%
     dplyr::rename(iso3c = .data$iso_code) %>%
