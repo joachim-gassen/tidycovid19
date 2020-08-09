@@ -77,7 +77,7 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
       rvest::html_attr('href')
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
-    raw_data <- readr::read_csv(url, col_types = "cccccccnnnnnn")
+    raw_data <- readr::read_csv(url, col_types = "ccccccccnnnnnn")
     raw_data$date <- lubridate::ymd(raw_data$date)
 
     clean_cmr_data <- function(df) {
@@ -101,10 +101,17 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
     }
 
     country <- raw_data %>%
-      dplyr::filter(is.na(.data$sub_region_1), is.na(.data$sub_region_2)) %>%
+      dplyr::filter(
+        is.na(.data$sub_region_1),
+        is.na(.data$sub_region_2),
+        is.na(.data$metro_area)
+      ) %>%
       dplyr::select(
         -.data$sub_region_1,
         -.data$sub_region_2,
+        -.data$metro_area,
+        -.data$iso_3166_2_code,
+        -.data$census_fips_code,
         -.data$country_region
       ) %>% clean_cmr_data()
 
@@ -112,7 +119,10 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
       dplyr::filter(!is.na(.data$sub_region_1), is.na(.data$sub_region_2)) %>%
       dplyr::select(
         -.data$sub_region_2,
-        -.data$country_region
+        -.data$country_region,
+        -.data$metro_area,
+        -.data$iso_3166_2_code,
+        -.data$census_fips_code
       ) %>% clean_cmr_data() %>%
       dplyr::rename(
         region = .data$sub_region_1
@@ -121,7 +131,10 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
     us_county <- raw_data %>%
       dplyr::filter(!is.na(.data$sub_region_2)) %>%
       dplyr::select(
-        -.data$country_region
+        -.data$country_region,
+        -.data$metro_area,
+        -.data$iso_3166_2_code,
+        -.data$census_fips_code
       ) %>% clean_cmr_data() %>%
       dplyr::rename(
         state = .data$sub_region_1,
