@@ -9,40 +9,41 @@ library(stringr)
 source("add_code/scrape_apple_mtr_url.R", echo = FALSE)
 
 jhu_list <- download_jhu_csse_covid19_data(
-  type = c("country", "country_region", "us_county")
+  type = c("country", "country_region", "us_county"), silent = TRUE
 )
 saveRDS(jhu_list, "cached_data/jhu_csse_covid19.RDS", version = 2)
 
-ecdc <- download_ecdc_covid19_data()
+ecdc <- download_ecdc_covid19_data(silent = TRUE)
 saveRDS(ecdc, "cached_data/ecdc_covid19.RDS", version = 2)
 
-owid_testing <- download_owid_testing_data()
+owid_testing <- download_owid_testing_data(silent = TRUE)
 saveRDS(owid_testing, "cached_data/owid_testing.RDS", version = 2)
 
-acaps <- download_acaps_npi_data()
+acaps <- download_acaps_npi_data(silent = TRUE)
 saveRDS(acaps, "cached_data/acaps_npi.RDS", version = 2)
 
-wblist <- download_wbank_data(var_def = TRUE)
+wblist <- download_wbank_data(var_def = TRUE, silent = TRUE)
 saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
 
 amtr_url <- scrape_apple_mtr_url()
 amtr_list <- download_apple_mtr_data(
   amtr_url,
-  type = c("country", "country_region", "country_city")
+  type = c("country", "country_region", "country_city"), 
+  silent = TRUE
 )
 saveRDS(amtr_list, "cached_data/apple_mtr.RDS")
 
 gcmr_list <- download_google_cmr_data(
-  type = c("country", "country_region", "us_county")
+  type = c("country", "country_region", "us_county"), silent = TRUE
 )
 saveRDS(gcmr_list, "cached_data/google_cmr.RDS", version = 2)
 
 gtlist <- download_google_trends_data(
-  type = c('country', 'country_day', 'region', 'city')
+  type = c('country', 'country_day', 'region', 'city'), silent = TRUE
 )
 saveRDS(gtlist, "cached_data/google_trends.RDS", version = 2)
 
-oxlist <- download_oxford_npi_data(type = c("measures", "index"))
+oxlist <- download_oxford_npi_data(type = c("measures", "index"), silent = TRUE)
 saveRDS(oxlist, "cached_data/oxford_npi.RDS", version = 2)
 
 
