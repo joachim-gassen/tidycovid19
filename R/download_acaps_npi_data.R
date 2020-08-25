@@ -58,14 +58,31 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   tmp_file <- tempfile(".xlsx")
   utils::download.file(paste0("https://data.humdata.org", dta_url), tmp_file,
                        quiet = silent, mode = "wb")
-  raw_dta <- readxl::read_excel(tmp_file, sheet = "Database")
+
+  # raw_dta <- readxl::read_excel(tmp_file, sheet = "Database")
+  # 2020-08-21 Some cells in DATE_IMPLEMENTED all ill-formatted as strings
+  # this is why we have to jump through a few hoops here...
+
+  raw_data <- readxl::read_excel(
+    tmp_file, sheet = "Database",
+    col_types = c("numeric", rep("text", 11), "list", rep("text", 3),
+                  "date", "text")
+  )
+
+  dlist <- raw_data$DATE_IMPLEMENTED
+
+  raw_data$DATE_IMPLEMENTED <- as.Date(
+    sapply(dlist, function(x) {
+      if (class(x)[1] == "character") lubridate::dmy(x)
+      else as.Date(x)
+    }), origin = "1970-01-01")
 
   df <- raw_dta
   names(df) <-tolower(names(df))
   names(df)[16] <- "alternative_source"
 
   df <- df %>%
-    dplyr::select(-.data$pcode) %>% # 2020-03-25 is all NA
+    dplyr::select(-.data$pcode) %>% # 2020-08-21 is all NA
     dplyr::filter(!is.na(.data$date_implemented),
                   !is.na(.data$category)) %>%
     dplyr::rename(iso3c = .data$iso) %>%
