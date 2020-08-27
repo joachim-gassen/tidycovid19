@@ -63,15 +63,15 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   # 2020-08-21 Some cells in DATE_IMPLEMENTED all ill-formatted as strings
   # this is why we have to jump through a few hoops here...
 
-  raw_data <- readxl::read_excel(
+  raw_dta <- readxl::read_excel(
     tmp_file, sheet = "Database",
     col_types = c("numeric", rep("text", 11), "list", rep("text", 3),
                   "date", "text")
   )
 
-  dlist <- raw_data$DATE_IMPLEMENTED
+  dlist <- raw_dta$DATE_IMPLEMENTED
 
-  raw_data$DATE_IMPLEMENTED <- as.Date(
+  raw_dta$DATE_IMPLEMENTED <- as.Date(
     sapply(dlist, function(x) {
       if (class(x)[1] == "character") lubridate::dmy(x)
       else as.Date(x)
