@@ -14,8 +14,8 @@ tidycovid19_variable_definitions <- data.frame(
     rep("wbank", 8), NA
   ),
   var_def = c(
-    "Country name",
     "ISO3c country code as defined by ISO 3166-1 alpha-3",
+    "Country name",
     "Calendar date",
     "Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)",
     "Covid-19-related deaths as reported by JHU CSSE (accumulated)",

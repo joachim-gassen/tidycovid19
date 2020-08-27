@@ -18,11 +18,11 @@
 #'     "confirmed", "deaths", "recovered" or "active", defined as the difference
 #'     of "confirmed", "deaths" and "recovered".
 #' @param min_cases Defines the zero point of your X axis (the 'event date').
-#'     Defaults to 100 cases for deaths and 1,000 cases otherwise.
+#'     Defaults to 1,000 cases for deaths and 10,000 cases otherwise.
 #' @param min_by_ctry_obs Limits the plot to countries that have at least that
 #'     many days of data since and including the event date. Defaults to 7.
 #' @param edate_cutoff The upper limit of the X axis in event days.
-#'     Defaults to 40.
+#'     Defaults to 180.
 #' @param data_date_str A date string to include in the annotation of the plot
 #'     giving the time when the data was pulled. Defaults to the timestamp of the
 #'     data. Note that you might run into issues with the default when running
@@ -80,7 +80,7 @@ plot_covid19_spread <- function(
   type = "deaths",
   min_cases = ifelse(per_capita, ifelse(type == "deaths", 5, 50),
                      ifelse(type == "deaths", 1000, 10000)),
-  min_by_ctry_obs = 7, edate_cutoff = 90,
+  min_by_ctry_obs = 7, edate_cutoff = 180,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "%B %d, %Y"),
   cumulative = TRUE, change_ave = 7, per_capita = FALSE,
   per_capita_x_axis = ifelse(per_capita, TRUE, FALSE), population_cutoff = 0,

@@ -187,7 +187,7 @@ use this [alternative server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19
 
 ## Blog posts
 
-- **NEW:** [An intro blog post](https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/) providing a quick walk-through of the package.
+- [An intro blog post](https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/) providing a quick walk-through of the package.
 
 - [A blog post](https://joachim-gassen.github.io/2020/04/tidycovid19-new-viz-and-npi_lifting/) on the new visuals of the package. 
 

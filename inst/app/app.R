@@ -63,7 +63,7 @@ ui <- fluidPage(
       sliderInput(
         "edate_cutoff",
         "How many days do you want to display?",
-        min = 10, max = max(120, po$edate_cutoff), value = po$edate_cutoff
+        min = 10, max = max(270, po$edate_cutoff), value = po$edate_cutoff
       ),
       hr(),
       checkboxInput(
@@ -256,6 +256,17 @@ server <- function(session, input, output) {
     else {
       updateCheckboxInput(session, "per_capita_x_axis", value = FALSE)
       shinyjs::disable("per_capita_x_axis")
+    }
+  })
+  
+  observeEvent(input$per_capita_x_axis, {
+    if (input$per_capita_x_axis) {
+      updateSliderInput(session, "min_cases", max = 100, step = 1, value = 5)
+    } else {
+      updateSliderInput(
+        session, "min_cases", 
+        max = max(20000, po$min_cases), step = 50, value = po$min_cases
+      )
     }
   })
 
