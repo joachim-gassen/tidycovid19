@@ -165,8 +165,8 @@ kable(df) %>% kableExtra::kable_styling()
 
 | var\_name                | var\_def                                                                                                                                                                                                  |
 | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| iso3c                    | Country name                                                                                                                                                                                              |
-| country                  | ISO3c country code as defined by ISO 3166-1 alpha-3                                                                                                                                                       |
+| iso3c                    | ISO3c country code as defined by ISO 3166-1 alpha-3                                                                                                                                                       |
+| country                  | Country name                                                                                                                                                                                              |
 | date                     | Calendar date                                                                                                                                                                                             |
 | confirmed                | Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)                                                                                                                                            |
 | deaths                   | Covid-19-related deaths as reported by JHU CSSE (accumulated)                                                                                                                                             |
@@ -330,7 +330,7 @@ server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
 ## Blog posts
 
-  - **NEW:** [An intro blog
+  - [An intro blog
     post](https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/)
     providing a quick walk-through of the package.
 

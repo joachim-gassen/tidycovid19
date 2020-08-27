@@ -10,7 +10,7 @@ plot_covid19_spread(
   min_cases = ifelse(per_capita, ifelse(type == "deaths", 5, 50), ifelse(type ==
     "deaths", 1000, 10000)),
   min_by_ctry_obs = 7,
-  edate_cutoff = 90,
+  edate_cutoff = 180,
   data_date_str = format(lubridate::as_date(data$timestamp[1]), "\%B \%d, \%Y"),
   cumulative = TRUE,
   change_ave = 7,
@@ -33,13 +33,13 @@ frame obtained by \link{download_merged_data} and defaults to
 of "confirmed", "deaths" and "recovered".}
 
 \item{min_cases}{Defines the zero point of your X axis (the 'event date').
-Defaults to 100 cases for deaths and 1,000 cases otherwise.}
+Defaults to 1,000 cases for deaths and 10,000 cases otherwise.}
 
 \item{min_by_ctry_obs}{Limits the plot to countries that have at least that
 many days of data since and including the event date. Defaults to 7.}
 
 \item{edate_cutoff}{The upper limit of the X axis in event days.
-Defaults to 40.}
+Defaults to 180.}
 
 \item{data_date_str}{A date string to include in the annotation of the plot
 giving the time when the data was pulled. Defaults to the timestamp of the
