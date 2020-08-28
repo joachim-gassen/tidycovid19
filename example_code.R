@@ -255,7 +255,7 @@ library(zoo)
 df <- download_merged_data(cached = TRUE)
 
 df %>%
-  filter(iso3c == "ITA") %>%
+  filter(iso3c == "USA") %>%
   mutate(
     new_cases = confirmed - lag(confirmed),
     ave_new_cases = rollmean(new_cases, 7, na.pad=TRUE, align="right")
@@ -265,4 +265,24 @@ df %>%
   geom_bar(aes(y = new_cases), stat = "identity", fill = "lightblue") +
   geom_line(aes(y = ave_new_cases), color ="red") +
   theme_minimal()
+
+
+df %>%
+  filter(iso3c == "USA") %>%
+  mutate(
+    new_deaths = deaths - lag(deaths),
+    ave_new_deaths = rollmean(new_deaths, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(!is.na(new_deaths), !is.na(ave_new_deaths)) %>%
+  ggplot(aes(x = date)) +
+  geom_bar(aes(y = new_deaths), stat = "identity", fill = "lightblue") +
+  geom_line(aes(y = ave_new_deaths), color ="red") +
+  theme_minimal()
+
+# --- Template to add regional case data (in progress work) --------------------
+
+
+# RKI Data
+
+df <- jsonlite::fromJSON("https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.geojson")
 
