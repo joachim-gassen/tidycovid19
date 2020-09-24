@@ -13,6 +13,7 @@
 #' \itemize{
 #'  \item{"country": }{Movement trends by country.}
 #'  \item{"country_region": }{Movement trends by country regions as classified by Google (only available for some countries).}
+#'  \item{"country_sub_region": }{Movement trends by country sub-regions as classified by Google (only available for some countries).}
 #'  \item{"us_county": }{Movement trends at the U.S. county level.}
 #' }
 #' @param silent Whether you want the function to send some status messages to
@@ -57,7 +58,7 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
   if (length(cached) > 1 || !is.logical(cached)) stop(
     "'cached' needs to be a single logical value"
   )
-  if (!all(type %in% c('country', 'country_region', 'us_county')))
+  if (!all(type %in% c('country', 'country_region', 'country_sub_region', 'us_county')))
     stop(
       "'type' needs to be a vector containing any set of 'country', 'country_region', and 'us_county'."
     )
@@ -65,15 +66,18 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
   if(cached) {
     if (!silent) message("Downloading cached version of Google's Community Mobility Reports data...", appendLF = FALSE)
     lst <- readRDS(gzcon(url("https://raw.githubusercontent.com/joachim-gassen/tidycovid19/master/cached_data/google_cmr.RDS")))
-    lst <- lst[match(type, c('country', 'country_region', 'us_county'))]
+    lst <- lst[match(type, c('country', 'country_region', 'country_sub_region', 'us_county'))]
     if (!silent) message(sprintf("done. Timestamp is %s", lst[[1]]$timestamp[1]))
   } else {
     if (!silent) message("Start downloading Google Community Mobility Reports data\n")
 
     cmr_url <- "https://www.google.com/covid19/mobility/"
 
+    # 2020-09-24 A temporary web page change has moved the download button to
+    # section 4
+    
     url <- xml2::read_html(cmr_url) %>%
-      rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[3]/a[1]") %>%
+      rvest::html_nodes(xpath = "/html/body/div[1]/section[4]/div[2]/div/div[1]/p[3]/a[1]") %>%
       rvest::html_attr('href')
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
@@ -128,27 +132,34 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
         region = .data$sub_region_1
       )
 
-    us_county <- raw_data %>%
+    country_sub_region <- raw_data %>%
       dplyr::filter(!is.na(.data$sub_region_2)) %>%
       dplyr::select(
         -.data$country_region,
         -.data$metro_area,
         -.data$iso_3166_2_code,
         -.data$census_fips_code
-      ) %>% clean_cmr_data() %>%
+      ) %>% clean_cmr_data()
+    
+    us_county <- country_sub_region %>%
+      filter(iso3c == "USA") %>%
       dplyr::rename(
         state = .data$sub_region_1,
         county = .data$sub_region_2
       ) %>%
       dplyr::select(-.data$iso3c)
 
+    country_sub_region <- country_sub_region %>%
+      filter(iso3c != "USA")
+      
     lst <- list(
       country = country,
       country_region = country_region,
+      country_sub_region = country_sub_region,
       us_county = us_county
     )
 
-    lst <- lst[match(type, c('country', 'country_region', 'us_county'))]
+    lst <- lst[match(type, c('country', 'country_region', 'country_sub_region', 'us_county'))]
 
     if (!silent) {
       message("Done downloading Google Community Mobility Reports data\n")

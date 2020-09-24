@@ -34,7 +34,8 @@ amtr_list <- download_apple_mtr_data(
 saveRDS(amtr_list, "cached_data/apple_mtr.RDS")
 
 gcmr_list <- download_google_cmr_data(
-  type = c("country", "country_region", "us_county"), silent = TRUE
+  type = c("country", "country_region", "country_sub_region", "us_county"), 
+  silent = TRUE
 )
 saveRDS(gcmr_list, "cached_data/google_cmr.RDS", version = 2)
 
