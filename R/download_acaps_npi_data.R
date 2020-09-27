@@ -62,9 +62,12 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   # raw_dta <- readxl::read_excel(tmp_file, sheet = "Database")
   # 2020-08-21 Some cells in DATE_IMPLEMENTED all ill-formatted as strings
   # this is why we have to jump through a few hoops here...
-
+  
+  # 2020-09-27 Name changes (sheet is now named 'Dataset')
+  #            And some variables seem to have leading whitespace...
+  
   raw_dta <- readxl::read_excel(
-    tmp_file, sheet = "Database",
+    tmp_file, sheet = "Dataset",
     col_types = c("numeric", rep("text", 11), "list", rep("text", 3),
                   "date", "text")
   )
@@ -82,6 +85,11 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
   names(df)[16] <- "alternative_source"
 
   df <- df %>%
+    dplyr::rename(
+      iso = .data$`_iso`, 
+      measure = .data$`_measure`, 
+      entry_date = .data$`_entry_date`
+    ) %>%
     dplyr::select(-.data$pcode) %>% # 2020-08-21 is all NA
     dplyr::filter(!is.na(.data$date_implemented),
                   !is.na(.data$category)) %>%
