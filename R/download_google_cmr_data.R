@@ -75,9 +75,10 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
 
     # 2020-09-24 A temporary web page change has moved the download button to
     # section 4
+    # 2020-10-09 And back to section 3 ;-)
     
     url <- xml2::read_html(cmr_url) %>%
-      rvest::html_nodes(xpath = "/html/body/div[1]/section[4]/div[2]/div/div[1]/p[3]/a[1]") %>%
+      rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[3]/a[1]") %>%
       rvest::html_attr('href')
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
