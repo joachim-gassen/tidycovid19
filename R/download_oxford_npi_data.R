@@ -72,14 +72,15 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
     else suppressWarnings(
       raw_data <- readr::read_csv(data_url, col_types = readr::cols())
     )
-    
+
     # 2020-08-28: Data now contains regional information for the U.S.
     # exlcuding this for now.
 
-    raw_data <- raw_data %>% filter(is.na(.data$RegionCode)) %>%
-      select(-.data$RegionName, -.data$RegionCode)
+    raw_data <- raw_data %>%
+      dplyr::filter(is.na(.data$RegionCode)) %>%
+      dplyr::select(-.data$RegionName, -.data$RegionCode)
     df <- raw_data
-    
+
     # Fix column names for pivot_long()
     names(df)[c(seq(from = 4, by = 3, length.out = 8), 36,
                 c(seq(from = 39, by = 2, length.out = 4)))] <-
