@@ -76,7 +76,7 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
     # 2020-09-24 A temporary web page change has moved the download button to
     # section 4
     # 2020-10-09 And back to section 3 ;-)
-    
+
     url <- xml2::read_html(cmr_url) %>%
       rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[3]/a[1]") %>%
       rvest::html_attr('href')
@@ -141,9 +141,9 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
         -.data$iso_3166_2_code,
         -.data$census_fips_code
       ) %>% clean_cmr_data()
-    
+
     us_county <- country_sub_region %>%
-      filter(iso3c == "USA") %>%
+      dplyr::filter(.data$iso3c == "USA") %>%
       dplyr::rename(
         state = .data$sub_region_1,
         county = .data$sub_region_2
@@ -151,8 +151,8 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
       dplyr::select(-.data$iso3c)
 
     country_sub_region <- country_sub_region %>%
-      filter(iso3c != "USA")
-      
+      dplyr::filter(.data$iso3c != "USA")
+
     lst <- list(
       country = country,
       country_region = country_region,

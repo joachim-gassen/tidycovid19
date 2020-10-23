@@ -11,6 +11,7 @@ download_google_cmr_data(type = "country", silent = FALSE, cached = FALSE)
 \itemize{
  \item{"country": }{Movement trends by country.}
  \item{"country_region": }{Movement trends by country regions as classified by Google (only available for some countries).}
+ \item{"country_sub_region": }{Movement trends by country sub-regions as classified by Google (only available for some countries).}
  \item{"us_county": }{Movement trends at the U.S. county level.}
 }}
 
