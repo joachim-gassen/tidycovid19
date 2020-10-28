@@ -28,13 +28,13 @@ saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
 amtr_url <- scrape_apple_mtr_url()
 amtr_list <- download_apple_mtr_data(
   amtr_url,
-  type = c("country", "country_region", "country_city"), 
+  type = c("country", "country_region", "country_city"),
   silent = TRUE
 )
 saveRDS(amtr_list, "cached_data/apple_mtr.RDS")
 
 gcmr_list <- download_google_cmr_data(
-  type = c("country", "country_region", "country_sub_region", "us_county"), 
+  type = c("country", "country_region", "country_sub_region", "us_county"),
   silent = TRUE
 )
 saveRDS(gcmr_list, "cached_data/google_cmr.RDS", version = 2)
@@ -121,7 +121,7 @@ calc_npi_measure <-function(type, var_name) {
         mutate(npi = ifelse(log_type == "Phase-out measure", -1, 1)) %>%
         select(iso3c, date, npi) %>%
         group_by(iso3c, date) %>%
-        summarise(npi = sum(npi)),
+        summarise(npi = sum(npi), .groups = "drop"),
       by = c("iso3c", "date")
     ) %>%
     group_by(iso3c) %>%
