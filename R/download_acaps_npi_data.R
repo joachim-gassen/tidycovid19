@@ -69,22 +69,11 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
 
   raw_dta <- readxl::read_excel(
     tmp_file, sheet = "Dataset",
-    col_types = c("numeric", rep("text", 11), "list", rep("text", 3),
+    col_types = c("numeric", rep("text", 11), "date", rep("text", 3),
                   "date", "text")
   )
 
-  dlist <- raw_dta$DATE_IMPLEMENTED
-
-  raw_dta$DATE_IMPLEMENTED <- as.Date(
-    sapply(dlist, function(x) {
-      if (class(x)[1] == "character") lubridate::dmy(x)
-      else if(class(x)[1] == "logical") as.Date(NA)
-      else if(class(x)[1] == "numeric") as.Date(x, origin = "1900-01-01")
-      else as.Date(x)
-    }), origin = "1970-01-01")
-
-  # 2020-10-29 There is a data issues in date_implemented
-  raw_dta$DATE_IMPLEMENTED[raw_dta$DATE_IMPLEMENTED == "0202-08-13"] <- NA
+  raw_dta$DATE_IMPLEMENTED <- as.Date(raw_dta$DATE_IMPLEMENTED)
 
   df <- raw_dta
   names(df) <-tolower(names(df))
