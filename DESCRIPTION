@@ -18,6 +18,7 @@ Imports:
     xml2, rvest, readxl, magrittr, dplyr, tidyr, countrycode, ggplot2, wbstats,
     gghighlight, gtrendsR, ggrepel, readr, rlang, scales, lubridate,
     shiny, shinyWidgets, shinyjs, rclipboard, stringr, zoo, gganimate, maps
+Remote: nset-ornl/wbstats
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.0
