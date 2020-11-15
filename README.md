@@ -32,7 +32,7 @@ to Covid-19. Two prominent cases are:
     [package](https://github.com/GuangchuangYu/nCov2019) has a focus on
     Chinese data but also contains data on other countries and regions.
     It contains a shiny dashboard.
-  - `{conronavirus}`: This
+  - `{coronavirus}`: This
     [package](https://github.com/RamiKrispin/coronavirus) provides the
     Johns Hopkins University CSSE dataset together with a dashboard
 
