@@ -70,15 +70,20 @@ download_oxford_npi_data <- function(type = "measures", silent = FALSE, cached =
       data_url, col_types = readr::cols(), trim_ws = TRUE, quote = '"', guess_max = 1e6,
     )
     else suppressWarnings(
-      raw_data <- readr::read_csv(data_url, col_types = readr::cols())
+      raw_data <- readr::read_csv(
+        data_url, col_types = readr::cols(), trim_ws = TRUE, quote = '"', guess_max = 1e6,
+      )
     )
 
     # 2020-08-28: Data now contains regional information for the U.S.
     # exlcuding this for now.
 
+    # 2020-11-25: Data now contains a 'Jurisdiction' indicator that
+    # seems to report whether a row contains national data.
+    
     raw_data <- raw_data %>%
-      dplyr::filter(is.na(.data$RegionCode)) %>%
-      dplyr::select(-.data$RegionName, -.data$RegionCode)
+      dplyr::filter(.data$Jurisdiction == "NAT_TOTAL") %>%
+      dplyr::select(-.data$Jurisdiction, -.data$RegionName, -.data$RegionCode)
     df <- raw_data
 
     # Fix column names for pivot_long()
