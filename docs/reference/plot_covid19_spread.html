@@ -8,21 +8,29 @@
 
 <title>Visualize the spread of the Covid-19 pandemic — plot_covid19_spread • tidycovid19</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,8 +38,8 @@
 
 
 
-<meta property="og:title" content="Visualize the spread of the Covid-19 pandemic — plot_covid19_spread" />
 
+<meta property="og:title" content="Visualize the spread of the Covid-19 pandemic — plot_covid19_spread" />
 <meta property="og:description" content="Provides a flexible visualization of the country-level Covid-19 spread,
 inpired by the displays created by John Burn-Murdoch from the Financial
 Times. Uses data from the Johns Hopkins University CSSE team
@@ -42,7 +50,7 @@ World Bank (https://data.worldbank.org).
 If your are overwhelmed with the options of the plot, explore them with
 shiny_covid19_spread() and use the 'copy code for plot to clipboard'
 option." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -66,9 +74,10 @@ option." />
   gtag('config', 'UA-119053376-1');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -101,7 +110,6 @@ option." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://www.github.com/joachim-gassen/tidycovid19">
@@ -117,6 +125,7 @@ option." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -128,7 +137,6 @@ option." />
     </div>
 
     <div class="ref-description">
-    
     <p>Provides a flexible visualization of the country-level Covid-19 spread,
 inpired by the displays created by John Burn-Murdoch from the Financial
 Times. Uses data from the Johns Hopkins University CSSE team
@@ -139,28 +147,27 @@ World Bank (<a href='https://data.worldbank.org'>https://data.worldbank.org</a>)
 If your are overwhelmed with the options of the plot, explore them with
 <code><a href='shiny_covid19_spread.html'>shiny_covid19_spread()</a></code> and use the 'copy code for plot to clipboard'
 option.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>plot_covid19_spread</span>(
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>),
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"deaths"</span>,
-  <span class='kw'>min_cases</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>per_capita</span>, <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>type</span> <span class='kw'>==</span> <span class='st'>"deaths"</span>, <span class='fl'>5</span>, <span class='fl'>50</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>type</span> <span class='kw'>==</span>
-    <span class='st'>"deaths"</span>, <span class='fl'>1000</span>, <span class='fl'>10000</span>)),
-  <span class='kw'>min_by_ctry_obs</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>edate_cutoff</span> <span class='kw'>=</span> <span class='fl'>50</span>,
-  <span class='kw'>data_date_str</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/format'>format</a></span>(<span class='kw pkg'>lubridate</span><span class='kw ns'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span>(<span class='no'>data</span>$<span class='no'>timestamp</span>[<span class='fl'>1</span>]), <span class='st'>"%B %d, %Y"</span>),
-  <span class='kw'>cumulative</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>change_ave</span> <span class='kw'>=</span> <span class='fl'>7</span>,
-  <span class='kw'>per_capita</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>per_capita_x_axis</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>per_capita</span>, <span class='fl'>TRUE</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>population_cutoff</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>log_scale</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>exclude_others</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
-)</pre>
-    
+    <pre class="usage"><span class='fu'>plot_covid19_spread</span><span class='op'>(</span>
+  data <span class='op'>=</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span><span class='op'>(</span>cached <span class='op'>=</span> <span class='cn'>TRUE</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='st'>"deaths"</span>,
+  min_cases <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>per_capita</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>type</span> <span class='op'>==</span> <span class='st'>"deaths"</span>, <span class='fl'>5</span>, <span class='fl'>50</span><span class='op'>)</span>, <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>type</span> <span class='op'>==</span>
+    <span class='st'>"deaths"</span>, <span class='fl'>1000</span>, <span class='fl'>10000</span><span class='op'>)</span><span class='op'>)</span>,
+  min_by_ctry_obs <span class='op'>=</span> <span class='fl'>7</span>,
+  edate_cutoff <span class='op'>=</span> <span class='fl'>180</span>,
+  data_date_str <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/format.html'>format</a></span><span class='op'>(</span><span class='fu'>lubridate</span><span class='fu'>::</span><span class='fu'><a href='http://lubridate.tidyverse.org/reference/as_date.html'>as_date</a></span><span class='op'>(</span><span class='va'>data</span><span class='op'>$</span><span class='va'>timestamp</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>)</span>, <span class='st'>"%B %d, %Y"</span><span class='op'>)</span>,
+  cumulative <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  change_ave <span class='op'>=</span> <span class='fl'>7</span>,
+  per_capita <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  per_capita_x_axis <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/ifelse.html'>ifelse</a></span><span class='op'>(</span><span class='va'>per_capita</span>, <span class='cn'>TRUE</span>, <span class='cn'>FALSE</span><span class='op'>)</span>,
+  population_cutoff <span class='op'>=</span> <span class='fl'>0</span>,
+  log_scale <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  highlight <span class='op'>=</span> <span class='cn'>NULL</span>,
+  exclude_others <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  intervention <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -179,7 +186,7 @@ of "confirmed", "deaths" and "recovered".</p></td>
     <tr>
       <th>min_cases</th>
       <td><p>Defines the zero point of your X axis (the 'event date').
-Defaults to 100 cases for deaths and 1,000 cases otherwise.</p></td>
+Defaults to 1,000 cases for deaths and 10,000 cases otherwise.</p></td>
     </tr>
     <tr>
       <th>min_by_ctry_obs</th>
@@ -189,7 +196,7 @@ many days of data since and including the event date. Defaults to 7.</p></td>
     <tr>
       <th>edate_cutoff</th>
       <td><p>The upper limit of the X axis in event days.
-Defaults to 40.</p></td>
+Defaults to 180.</p></td>
     </tr>
     <tr>
       <th>data_date_str</th>
@@ -258,34 +265,31 @@ and include general lockdowns ('lockdown'), social distancing
 ('pub_health'), and social and economic measures ('soc_econ').</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A ggplot2 object.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>plot_covid19_spread</span>()</div><div class='img'><img src='plot_covid19_spread-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>merged</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span>(<span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='fu'>plot_covid19_spread</span>(<span class='no'>merged</span>, <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='st'>"DEU"</span>, <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='st'>"lockdown"</span>)</div><div class='img'><img src='plot_covid19_spread-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>plot_covid19_spread</span>(<span class='no'>merged</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"recovered"</span>, <span class='kw'>min_by_ctry_obs</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>edate_cutoff</span> <span class='kw'>=</span> <span class='fl'>40</span>,
-  <span class='kw'>highlight</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"ITA"</span>, <span class='st'>"ESP"</span>, <span class='st'>"FRA"</span>, <span class='st'>"DEU"</span>, <span class='st'>"USA"</span>), <span class='kw'>intervention</span> <span class='kw'>=</span> <span class='st'>"soc_dist"</span>
-)</div><div class='img'><img src='plot_covid19_spread-3.png' alt='' width='700' height='433' /></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>plot_covid19_spread</span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_covid19_spread-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>merged</span> <span class='op'>&lt;-</span> <span class='fu'><a href='download_merged_data.html'>download_merged_data</a></span><span class='op'>(</span>cached <span class='op'>=</span> <span class='cn'>TRUE</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>plot_covid19_spread</span><span class='op'>(</span><span class='va'>merged</span>, highlight <span class='op'>=</span> <span class='st'>"DEU"</span>, intervention <span class='op'>=</span> <span class='st'>"lockdown"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_covid19_spread-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot_covid19_spread</span><span class='op'>(</span><span class='va'>merged</span>, type <span class='op'>=</span> <span class='st'>"recovered"</span>, min_by_ctry_obs <span class='op'>=</span> <span class='fl'>10</span>,
+  edate_cutoff <span class='op'>=</span> <span class='fl'>40</span>,
+  highlight <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"ITA"</span>, <span class='st'>"ESP"</span>, <span class='st'>"FRA"</span>, <span class='st'>"DEU"</span>, <span class='st'>"USA"</span><span class='op'>)</span>, intervention <span class='op'>=</span> <span class='st'>"soc_dist"</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='plot_covid19_spread-3.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -293,13 +297,16 @@ and include general lockdowns ('lockdown'), social distancing
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 

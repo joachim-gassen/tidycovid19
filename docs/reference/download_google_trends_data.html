@@ -8,21 +8,29 @@
 
 <title>Download Google Trends data on Covid-19 — download_google_trends_data • tidycovid19</title>
 
+
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,13 +38,13 @@
 
 
 
-<meta property="og:title" content="Download Google Trends data on Covid-19 — download_google_trends_data" />
 
+<meta property="og:title" content="Download Google Trends data on Covid-19 — download_google_trends_data" />
 <meta property="og:description" content="Downloads Google Trends data (https://trends.google.com/trends/)
 about the 2020 search activity for a given search term at global and
 country levels. The search term defaults to &quot;coronavirus&quot; to reflect
 the relative public attention to the Covid-19 pandemic." />
-<meta name="twitter:card" content="summary" />
+
 
 
 
@@ -60,9 +68,10 @@ the relative public attention to the Covid-19 pandemic." />
   gtag('config', 'UA-119053376-1');
 </script>
 
+
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -95,7 +104,6 @@ the relative public attention to the Covid-19 pandemic." />
   <a href="../news/index.html">News</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://www.github.com/joachim-gassen/tidycovid19">
@@ -111,6 +119,7 @@ the relative public attention to the Covid-19 pandemic." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -122,24 +131,22 @@ the relative public attention to the Covid-19 pandemic." />
     </div>
 
     <div class="ref-description">
-    
     <p>Downloads Google Trends data (<a href='https://trends.google.com/trends/'>https://trends.google.com/trends/</a>)
 about the 2020 search activity for a given search term at global and
 country levels. The search term defaults to "coronavirus" to reflect
 the relative public attention to the Covid-19 pandemic.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>download_google_trends_data</span>(
-  <span class='kw'>search_term</span> <span class='kw'>=</span> <span class='st'>"coronavirus"</span>,
-  <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"country_day"</span>,
-  <span class='kw'>countries</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>low_search_volume</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>pause</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
-    
+    <pre class="usage"><span class='fu'>download_google_trends_data</span><span class='op'>(</span>
+  search_term <span class='op'>=</span> <span class='st'>"coronavirus"</span>,
+  type <span class='op'>=</span> <span class='st'>"country_day"</span>,
+  countries <span class='op'>=</span> <span class='cn'>NULL</span>,
+  low_search_volume <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  pause <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  silent <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  cached <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -190,13 +197,12 @@ data from the authorative source. Downloading the cached version is
 faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>If only one <code>type</code> was selected, a data frame containing the
     data. Otherwise, a list containing the desired data frames ordered as
     in <code>type</code>.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Uses the <code>gtrendsR</code> package. Please note that Google Trends
@@ -206,140 +212,136 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
     to that. This implies that comparisons across data frames are not
     feasible. When Google Trends reports a score of "&lt;1" this is
     translated to 0.5 in the data.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>download_google_trends_data</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"country"</span>, <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>df</span> <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>iso3c</span>, <span class='no'>gtrends_score</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>gtrends_score</span>)</div><div class='output co'>#&gt;    iso3c gtrends_score
+    <pre class="examples"><div class='input'><span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>download_google_trends_data</span><span class='op'>(</span>type <span class='op'>=</span> <span class='st'>"country"</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>df</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>iso3c</span>, <span class='va'>gtrends_score</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>gtrends_score</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;    iso3c gtrends_score
 #&gt; 1    ITA           100
-#&gt; 2    QAT            94
-#&gt; 3    ESP            90
-#&gt; 4    NPL            83
-#&gt; 5    FRA            72
-#&gt; 6    ARE            71
-#&gt; 7    GBR            71
-#&gt; 8    IRL            71
-#&gt; 9    PER            64
-#&gt; 10   ZAF            62
-#&gt; 11   PAN            59
-#&gt; 12   GHA            58
-#&gt; 13   CHE            58
-#&gt; 14   AUS            55
-#&gt; 15   USA            54
-#&gt; 16   COL            54
-#&gt; 17   CAN            52
-#&gt; 18   ARG            52
-#&gt; 19   NZL            51
-#&gt; 20   URY            51
-#&gt; 21   PRY            51
-#&gt; 22   BOL            51
-#&gt; 23   KWT            47
-#&gt; 24   CHL            45
-#&gt; 25   SGP            45
-#&gt; 26   GTM            44
-#&gt; 27   ROU            44
-#&gt; 28   ECU            44
-#&gt; 29   CRI            43
-#&gt; 30   KEN            43
-#&gt; 31   IND            43
-#&gt; 32   BGD            41
-#&gt; 33   AUT            40
-#&gt; 34   MEX            40
-#&gt; 35   DEU            40
-#&gt; 36   BEL            40
-#&gt; 37   VEN            39
-#&gt; 38   DOM            39
-#&gt; 39   PAK            37
-#&gt; 40   MAR            35
-#&gt; 41   PRT            35
-#&gt; 42   NGA            31
-#&gt; 43   BRA            31
+#&gt; 2    ESP            90
+#&gt; 3    QAT            86
+#&gt; 4    NPL            77
+#&gt; 5    GBR            72
+#&gt; 6    IRL            72
+#&gt; 7    FRA            66
+#&gt; 8    ARE            63
+#&gt; 9    OMN            60
+#&gt; 10   CHE            59
+#&gt; 11   PER            54
+#&gt; 12   AUS            54
+#&gt; 13   ZAF            53
+#&gt; 14   ARG            53
+#&gt; 15   USA            50
+#&gt; 16   URY            50
+#&gt; 17   CAN            48
+#&gt; 18   GHA            46
+#&gt; 19   NZL            46
+#&gt; 20   COL            46
+#&gt; 21   PAN            45
+#&gt; 22   ROU            45
+#&gt; 23   BOL            44
+#&gt; 24   KWT            43
+#&gt; 25   PRY            40
+#&gt; 26   GTM            40
+#&gt; 27   AUT            39
+#&gt; 28   IND            39
+#&gt; 29   BEL            38
+#&gt; 30   CHL            38
+#&gt; 31   CRI            38
+#&gt; 32   SGP            38
+#&gt; 33   DEU            37
+#&gt; 34   VEN            36
+#&gt; 35   MEX            34
+#&gt; 36   ECU            34
+#&gt; 37   BGD            33
+#&gt; 38   PAK            33
+#&gt; 39   MAR            33
+#&gt; 40   KEN            33
+#&gt; 41   DOM            32
+#&gt; 42   PRT            31
+#&gt; 43   BRA            27
 #&gt; 44   DZA            25
-#&gt; 45   NLD            24
-#&gt; 46   MYS            22
-#&gt; 47   SAU            20
-#&gt; 48   SWE            18
-#&gt; 49   DNK            18
-#&gt; 50   PHL            16
-#&gt; 51   NOR            13
-#&gt; 52   CZE             9
-#&gt; 53   GRC             9
-#&gt; 54   EGY             8
-#&gt; 55   POL             5
-#&gt; 56   THA             4
-#&gt; 57   IDN             4
-#&gt; 58   TUR             4
-#&gt; 59   JPN             1</div><div class='input'>
-<span class='no'>lst</span> <span class='kw'>&lt;-</span> <span class='fu'>download_google_trends_data</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"region"</span>, <span class='st'>"city"</span>), <span class='kw'>silent</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>cached</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>lst</span><span class='kw'>[[</span><span class='fl'>1</span>]] <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>iso3c</span> <span class='kw'>==</span> <span class='st'>"DEU"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>region</span>, <span class='no'>gtrends_score</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>gtrends_score</span>)</div><div class='output co'>#&gt;                    region gtrends_score
+#&gt; 45   NGA            22
+#&gt; 46   NLD            20
+#&gt; 47   MYS            19
+#&gt; 48   SAU            19
+#&gt; 49   DNK            15
+#&gt; 50   SWE            15
+#&gt; 51   PHL            13
+#&gt; 52   NOR            12
+#&gt; 53   ISR            10
+#&gt; 54   GRC             9
+#&gt; 55   EGY             7
+#&gt; 56   POL             4
+#&gt; 57   THA             3
+#&gt; 58   TUR             3
+#&gt; 59   IDN             3
+#&gt; 60   JPN             1</div><div class='input'>
+<span class='va'>lst</span> <span class='op'>&lt;-</span> <span class='fu'>download_google_trends_data</span><span class='op'>(</span>type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"region"</span>, <span class='st'>"city"</span><span class='op'>)</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>lst</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>iso3c</span> <span class='op'>==</span> <span class='st'>"DEU"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>region</span>, <span class='va'>gtrends_score</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>gtrends_score</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                    region gtrends_score
 #&gt; 1                Saarland           100
-#&gt; 2       Baden-Württemberg            96
-#&gt; 3           Saxony-Anhalt            95
-#&gt; 4               Thuringia            95
-#&gt; 5  North Rhine-Westphalia            94
-#&gt; 6                  Bremen            94
-#&gt; 7             Brandenburg            93
-#&gt; 8                 Bavaria            92
-#&gt; 9                  Berlin            92
-#&gt; 10   Rhineland-Palatinate            91
-#&gt; 11     Schleswig-Holstein            88
-#&gt; 12                 Saxony            88
-#&gt; 13 Mecklenburg-Vorpommern            86
-#&gt; 14                  Hesse            85
-#&gt; 15           Lower Saxony            85
-#&gt; 16                Hamburg            85</div><div class='input'>
-<span class='no'>lst</span><span class='kw'>[[</span><span class='fl'>2</span>]] <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span>(<span class='no'>iso3c</span> <span class='kw'>==</span> <span class='st'>"DEU"</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span>(<span class='no'>city</span>, <span class='no'>gtrends_score</span>) <span class='kw'>%&gt;%</span>
-  <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span>(-<span class='no'>gtrends_score</span>)</div><div class='output co'>#&gt;             city gtrends_score
+#&gt; 2      Baden-WÃ¼rttemberg            95
+#&gt; 3                  Bremen            95
+#&gt; 4  North Rhine-Westphalia            94
+#&gt; 5               Thuringia            93
+#&gt; 6           Saxony-Anhalt            91
+#&gt; 7                 Bavaria            90
+#&gt; 8             Brandenburg            90
+#&gt; 9                  Berlin            89
+#&gt; 10   Rhineland-Palatinate            89
+#&gt; 11     Schleswig-Holstein            86
+#&gt; 12                 Saxony            85
+#&gt; 13 Mecklenburg-Vorpommern            85
+#&gt; 14           Lower Saxony            82
+#&gt; 15                  Hesse            82
+#&gt; 16                Hamburg            80</div><div class='input'>
+<span class='va'>lst</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>iso3c</span> <span class='op'>==</span> <span class='st'>"DEU"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>city</span>, <span class='va'>gtrends_score</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>gtrends_score</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;             city gtrends_score
 #&gt; 1  Gelsenkirchen           100
-#&gt; 2        Krefeld            96
-#&gt; 3         Bochum            93
-#&gt; 4       Duisburg            91
-#&gt; 5       Augsburg            90
-#&gt; 6          Essen            89
-#&gt; 7         Bremen            87
-#&gt; 8       Dortmund            87
-#&gt; 9         Berlin            86
-#&gt; 10      Mannheim            83
-#&gt; 11     Nuremberg            83
-#&gt; 12     Wuppertal            82
-#&gt; 13     Wiesbaden            81
-#&gt; 14        Munich            80
-#&gt; 15    Düsseldorf            79
-#&gt; 16     Stuttgart            79
-#&gt; 17     Bielefeld            78
-#&gt; 18       Hamburg            77
-#&gt; 19     Karlsruhe            77
-#&gt; 20       Dresden            76
-#&gt; 21       Cologne            75
-#&gt; 22       Leipzig            75
-#&gt; 23       Hanover            74
-#&gt; 24          Bonn            73
-#&gt; 25       Münster            73
-#&gt; 26     Frankfurt            66
-#&gt; 27   Drochtersen            64</div><div class='input'>
+#&gt; 2        Krefeld            97
+#&gt; 3         Bochum            94
+#&gt; 4       Dortmund            89
+#&gt; 5       Augsburg            88
+#&gt; 6         Bremen            87
+#&gt; 7       Duisburg            87
+#&gt; 8          Essen            86
+#&gt; 9      Wuppertal            84
+#&gt; 10      Mannheim            81
+#&gt; 11        Berlin            80
+#&gt; 12   DÃ¼sseldorf            80
+#&gt; 13     Wiesbaden            80
+#&gt; 14     Brunswick            78
+#&gt; 15        Munich            77
+#&gt; 16     Nuremberg            77
+#&gt; 17       Hamburg            75
+#&gt; 18       Dresden            73
+#&gt; 19          Bonn            73
+#&gt; 20     Karlsruhe            73
+#&gt; 21      MÃ¼nster            71
+#&gt; 22       Hanover            70
+#&gt; 23     Stuttgart            69
+#&gt; 24       Cologne            69
+#&gt; 25       Leipzig            67
+#&gt; 26     Frankfurt            61
+#&gt; 27   Drochtersen            57</div><div class='input'>
 </div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#value">Value</a></li>
-
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -347,13 +349,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
