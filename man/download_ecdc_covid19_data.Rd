@@ -4,7 +4,7 @@
 \alias{download_ecdc_covid19_data}
 \title{Download ECDC Data on Covid-19 cases}
 \usage{
-download_ecdc_covid19_data(silent = FALSE, cached = FALSE)
+download_ecdc_covid19_data(silent = FALSE, cached = FALSE, use_daily = TRUE)
 }
 \arguments{
 \item{silent}{Whether you want the function to send some status messages to
@@ -14,7 +14,14 @@ and thus defaults to \code{TRUE}.}
 \item{cached}{Whether you want to download the cached version of the data
 from the {tidycovid19} Github repository instead of retrieving the
 data from the authorative source. Downloading the cached version is
-faster and the cache is updated daily. Defaults to \code{FALSE}.}
+faster and the cache is updated daily. The cached version includes the
+discontinued daily data (see below). Defaults to \code{FALSE}.}
+
+\item{use_daily}{On December 14th, 2020 the ECDC switched from daily to 
+weekly reporting. If \code{TRUE} (the default), the code will use the 
+cached daily data (that is no longer available on the webpage) up 
+to 2020-12-14 and then switch to the weekly data that currently is being
+reported by the ECDC.}
 }
 \value{
 A data frame containing the data.

@@ -4,7 +4,7 @@ library(dplyr)
 # Need to run a docker instance in local development envrionment
 # that sets up the "remote" Selenium driver, e.g. (for chrome browser):
 #
-# docker run -d -p 4445:4444 selenium/standalone-chrome
+# docker run -d -p 4445:4444 --restart unless-stopped selenium/standalone-chrome
 #
 
 scrape_apple_mtr_url <- function() {
