@@ -16,8 +16,8 @@ saveRDS(jhu_list, "cached_data/jhu_csse_covid19.RDS", version = 2)
 ecdc <- download_ecdc_covid19_data(silent = TRUE)
 saveRDS(ecdc, "cached_data/ecdc_covid19.RDS", version = 2)
 
-owid_testing <- download_owid_testing_data(silent = TRUE)
-saveRDS(owid_testing, "cached_data/owid_testing.RDS", version = 2)
+owid_data <- download_owid_data(silent = TRUE)
+saveRDS(owid_data, "cached_data/owid_data.RDS", version = 2)
 
 acaps <- download_acaps_npi_data(silent = TRUE)
 saveRDS(acaps, "cached_data/acaps_npi.RDS", version = 2)

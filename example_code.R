@@ -53,52 +53,8 @@ plot_covid19_spread(
 )
 
 
-# --- Code from https://robjhyndman.com/hyndsight/logratios-covid19/ -----------
-
-library(tidyverse)
-library(tsibble)
-library(tidycovid19)
-
-updates <- download_merged_data(cached = TRUE)
-
-countries <- c("AUS", "NZL", "ITA", "ESP", "USA", "GBR")
-
-updates %>%
-  mutate(cases_logratio = difference(log(confirmed))) %>%
-  filter(
-    iso3c %in% countries,
-    date >= as.Date("2020-03-01")
-  ) %>%
-  ggplot(aes(x = date, y = cases_logratio, col = country)) +
-  geom_point() +
-  geom_smooth(method = "loess") +
-  facet_wrap(. ~ country, ncol = 3) +
-  xlab("Date")
-
-updates %>%
-  mutate(
-    cases_logratio = difference(log(confirmed))
-  ) %>%
-  filter(iso3c %in% countries) %>%
-  filter(date >= as.Date("2020-03-01")) %>%
-  ggplot(aes(x = date, y = cases_logratio, col = country)) +
-  geom_hline(yintercept = log(2)/c(2:7,14,21), col='grey') +
-  geom_smooth(method = "loess", se = FALSE) +
-  scale_y_continuous(
-    "Daily increase in cumulative cases",
-    breaks = log(1+seq(0,60,by=10)/100),
-    labels = paste0(seq(0,60,by=10),"%"),
-    minor_breaks=NULL,
-    sec.axis = sec_axis(~ log(2)/(.),
-                        breaks = c(2:7,14,21),
-                        name = "Doubling time (days)")
-  ) +
-  theme_minimal() + theme(
-    panel.grid = element_blank()
-  )
-
-
 # --- Find data inconsitencies in JHU CSSE data --------------------------------
+
 library(tidycovid19)
 library(dplyr)
 
@@ -119,29 +75,6 @@ df %>%
   filter(confirmed < lag(confirmed) |
            confirmed > lead(confirmed))
 
-
-# --- Check Deaths per Capita for China ----------------------------------------
-
-library(tidyverse)
-library(tidycovid19)
-
-merged_data <- download_merged_data(cached = T, silent = T)
-chn_deaths <- max(merged_data$deaths[merged_data$iso3c == "CHN"])
-chn_population <- unique(merged_data$population[merged_data$iso3c == "CHN"])
-
-c(chn_deaths, chn_population, 1e5*chn_deaths/chn_population)
-
-5*chn_population/1e5
-
-countries <- "CHN"
-print(plot_covid19_spread(merged_data,
-                          highlight = countries,
-                          type = "deaths",
-                          per_capita = TRUE,
-                          exclude_others = TRUE,
-                          min_cases = 0.1))
-
-# ggsave("pic.png")
 
 # --- Use old PDF scraping code ------------------------------------------------
 
@@ -167,39 +100,6 @@ df <- tidycovid19:::parse_line_graph_bitmap(bitmaps[[1]][[1]])
 
 # remotes::install_github("joachim-gassen/tidycovid19")
 
-
-# --- Show reduction in NPIs ---------------------------------------------------
-
-#remotes::install_github("joachim-gassen/tidycovid19")
-library(tidyverse)
-library(tidycovid19)
-
-acaps <- download_acaps_npi_data(cached = TRUE, silent = TRUE)
-merged <- download_merged_data(cached = TRUE, silent = TRUE)
-
-# Example
-ggplot(merged %>% filter(iso3c == "AUT"), aes(x = date, y = mov_rest)) + geom_line()
-
-df <- acaps %>%
-  rename(date = date_implemented) %>%
-  mutate(nobs = 1*(log_type == "Introduction / extension of measures") -
-           1*(log_type != "Introduction / extension of measures")) %>%
-  select(iso3c, date, log_type, category, nobs)
-
-ggplot(df, aes(x = date, fill = category, weight = nobs)) +
-  geom_histogram(data = df %>% filter(log_type == "Introduction / extension of measures"),
-                 position = "stack", binwidth = 24*3600*7) +
-  geom_histogram(data = df %>% filter(log_type != "Introduction / extension of measures"),
-                 position = "stack", binwidth = 24*3600*7) +
-  theme_minimal() +
-  labs(title = "Implementation and Lifting of Interventions over Calendar Time",
-       x = "Date",
-       y = "Number of interventions",
-       fill = "Intervention") +
-  theme(legend.position = c(0.25, 0.8),
-        legend.background = element_rect(fill = "white", color = NA),
-        legend.title = element_text(size = 8),
-        legend.text = element_text(size = 7))
 
 
 # --- Use regional data --------------------------------------------------------
@@ -266,7 +166,6 @@ df %>%
   geom_line(aes(y = ave_new_cases), color ="red") +
   theme_minimal()
 
-
 df %>%
   filter(iso3c == "USA") %>%
   mutate(
@@ -279,10 +178,111 @@ df %>%
   geom_line(aes(y = ave_new_deaths), color ="red") +
   theme_minimal()
 
-# --- Template to add regional case data (in progress work) --------------------
+df %>%
+  filter(iso3c == "DEU") %>%
+  mutate(
+    new_cases_by_100k = 1e5*((confirmed - lag(confirmed))/population),
+    ave_new_cases_by_100k = rollmean(new_cases_by_100k, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(!is.na(new_cases_by_100k), !is.na(ave_new_cases_by_100k)) %>%
+  ggplot(aes(x = date)) +
+  geom_bar(aes(y = new_cases_by_100k), stat = "identity", fill = "lightblue") +
+  geom_line(aes(y = ave_new_cases_by_100k), color ="red") +
+  theme_minimal()
+
+df %>%
+  filter(iso3c == "DEU") %>%
+  mutate(
+    new_deaths_by_100k = (deaths - lag(deaths))/(0.1*population),
+    ave_new_deaths_by_100k = rollmean(new_deaths_by_100k, 7, na.pad=TRUE, align="right")
+  ) %>%
+  filter(!is.na(new_deaths_by_100k), !is.na(ave_new_deaths_by_100k)) %>%
+  ggplot(aes(x = date)) +
+  geom_bar(aes(y = new_deaths_by_100k), stat = "identity", fill = "lightblue") +
+  geom_line(aes(y = ave_new_deaths_by_100k), color ="red") +
+  theme_minimal()
 
 
-# RKI Data
+# --- New Our World in Data data -----------------------------------------------
 
-df <- jsonlite::fromJSON("https://opendata.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0.geojson")
+df <- download_merged_data(cached = TRUE, silent = TRUE)
 
+nobs <- df %>%
+  group_by(iso3c) %>%
+  summarise(
+    nobs_hosp = sum(!is.na(hosp_patients)),
+    nobs_icu = sum(!is.na(icu_patients)),
+    nobs_vacc = sum(!is.na(total_vaccinations)),
+    .groups = "drop"
+  ) %>%
+  filter(
+    nobs_hosp != 0 | nobs_icu != 0 | nobs_vacc  != 0
+  ) %>%
+  arrange(iso3c)
+
+vacc <- df %>%
+  filter(!is.na(total_vaccinations)) %>%
+  select(iso3c, date, total_vaccinations)
+
+clevel <- df %>%
+  group_by(iso3c) %>%
+  filter(any(!is.na(total_vaccinations))) %>%
+  mutate(
+    vacc_1e5pop = 1e5*(total_vaccinations/population),
+    cases_1e5pop = 1e5*(confirmed/population),
+    deaths_1e5pop = 1e5*(deaths/population)
+  ) %>%
+  summarise(
+    vacc_1e5pop  = max(vacc_1e5pop, na.rm = TRUE),
+    cases_1e5pop = max(cases_1e5pop, na.rm = TRUE),
+    deaths_1e5pop = max(deaths_1e5pop, na.rm = TRUE),
+    gdp_capita = max(gdp_capita, na.rm = TRUE),
+    .groups = "drop"
+  ) %>%
+  na.omit()
+
+
+plot_clevel_vacc_by_x <- function(xvar, xlab) {
+  xvar <- enquo(xvar)
+  ggplot(clevel, aes(x = !!xvar, y = vacc_1e5pop)) +
+    geom_point() +
+    scale_x_log10() +
+    scale_y_log10() +
+    theme_minimal() +
+    labs(
+      x = xlab,
+      y = "Vaccinations per 100,000 inhabitants"
+    ) +
+    ggrepel::geom_text_repel(aes(label = iso3c)) +
+    geom_smooth(method = "lm", formula = "y ~x")
+}
+
+plot_clevel_vacc_by_x(gdp_capita, "National income per capita (2010 US-$)")
+plot_clevel_vacc_by_x(cases_1e5pop, "Cases per 100,000 inhabitants")
+plot_clevel_vacc_by_x(deaths_1e5pop, "Deaths per 100,000 inhabitants")
+
+library(ExPanDaR)
+
+display_html_viewer <- function(raw_html) {
+  html_file <- tempfile(fileext = ".html")
+  writeLines(raw_html, html_file)
+  viewer <- getOption("viewer")
+  viewer(html_file)
+}
+
+rv <- prepare_regression_table(
+  df = clevel,
+  dvs = rep("vacc_1e5pop", 4),
+  idvs = list(
+    "gdp_capita",
+    "cases_1e5pop",
+    "deaths_1e5pop",
+    c(
+      "gdp_capita",
+      "cases_1e5pop",
+      "deaths_1e5pop"
+    )
+  )
+)
+
+display_html_viewer(rv$table)

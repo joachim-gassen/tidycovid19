@@ -7,11 +7,13 @@ Authors@R: person("Joachim", "Gassen", role = c("aut", "cre"),
     comment = c(ORCID = "0000-0003-4364-2911"))
 Description: This package facilitates the download of current Covid-19 related 
     data from various sources, including the Johns Hopkins University CSSE 
-    team, the Assessment Capacities Project (ACAPS), Google Trends and movement 
-    data, Government measures provided by University of Oxford and additional 
-    country-level data provided by the World Bank. These data can be downloaded 
-    separately or in one merged data frame. In addition, the package features a 
-    function and shiny app to visualize the country-level spread of Covid-19. 
+    team, the Assessment Capacities Project (ACAPS), data on testing, 
+    hospitalizations and vaccinations collected by the Our World in Data team,
+    Google Trends and movement data, Government measures provided by University 
+    of Oxford and additional country-level data provided by the World Bank. 
+    These data can be downloaded separately or in one merged data frame. In 
+    addition, the package features some functions and shiny app to visualize 
+    the country-level spread of Covid-19. 
 Depends: R (>= 2.10)
 License: MIT + file LICENSE
 Imports: 

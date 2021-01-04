@@ -12,7 +12,11 @@
 #' Google COVID-19 Community Mobility Reports
 #' (\url{https://www.google.com/covid19/mobility/}),
 #' Google Trends Covid-19 related search volume
-#' (\url{https://trends.google.com/trends/}), and the World Bank
+#' (\url{https://trends.google.com/trends/}),
+#' data on tests, vaccinations and hospitalizations as collected by the
+#' Our World in Data team,
+#' (\url{https://github.com/owid/covid-19-data/tree/master/public/data}),
+#' and from the World Bank
 #' (\url{https://data.worldbank.org}) intro a country-day data frame.
 #' Variable definitions are provided by the data frame
 #' \code{tidycovid19_variable_definitions}.
@@ -109,7 +113,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
                   .data$ecdc_cases, .data$ecdc_deaths) %>%
     dplyr::ungroup()
 
-  owid_testing <- download_owid_testing_data(silent = silent) %>%
+  owid_data <- download_owid_data(silent = silent) %>%
     dplyr::select(-.data$timestamp)
 
   npis <- download_acaps_npi_data(silent = silent) %>%
@@ -187,7 +191,7 @@ download_merged_data <- function(wbank_vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     dplyr::select(.data$iso3c, .data$country, dplyr::everything())
 
   df <- merged_base %>%
-    dplyr::left_join(owid_testing, by = c("iso3c", "date")) %>%
+    dplyr::left_join(owid_data, by = c("iso3c", "date")) %>%
     dplyr::left_join(
       calc_npi_measure("Social distancing", "soc_dist"),
       by = c("iso3c", "date")

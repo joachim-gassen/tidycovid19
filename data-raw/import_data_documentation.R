@@ -9,7 +9,7 @@ tidycovid19_variable_definitions <- data.frame(
   var_name = names(df),
   var_source = c(
     rep(NA, 3), rep("jhu_ccse", 3), rep("ecdc_covid19", 2),
-    rep("owid_testing", 2), rep("acaps_npi", 5),
+    rep("owid_data", 6), rep("acaps_npi", 5),
     rep("apple_mtr", 3), rep("google_cmr", 6), rep("google_trends", 2),
     rep("wbank", 8), NA
   ),
@@ -24,6 +24,10 @@ tidycovid19_variable_definitions <- data.frame(
     "Covid-19-related deaths as reported by ECDC (accumulated)",
     "Accumulated test counts as reported by Our World in Data",
     "Definition of what constitutes a 'test'",
+    "The share of COVID-19 tests that are positive, given as a rolling 7-day average",
+    "Number of COVID-19 patients in hospital on a given day",
+    "Number of COVID-19 patients in intensive care units (ICUs) on a given day",
+    "Total number of COVID-19 vaccination doses administered",
     "Number of social distancing measures reported up to date by ACAPS, net of lifted restrictions",
     "Number of movement restrictions reported up to date by ACAPS, net of lifted restrictions",
     "Number of public health measures reported up to date by ACAPS, net of lifted restrictions",

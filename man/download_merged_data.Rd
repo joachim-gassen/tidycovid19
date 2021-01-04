@@ -50,7 +50,11 @@ Mobility Trends Reports provided by Apple related to Covid-19
 Google COVID-19 Community Mobility Reports
 (\url{https://www.google.com/covid19/mobility/}),
 Google Trends Covid-19 related search volume
-(\url{https://trends.google.com/trends/}), and the World Bank
+(\url{https://trends.google.com/trends/}),
+data on tests, vaccinations and hospitalizations as collected by the
+Our World in Data team,
+(\url{https://github.com/owid/covid-19-data/tree/master/public/data}),
+and from the World Bank
 (\url{https://data.worldbank.org}) intro a country-day data frame.
 Variable definitions are provided by the data frame
 \code{tidycovid19_variable_definitions}.

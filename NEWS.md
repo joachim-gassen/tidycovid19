@@ -1,5 +1,7 @@
 # tidycovid19 0.0.0.9000
 
+* 2021-01-03: Added hopitalization and vaccination data from Our World in Data. This implies a renaming of the function `download_owid_testing_data()` to `download_owid_data()`
+
 * 2020-06-07: Added some options to `download_google_trends_data()` to allow the download of Google Trends data for selected countries and a wider set of countries. Also included an option to omit the sleeping delay between Google Trends queries (usage not encouraged). 
 
 * 2020-05-21: Changed definition of active cases
