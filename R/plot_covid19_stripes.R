@@ -46,7 +46,7 @@
 #'     data. Note that you might run into issues with the default when running
 #'     this in a non-english locale. Consider setting it by hand then.
 #'
-#' @return A \link{ggplot2} object.
+#' @return A \code{\link[ggplot2]{ggplot2}} oobject.
 #'
 #'
 #' @examples

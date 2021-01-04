@@ -88,7 +88,7 @@ and include general lockdowns ('lockdown'), social distancing
 ('pub_health'), and social and economic measures ('soc_econ').}
 }
 \value{
-A \link{ggplot2} object.
+A \code{\link[ggplot2]{ggplot2}} object.
 }
 \description{
 Provides a flexible visualization of the country-level Covid-19 spread,
