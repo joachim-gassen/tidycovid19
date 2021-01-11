@@ -1,6 +1,6 @@
 # Some example code on how to use the {tidycovid19}
-# Not part of the package of the package itself
-
+# Not part of the package  itself
+# Some more code that uses the package can be found in the 'add_code' directory.
 
 # --- Some visuals -------------------------------------------------------------
 
@@ -205,6 +205,9 @@ df %>%
 
 # --- New Our World in Data data -----------------------------------------------
 
+library(tidyverse)
+library(tidycovid19)
+
 df <- download_merged_data(cached = TRUE, silent = TRUE)
 
 nobs <- df %>%
@@ -224,6 +227,33 @@ vacc <- df %>%
   filter(!is.na(total_vaccinations)) %>%
   select(iso3c, date, total_vaccinations)
 
+
+has_vacc_data <- df %>%
+  select(iso3c, gdp_capita) %>%
+  distinct() %>%
+  left_join(vacc, by = "iso3c") %>%
+  group_by(iso3c) %>%
+  summarise(
+    has_vacc_data = sum(!is.na(total_vaccinations)) > 0,
+    gdp_capita = mean(gdp_capita),
+    .groups = "drop"
+  )
+
+ggplot(data = has_vacc_data, aes(group = has_vacc_data, fill = has_vacc_data)) +
+  geom_density(aes(x = gdp_capita), color = NA, alpha = 0.5) +
+  scale_x_log10(labels = scales::comma) +
+  labs(
+    x = "GDP per capita (in 2010 US-$, log-scaled)",
+    y = "Density",
+    fill = "OWID provides vaccination data"
+  ) +
+  theme_classic() +
+  theme(
+    legend.position = c(0.3, 0.8)
+  )
+
+print(t.test(gdp_capita ~ has_vacc_data, data = has_vacc_data))
+
 clevel <- df %>%
   group_by(iso3c) %>%
   filter(any(!is.na(total_vaccinations))) %>%
@@ -239,7 +269,14 @@ clevel <- df %>%
     gdp_capita = max(gdp_capita, na.rm = TRUE),
     .groups = "drop"
   ) %>%
-  na.omit()
+  na.omit() %>%
+  mutate(
+    log_vacc = log(vacc_1e5pop),
+    log_cases = log(cases_1e5pop),
+    log_deaths = log(deaths_1e5pop),
+    log_gdp = log(gdp_capita),
+  )
+
 
 
 plot_clevel_vacc_by_x <- function(xvar, xlab) {
@@ -270,19 +307,24 @@ display_html_viewer <- function(raw_html) {
   viewer(html_file)
 }
 
-rv <- prepare_regression_table(
-  df = clevel,
-  dvs = rep("vacc_1e5pop", 4),
-  idvs = list(
-    "gdp_capita",
-    "cases_1e5pop",
-    "deaths_1e5pop",
-    c(
-      "gdp_capita",
-      "cases_1e5pop",
-      "deaths_1e5pop"
+prepare_vacc_reg_table <- function(df) {
+  rv <- prepare_regression_table(
+    df = df,
+    dvs = rep("log_vacc", 4),
+    idvs = list(
+      "log_gdp",
+      "log_cases",
+      "log_deaths",
+      c(
+        "log_gdp",
+        "log_cases",
+        "log_deaths"
+      )
     )
   )
-)
+  
+  display_html_viewer(rv$table)
+}
 
-display_html_viewer(rv$table)
+prepare_vacc_reg_table(clevel)
+prepare_vacc_reg_table(clevel %>% filter(iso3c != "GIN"))
