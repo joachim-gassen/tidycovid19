@@ -76,7 +76,7 @@ ecdc_acc <- expand.grid(
   select(iso3c, date, ecdc_cases, ecdc_deaths) %>%
   ungroup()
 
-owid_testing <- readRDS("cached_data/owid_testing.RDS") %>%
+owid_data <- readRDS("cached_data/owid_data.RDS") %>%
   select(-timestamp)
 
 jhu_cases <- jhu_list[[1]] %>%
@@ -153,7 +153,7 @@ merged_base <- jhu_cases %>%
   select(iso3c, country, everything())
 
 merged <- merged_base %>%
-  left_join(owid_testing, by = c("iso3c", "date")) %>%
+  left_join(owid_data, by = c("iso3c", "date")) %>%
   left_join(
     calc_npi_measure("Social distancing", "soc_dist"),
     by = c("iso3c", "date")
