@@ -82,9 +82,12 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
       rvest::html_attr('href')
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
-    raw_data <- readr::read_csv(url, col_types = "ccccccccnnnnnn")
+    raw_data <- readr::read_csv(url, col_types = "cccccccccnnnnnn")
     raw_data$date <- lubridate::ymd(raw_data$date)
 
+    # 2021-02-16: Added a Google place_id (pos 8 , alphanumeric char string)
+    # https://developers.google.com/places/web-service/place-id
+    
     clean_cmr_data <- function(df) {
       df %>% dplyr::rename(
         retail_recreation = .data$retail_and_recreation_percent_change_from_baseline,
