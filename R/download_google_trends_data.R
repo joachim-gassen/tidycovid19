@@ -114,10 +114,34 @@ download_google_trends_data <- function(search_term = "coronavirus",
     lst <- lst[match(type, c('country', 'country_day', 'region', 'city'))]
     if (!silent) message(sprintf("done. Timestamp is %s", lst[[1]]$timestamp[1]))
   } else {
+
+    fail_safe_gtrends <- function(..., pause_after_fail = 10, retries = 10) {
+      done <- FALSE
+      tries = 0
+      while(!done & tries < retries) {
+        if(tries > 0) {
+          message(sprintf(
+            "This was error #%d. Sleeping for %d seconds.",
+            tries, pause_after_fail
+          ))
+          Sys.sleep(pause_after_fail)
+        }
+        rv <- try(gtrendsR::gtrends(...))
+        if(!is(rv, 'try-error')) done <- TRUE
+        else tries <- tries + 1
+      }
+      if (!done) stop(sprintf(
+        "Google Trends query failed %d times. I am giving up", tries
+      ))
+      rv
+    }
+
+
     time <- paste("2020-01-01", lubridate::today(tzone = "US/Pacific"))
 
-    trends_global <- gtrendsR::gtrends(search_term, time = time,
-                                       low_search_volume = low_search_volume)
+    trends_global <- fail_safe_gtrends(
+      search_term, time = time, low_search_volume = low_search_volume
+    )
 
     trends_global$interest_by_country %>%
       dplyr::filter(!is.na(.data$hits)) %>%
@@ -134,7 +158,7 @@ download_google_trends_data <- function(search_term = "coronavirus",
         sprintf("Pulling Google trend data for %s ...", iso2c),
         appendLF = FALSE
       )
-      gl <- gtrendsR::gtrends(search_term, geo = iso2c, time = time)
+      gl <- fail_safe_gtrends(search_term, geo = iso2c, time = time)
       if (!silent) message("done!")
 
       # Be nice to Google and sleep a little if 'pause' == 'TRUE'
