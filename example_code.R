@@ -1,6 +1,6 @@
 # Some example code on how to use the {tidycovid19}
-# Not part of the package of the package itself
-
+# Not part of the package  itself
+# Some more code that uses the package can be found in the 'add_code' directory.
 
 # --- Some visuals -------------------------------------------------------------
 
@@ -205,6 +205,10 @@ df %>%
 
 # --- New Our World in Data data -----------------------------------------------
 
+library(tidyverse)
+library(tidycovid19)
+library(ggridges)
+
 df <- download_merged_data(cached = TRUE, silent = TRUE)
 
 nobs <- df %>%
@@ -220,9 +224,57 @@ nobs <- df %>%
   ) %>%
   arrange(iso3c)
 
-vacc <- df %>%
-  filter(!is.na(total_vaccinations)) %>%
-  select(iso3c, date, total_vaccinations)
+has_vacc_data <- df %>%
+  select(iso3c, total_vaccinations, gdp_capita, deaths, confirmed, population) %>%
+  group_by(iso3c) %>%
+  filter(
+    !all(is.na(confirmed)) & !all(is.na(deaths)) & !all(is.na(population)) &
+    !all(is.na(gdp_capita))
+  ) %>%
+  summarise(
+    has_vacc_data = sum(!is.na(total_vaccinations)) > 0,
+    gdp_capita = mean(gdp_capita),
+    cases = max(1e5*(confirmed/population), na.rm = TRUE),
+    deaths = max(1e5*(deaths/population), na.rm = TRUE),
+    .groups = "drop"
+  )
+
+plot_sel_bias <- function(df, xvar, xlab) {
+  xvar <- enquo(xvar)
+  ggplot(
+    data = df, 
+    aes(
+      x = !!xvar, y = has_vacc_data, 
+      fill = has_vacc_data, height = stat(density)
+    )
+  ) +
+    geom_density_ridges(
+      stat = "binline", bins = 20, scale = 0.95
+    ) +
+    scale_x_log10(labels = scales::comma_format(accuracy = 0.1)) +
+    labs(
+      x = xlab,
+      y = "",
+      title = "OWID provides vaccination data"
+    ) +
+    theme_ridges() +
+    theme(
+      legend.position = "none",
+      plot.title.position = "plot"
+    )
+}
+
+plot_sel_bias(has_vacc_data, gdp_capita, "GDP per capita (in 2010 US-$, log-scaled)")
+plot_sel_bias(has_vacc_data, cases, "Covid-19 cases per 100,000 inhabitants (log-scaled)")
+plot_sel_bias(has_vacc_data, deaths, "Covid-19 deaths per 100,000 inhabitants (log-scaled)")
+
+mod <- glm(
+  has_vacc_data ~ log(gdp_capita) + log(deaths), 
+  data = has_vacc_data %>% filter(deaths > 0),
+  family = "binomial"
+) 
+
+summary(mod)
 
 clevel <- df %>%
   group_by(iso3c) %>%
@@ -242,9 +294,9 @@ clevel <- df %>%
   na.omit()
 
 
-plot_clevel_vacc_by_x <- function(xvar, xlab) {
+plot_clevel_vacc_by_x <- function(df, xvar, xlab) {
   xvar <- enquo(xvar)
-  ggplot(clevel, aes(x = !!xvar, y = vacc_1e5pop)) +
+  ggplot(df, aes(x = !!xvar, y = vacc_1e5pop)) +
     geom_point() +
     scale_x_log10() +
     scale_y_log10() +
@@ -257,32 +309,29 @@ plot_clevel_vacc_by_x <- function(xvar, xlab) {
     geom_smooth(method = "lm", formula = "y ~x")
 }
 
-plot_clevel_vacc_by_x(gdp_capita, "National income per capita (2010 US-$)")
-plot_clevel_vacc_by_x(cases_1e5pop, "Cases per 100,000 inhabitants")
-plot_clevel_vacc_by_x(deaths_1e5pop, "Deaths per 100,000 inhabitants")
-
-library(ExPanDaR)
-
-display_html_viewer <- function(raw_html) {
-  html_file <- tempfile(fileext = ".html")
-  writeLines(raw_html, html_file)
-  viewer <- getOption("viewer")
-  viewer(html_file)
-}
-
-rv <- prepare_regression_table(
-  df = clevel,
-  dvs = rep("vacc_1e5pop", 4),
-  idvs = list(
-    "gdp_capita",
-    "cases_1e5pop",
-    "deaths_1e5pop",
-    c(
-      "gdp_capita",
-      "cases_1e5pop",
-      "deaths_1e5pop"
-    )
-  )
+plot_clevel_vacc_by_x(clevel, gdp_capita, "National income per capita (2010 US-$)")
+plot_clevel_vacc_by_x(clevel, cases_1e5pop, "Cases per 100,000 inhabitants")
+plot_clevel_vacc_by_x(clevel, deaths_1e5pop, "Deaths per 100,000 inhabitants")
+plot_clevel_vacc_by_x(
+  clevel %>% filter(iso3c != "GIN"), 
+  gdp_capita, "National income per capita (2010 US-$)"
 )
 
-display_html_viewer(rv$table)
+mod <- lm(
+  log(vacc_1e5pop) ~ log(gdp_capita) + log(deaths_1e5pop), 
+  data = clevel
+) 
+summary(mod)
+
+mod <- lm(
+  log(vacc_1e5pop) ~ log(gdp_capita) + log(deaths_1e5pop), 
+  data = clevel %>% filter(iso3c != "GIN")
+) 
+summary(mod)
+
+
+mod <- lm(
+  log(vacc_1e5pop) ~ log(gdp_capita) + log(deaths_1e5pop), 
+  data = clevel %>% filter(!iso3c %in% c("CHN", "GIN"))
+) 
+summary(mod)

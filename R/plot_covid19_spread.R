@@ -60,7 +60,7 @@
 #'     ('soc_dist'), movement restrictions ('mov_rest'), public health measures
 #'     ('pub_health'), and social and economic measures ('soc_econ').
 #'
-#' @return A \link{ggplot2} object.
+#' @return A \code{\link[ggplot2]{ggplot2}} object.
 #'
 #'
 #' @examples

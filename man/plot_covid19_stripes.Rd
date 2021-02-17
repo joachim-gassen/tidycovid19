@@ -71,7 +71,7 @@ data. Note that you might run into issues with the default when running
 this in a non-english locale. Consider setting it by hand then.}
 }
 \value{
-A \link{ggplot2} object.
+A \code{\link[ggplot2]{ggplot2}} oobject.
 }
 \description{
 Provides a flexible visualization of the country-level Covid-19 spread,
