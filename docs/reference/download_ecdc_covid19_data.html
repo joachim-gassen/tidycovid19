@@ -43,8 +43,8 @@
 <meta property="og:description" content="Downloads case data provided by the European Centre for Disease Prevention
 and Control
 (https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide).
-The data is updated daily and contains the latest available public data
-on the number of new Covid-19 cases reported per day and per country." />
+The data is updated weekly and contains the latest available public data
+on the number of new Covid-19 cases reported per week and per country." />
 
 
 
@@ -135,8 +135,8 @@ on the number of new Covid-19 cases reported per day and per country." />
     <p>Downloads case data provided by the European Centre for Disease Prevention
 and Control
 (<a href='https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide'>https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide</a>).
-The data is updated daily and contains the latest available public data
-on the number of new Covid-19 cases reported per day and per country.</p>
+The data is updated weekly and contains the latest available public data
+on the number of new Covid-19 cases reported per week and per country.</p>
     </div>
 
     <pre class="usage"><span class='fu'>download_ecdc_covid19_data</span><span class='op'>(</span>silent <span class='op'>=</span> <span class='cn'>FALSE</span>, cached <span class='op'>=</span> <span class='cn'>FALSE</span>, use_daily <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
@@ -160,11 +160,10 @@ discontinued daily data (see below). Defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>use_daily</th>
-      <td><p>On December 14th, 2020 the ECDC switched from daily to 
-weekly reporting. If <code>TRUE</code> (the default), the code will use the 
-cached daily data (that is no longer available on the webpage) up 
-to 2020-12-14 and then switch to the weekly data that currently is being
-reported by the ECDC.</p></td>
+      <td><p>On December 14th, 2020 the ECDC switched from daily to
+weekly reporting. If <code>TRUE</code> (the default), the code will use daily
+data up to 2020-12-14 and then switch to the weekly data that currently
+is being reported by the ECDC.</p></td>
     </tr>
     </table>
 

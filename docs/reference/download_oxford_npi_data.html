@@ -189,20 +189,20 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>country</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>number_of_interventions <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>number_of_interventions</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`summarise()` ungrouping output (override with `.groups` argument)</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 183 x 2</span><span>
-#&gt;    country    number_of_interventions
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                        </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Georgia                        265
-#&gt; </span><span style='color: #555555;'> 2</span><span> Russia                         263
-#&gt; </span><span style='color: #555555;'> 3</span><span> Turkey                         263
-#&gt; </span><span style='color: #555555;'> 4</span><span> Botswana                       255
-#&gt; </span><span style='color: #555555;'> 5</span><span> Israel                         254
-#&gt; </span><span style='color: #555555;'> 6</span><span> Canada                         247
-#&gt; </span><span style='color: #555555;'> 7</span><span> Brazil                         243
-#&gt; </span><span style='color: #555555;'> 8</span><span> Kazakhstan                     243
-#&gt; </span><span style='color: #555555;'> 9</span><span> Azerbaijan                     237
-#&gt; </span><span style='color: #555555;'>10</span><span> Romania                        235
-#&gt; </span><span style='color: #555555;'># ... with 173 more rows</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>`summarise()` ungrouping output (override with `.groups` argument)</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 184 x 2</span><span>
+#&gt;    country   number_of_interventions
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Turkey                        355
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Georgia                       350
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Russia                        297
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Botswana                      295
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Canada                        291
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Israel                        287
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Romania                       287
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Australia                     285
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Bulgaria                      273
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Brazil                        271
+#&gt; </span><span style='color: #949494;'># … with 174 more rows</span><span></div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

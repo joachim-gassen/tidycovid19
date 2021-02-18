@@ -67,12 +67,14 @@ See the documentation of the separate download functions of the
 df <- download_merged_data(silent = TRUE, cached = TRUE)
 df \%>\%
   dplyr::group_by(iso3c) \%>\%
+  dplyr::filter(population > 10e6) \%>\%
   dplyr::summarise(
-    confirmed_cases = max(confirmed, na.rm = TRUE),
-    soc_dist_measures = max(soc_dist)
+    cases_per_1e5_pop =  max(1e5*(confirmed/population), na.rm = TRUE),
+    soc_dist_measures = max(soc_dist),
+    .groups = "drop"
   ) \%>\%
-  dplyr::filter(confirmed_cases >= 1000) \%>\%
-  ggplot2::ggplot(df, mapping = ggplot2::aes(x = confirmed_cases,
+  dplyr::filter(cases_per_1e5_pop >= 1000) \%>\%
+  ggplot2::ggplot(mapping = ggplot2::aes(x = cases_per_1e5_pop,
                                              y = soc_dist_measures)) +
   ggplot2::geom_point() +
   ggrepel::geom_label_repel(ggplot2::aes(label = iso3c)) +

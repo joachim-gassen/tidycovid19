@@ -127,7 +127,7 @@ download_google_trends_data <- function(search_term = "coronavirus",
           Sys.sleep(pause_after_fail)
         }
         rv <- try(gtrendsR::gtrends(...))
-        if(!is(rv, 'try-error')) done <- TRUE
+        if(!methods::is(rv, 'try-error')) done <- TRUE
         else tries <- tries + 1
       }
       if (!done) stop(sprintf(

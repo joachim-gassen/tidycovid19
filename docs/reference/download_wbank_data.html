@@ -188,34 +188,34 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 <span class='va'>df</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>country</span>, <span class='va'>population</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>population</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 217 x 2</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 217 x 2</span><span>
 #&gt;    country            population
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> China              </span><span style='text-decoration: underline;'>1</span><span>397</span><span style='text-decoration: underline;'>715</span><span>000
-#&gt; </span><span style='color: #555555;'> 2</span><span> India              </span><span style='text-decoration: underline;'>1</span><span>366</span><span style='text-decoration: underline;'>417</span><span>754
-#&gt; </span><span style='color: #555555;'> 3</span><span> United States       328</span><span style='text-decoration: underline;'>239</span><span>523
-#&gt; </span><span style='color: #555555;'> 4</span><span> Indonesia           270</span><span style='text-decoration: underline;'>625</span><span>568
-#&gt; </span><span style='color: #555555;'> 5</span><span> Pakistan            216</span><span style='text-decoration: underline;'>565</span><span>318
-#&gt; </span><span style='color: #555555;'> 6</span><span> Brazil              211</span><span style='text-decoration: underline;'>049</span><span>527
-#&gt; </span><span style='color: #555555;'> 7</span><span> Nigeria             200</span><span style='text-decoration: underline;'>963</span><span>599
-#&gt; </span><span style='color: #555555;'> 8</span><span> Bangladesh          163</span><span style='text-decoration: underline;'>046</span><span>161
-#&gt; </span><span style='color: #555555;'> 9</span><span> Russian Federation  144</span><span style='text-decoration: underline;'>373</span><span>535
-#&gt; </span><span style='color: #555555;'>10</span><span> Mexico              127</span><span style='text-decoration: underline;'>575</span><span>529
-#&gt; </span><span style='color: #555555;'># ... with 207 more rows</span><span></div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> China              </span><span style='text-decoration: underline;'>1</span><span>397</span><span style='text-decoration: underline;'>715</span><span>000
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> India              </span><span style='text-decoration: underline;'>1</span><span>366</span><span style='text-decoration: underline;'>417</span><span>754
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> United States       328</span><span style='text-decoration: underline;'>239</span><span>523
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Indonesia           270</span><span style='text-decoration: underline;'>625</span><span>568
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Pakistan            216</span><span style='text-decoration: underline;'>565</span><span>318
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Brazil              211</span><span style='text-decoration: underline;'>049</span><span>527
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Nigeria             200</span><span style='text-decoration: underline;'>963</span><span>599
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Bangladesh          163</span><span style='text-decoration: underline;'>046</span><span>161
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Russian Federation  144</span><span style='text-decoration: underline;'>373</span><span>535
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Mexico              127</span><span style='text-decoration: underline;'>575</span><span>529
+#&gt; </span><span style='color: #949494;'># … with 207 more rows</span><span></div><div class='input'>
 <span class='va'>lst</span> <span class='op'>&lt;-</span> <span class='fu'>download_wbank_data</span><span class='op'>(</span>silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span>, var_def <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>lst</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span>, names_to <span class='op'>=</span> <span class='st'>"wbank_variable"</span>, values_to <span class='op'>=</span> <span class='st'>"values"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>wbank_variable</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>non_na <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>values</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`summarise()` ungrouping output (override with `.groups` argument)</span></div><div class='output co'>#&gt; </span><span style='color: #555555;'># A tibble: 6 x 2</span><span>
+</div><div class='output co'>#&gt; <span class='message'>`summarise()` ungrouping output (override with `.groups` argument)</span></div><div class='output co'>#&gt; </span><span style='color: #949494;'># A tibble: 6 x 2</span><span>
 #&gt;   wbank_variable   non_na
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> gdp_capita          206
-#&gt; </span><span style='color: #555555;'>2</span><span> land_area_skm       215
-#&gt; </span><span style='color: #555555;'>3</span><span> life_expectancy     203
-#&gt; </span><span style='color: #555555;'>4</span><span> pop_density         215
-#&gt; </span><span style='color: #555555;'>5</span><span> pop_largest_city    153
-#&gt; </span><span style='color: #555555;'>6</span><span> population          217</div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> gdp_capita          206
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> land_area_skm       215
+#&gt; </span><span style='color: #BCBCBC;'>3</span><span> life_expectancy     203
+#&gt; </span><span style='color: #BCBCBC;'>4</span><span> pop_density         215
+#&gt; </span><span style='color: #BCBCBC;'>5</span><span> pop_largest_city    153
+#&gt; </span><span style='color: #BCBCBC;'>6</span><span> population          217</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

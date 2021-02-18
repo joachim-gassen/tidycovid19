@@ -17,11 +17,10 @@ data from the authorative source. Downloading the cached version is
 faster and the cache is updated daily. The cached version includes the
 discontinued daily data (see below). Defaults to \code{FALSE}.}
 
-\item{use_daily}{On December 14th, 2020 the ECDC switched from daily to 
-weekly reporting. If \code{TRUE} (the default), the code will use the 
-cached daily data (that is no longer available on the webpage) up 
-to 2020-12-14 and then switch to the weekly data that currently is being
-reported by the ECDC.}
+\item{use_daily}{On December 14th, 2020 the ECDC switched from daily to
+weekly reporting. If \code{TRUE} (the default), the code will use daily
+data up to 2020-12-14 and then switch to the weekly data that currently
+is being reported by the ECDC.}
 }
 \value{
 A data frame containing the data.
@@ -30,8 +29,8 @@ A data frame containing the data.
 Downloads case data provided by the European Centre for Disease Prevention
 and Control
 (\url{https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide}).
-The data is updated daily and contains the latest available public data
-on the number of new Covid-19 cases reported per day and per country.
+The data is updated weekly and contains the latest available public data
+on the number of new Covid-19 cases reported per week and per country.
 }
 \examples{
 df <- download_ecdc_covid19_data(silent = TRUE, cached = TRUE)

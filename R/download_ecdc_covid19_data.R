@@ -86,13 +86,13 @@ download_ecdc_covid19_data <- function(
       iso3c = .data$country_code,
       country_territory = .data$country,
       variable = .data$indicator,
-      value = .data$cumulative_count
+      value = .data$weekly_count
     ) %>%
     dplyr::mutate(date = ecdc_wk_to_date(.data$year_week)) %>%
     tidyr::pivot_wider(
-      id = all_of(c("iso3c", "country_territory", "date")),
-      names_from = variable,
-      values_from = value
+      id = dplyr::all_of(c("iso3c", "country_territory", "date")),
+      names_from = .data$variable,
+      values_from = .data$value
     ) %>%
     dplyr::mutate(timestamp = Sys.time()) %>%
     dplyr::arrange(.data$iso3c, .data$date)
