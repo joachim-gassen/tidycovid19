@@ -59,7 +59,10 @@ download_ecdc_covid19_data <- function(
   # I stick to our cached daily data and ignore the subnational data for the
   # time being
 
-  data_raw <- readr::read_csv("https://opendata.ecdc.europa.eu/covid19/nationalcasedeath/csv", col_types = readr::cols())
+  data_raw <- readr::read_csv(
+    "https://opendata.ecdc.europa.eu/covid19/nationalcasedeath/csv", 
+    col_types = readr::cols(note = "c")
+  )
 
   ecdc_wk_to_date <- function(str) {
     # I callbirated this to the old daily ECDC data for China and found that
@@ -71,12 +74,15 @@ download_ecdc_covid19_data <- function(
 
     yrpart <- as.integer(substr(str, 1, 4))
     wkpart <- as.integer(substr(str, 6, 7))
-    if (max(yrpart) > 2021) stop(paste(
-      "Is it really 2022? ECDC week day conversion needs adjustment.",
+    if (max(yrpart) > 2022) stop(paste(
+      "Is it really 2023? ECDC week day conversion needs adjustment.",
       "Please file an issue on Github quoting this error message."
     ))
     as.Date(
-      ifelse(yrpart == 2020, as.Date("2019-12-30"), as.Date("2021-01-04")) +
+      ifelse(
+        yrpart == 2020, as.Date("2019-12-30"), 
+        ifelse(yrpart == 2021, as.Date("2021-01-04"), as.Date("2022-01-03"))
+      ) +
       7*wkpart, origin = "1970-01-01"
     )
   }
