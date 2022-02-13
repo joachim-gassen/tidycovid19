@@ -83,16 +83,17 @@ download_wbank_data <- function(vars = c("SP.POP.TOTL", "AG.LND.TOTL.K2",
     data_def <- wb_list[[2]]
   } else {
     pull_worldbank_data <- function(vars) {
-      new_cache <- wbstats::wbcache()
-      all_vars <- as.character(unique(new_cache$indicators$indicatorID))
+      countries <- wbstats::wbcountries()
+      indicators <- wbstats::wbindicators()
+      all_vars <- as.character(unique(indicators$indicatorID))
       data_wide <- wbstats::wb(indicator = vars, mrv = 10, return_wide = TRUE)
-      new_cache$indicators[new_cache$indicators[,"indicatorID"] %in% vars, ] %>%
+      indicators[indicators[,"indicatorID"] %in% vars, ] %>%
         dplyr::rename(var_name = .data$indicatorID) %>%
         dplyr::mutate(var_def = paste(.data$indicator, "\nNote:",
                                       .data$indicatorDesc, "\nSource:",
                                       .data$sourceOrg)) %>%
         dplyr::select(.data$var_name, .data$var_def) -> wb_data_def
-      new_cache$countries %>%
+      countries %>%
         dplyr::select(.data$iso3c, .data$iso2c, .data$country,
                       .data$region, .data$income) -> ctries
       dplyr::left_join(data_wide, ctries, by = "iso3c") %>%
