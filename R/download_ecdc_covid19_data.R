@@ -96,7 +96,7 @@ download_ecdc_covid19_data <- function(
     ) %>%
     dplyr::mutate(date = ecdc_wk_to_date(.data$year_week)) %>%
     tidyr::pivot_wider(
-      id = dplyr::all_of(c("iso3c", "country_territory", "date")),
+      id_cols = dplyr::all_of(c("iso3c", "country_territory", "date")),
       names_from = .data$variable,
       values_from = .data$value
     ) %>%
