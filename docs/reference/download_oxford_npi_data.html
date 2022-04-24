@@ -189,21 +189,21 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>country</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>number_of_interventions <span class='op'>=</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/context.html'>n</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>number_of_interventions</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>`summarise()` ungrouping output (override with `.groups` argument)</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 184 x 2</span><span>
-#&gt;    country   number_of_interventions
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                       </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Turkey                        355
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Georgia                       350
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Russia                        297
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Botswana                      295
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Canada                        291
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Israel                        287
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Romania                       287
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Australia                     285
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Bulgaria                      273
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Brazil                        271
-#&gt; </span><span style='color: #949494;'># … with 174 more rows</span><span></div><div class='input'>
-</div></span></pre>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 186 × 2</span>
+#&gt;    country     number_of_interventions
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                         <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> Canada                          998
+#&gt; <span style='color: #BCBCBC;'> 2</span> Italy                           835
+#&gt; <span style='color: #BCBCBC;'> 3</span> Australia                       793
+#&gt; <span style='color: #BCBCBC;'> 4</span> Mongolia                        736
+#&gt; <span style='color: #BCBCBC;'> 5</span> Germany                         723
+#&gt; <span style='color: #BCBCBC;'> 6</span> Japan                           714
+#&gt; <span style='color: #BCBCBC;'> 7</span> Peru                            680
+#&gt; <span style='color: #BCBCBC;'> 8</span> Netherlands                     679
+#&gt; <span style='color: #BCBCBC;'> 9</span> Chile                           675
+#&gt; <span style='color: #BCBCBC;'>10</span> Singapore                       675
+#&gt; <span style='color: #949494;'># … with 176 more rows</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

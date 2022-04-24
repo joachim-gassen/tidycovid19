@@ -25,13 +25,7 @@ saveRDS(acaps, "cached_data/acaps_npi.RDS", version = 2)
 wblist <- download_wbank_data(var_def = TRUE, silent = TRUE)
 saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
 
-amtr_url <- scrape_apple_mtr_url()
-amtr_list <- download_apple_mtr_data(
-  amtr_url,
-  type = c("country", "country_region", "country_city"),
-  silent = TRUE
-)
-saveRDS(amtr_list, "cached_data/apple_mtr.RDS")
+# Since Apr 14, 2022 Apple is no longer providing mobility data
 
 gcmr_list <- download_google_cmr_data(
   type = c("country", "country_region", "country_sub_region", "us_county"),

@@ -8,7 +8,7 @@ download_apple_mtr_data(
   type = "country",
   url = NULL,
   silent = FALSE,
-  cached = FALSE
+  cached = TRUE
 )
 }
 \arguments{
@@ -19,31 +19,26 @@ download_apple_mtr_data(
  \item{"country_city": }{Mobility trends by city as classified by Apple (only available for some countries).}
 }}
 
-\item{url}{The URL of the Apple Mobility Trend Reports is burried in
-Java Script, making it non-trivial to parse. The Github repository
-of this package contains an R script that uses the 'RSelenium'
-package and headless browsing to scrape the URL. The scraped URL
-is included in the daily updated data contained in this repository.
-By default, the function uses this cached URL to retrieve the data.
-You can, however, pass your own URL by setting this variable.
-Defaults to \code{NULL} to trigger loading the cached URL.}
+\item{url}{The URL of the now defunct Apple Mobility Trend Reports. Ignored.}
 
 \item{silent}{Whether you want the function to send some status messages to
 the console. Might be informative as downloading will take some time
 and thus defaults to \code{TRUE}.}
 
 \item{cached}{Whether you want to download the cached version of the data
-from the {tidycovid19} Github repository instead of retrieving the
-data from the authorative source. Downloading the cached version is
-faster and the cache is updated daily. Defaults to \code{FALSE}.}
+from the {tidycovid19} Github repository. As Apple is no longer provides
+the data, this needs to be set to \code{TRUE} and this is what it
+defaults to. Will return an error if set to \code{FALSE}.}
 }
 \value{
 A data frame containing the data. It includes a \code{timestamp}
     variable indicating the time of data retrieval.
 }
 \description{
-Downloads Mobility Trends Reports provided by Apple related to Covid-19
-(\url{https://www.apple.com/covid19/mobility}).
+Provides Mobility Trends Reports related to Covid-19 as provided by Apple 
+(\url{https://www.apple.com/covid19/mobility}). Since apple is no longer 
+providing this data since April 14, 2022 the cached data will be returned
+and calling the function with \code{cache = TRUE} will yield an error.
 }
 \examples{
 df <- download_apple_mtr_data(silent = TRUE, cached = TRUE)

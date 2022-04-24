@@ -70,8 +70,8 @@ Currently, the package offers the following functions to download data:
     Control](https://www.ecdc.europa.eu/en/covid-19/data). The data is
     updated weekly and contains the latest available public data on the
     number of new Covid-19 cases reported per week and per country.
-  - **NEW**: `download_owid_data()`: Downloads and tidies [data
-    collected by the ‘Our World in Data’
+  - `download_owid_data()`: Downloads and tidies [data collected by the
+    ‘Our World in Data’
     team](https://ourworldindata.org/covid-testing). This team
     systematically collects data on hospitalizations, testing and
     vaccinations from multiple national sources.
@@ -91,7 +91,8 @@ Currently, the package offers the following functions to download data:
     why](https://joachim-gassen.github.io/2020/04/exploring-and-benchmarking-oxford-government-response-data/)).
   - `download_apple_mtr_data()`: Downloads [Mobility Trends Reports
     provided by Apple](https://www.apple.com/covid19/mobility) related
-    to Covid-19. The data is provided at country and sub-country levels.
+    to Covid-19. The data has been provided by Apple at country and
+    sub-country levels until April 14, 2022.
   - `download_google_cmr_data()`: Downloads [Google COVID-19 Community
     Mobility Reports](https://www.google.com/covid19/mobility/) data. As
     of April 17, Google provides a nice and clean CSV file containing
@@ -161,43 +162,691 @@ df <- tidycovid19_variable_definitions %>%
 kable(df) %>% kableExtra::kable_styling()
 ```
 
-| var\_name                | var\_def                                                                                                                                                                                                  |
-| :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| iso3c                    | Country name                                                                                                                                                                                              |
-| country                  | ISO3c country code as defined by ISO 3166-1 alpha-3                                                                                                                                                       |
-| date                     | Calendar date                                                                                                                                                                                             |
-| confirmed                | Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)                                                                                                                                            |
-| deaths                   | Covid-19-related deaths as reported by JHU CSSE (accumulated)                                                                                                                                             |
-| recovered                | Covid-19 recoveries as reported by JHU CSSE (accumulated)                                                                                                                                                 |
-| ecdc\_cases              | Covid-19 cases as reported by ECDC (accumulated)                                                                                                                                                          |
-| ecdc\_deaths             | Covid-19-related deaths as reported by ECDC (accumulated)                                                                                                                                                 |
-| total\_tests             | Accumulated test counts as reported by Our World in Data                                                                                                                                                  |
-| tests\_units             | Definition of what constitutes a ‘test’                                                                                                                                                                   |
-| soc\_dist                | Number of social distancing measures reported up to date by ACAPS, net of lifted restrictions                                                                                                             |
-| mov\_rest                | Number of movement restrictions reported up to date by ACAPS, net of lifted restrictions                                                                                                                  |
-| pub\_health              | Number of public health measures reported up to date by ACAPS, net of lifted restrictions                                                                                                                 |
-| gov\_soc\_econ           | Number of social and economic measures reported up to date by ACAPS, net of lifted restrictions                                                                                                           |
-| lockdown                 | Number of lockdown measures reported up to date by ACAPS, net of lifted restrictions                                                                                                                      |
-| apple\_mtr\_driving      | Apple Maps usage for driving directions, as percentage\*100 relative to the baseline of Jan 13, 2020                                                                                                      |
-| apple\_mtr\_walking      | Apple Maps usage for walking directions, as percentage\*100 relative to the baseline of Jan 13, 2020                                                                                                      |
-| apple\_mtr\_transit      | Apple Maps usage for public transit directions, as percentage\*100 relative to the baseline of Jan 13, 2020                                                                                               |
-| gcmr\_retail\_recreation | Google Community Mobility Reports data for the frequency that people visit retail and recreation places expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020         |
-| gcmr\_grocery\_pharmacy  | Google Community Mobility Reports data for the frequency that people visit grocery stores and pharmacies expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020        |
-| gcmr\_parks              | Google Community Mobility Reports data for the frequency that people visit parks expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                                |
-| gcmr\_transit\_stations  | Google Community Mobility Reports data for the frequency that people visit transit stations expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                     |
-| gcmr\_workplaces         | Google Community Mobility Reports data for the frequency that people visit workplaces expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                           |
-| gcmr\_residential        | Google Community Mobility Reports data for the frequency that people visit residential places expressed as a percentage\*100 change relative to the baseline period Jan 3 - Feb 6, 2020                   |
-| gtrends\_score           | Google search volume for the term ‘coronavirus’, relative across time with the country maximum scaled to 100                                                                                              |
-| gtrends\_country\_score  | Country-level Google search volume for the term ‘coronavirus’ over a period starting Jan 1, 2020, relative across countries with the country having the highest search volume scaled to 100 (time-stable) |
-| region                   | Country region as classified by the World Bank (time-stable)                                                                                                                                              |
-| income                   | Country income group as classified by the World Bank (time-stable)                                                                                                                                        |
-| population               | Country population as reported by the World Bank (original identifier ‘SP.POP.TOTL’, time-stable)                                                                                                         |
-| land\_area\_skm          | Country land mass in square kilometers as reported by the World Bank (original identifier ‘AG.LND.TOTL.K2’, time-stable)                                                                                  |
-| pop\_density             | Country population density as reported by the World Bank (original identifier ‘EN.POP.DNST’, time-stable)                                                                                                 |
-| pop\_largest\_city       | Population in the largest metropolian area of the country as reported by the World Bank (original identifier ‘EN.URB.LCTY’, time-stable)                                                                  |
-| life\_expectancy         | Average life expectancy at birth of country citizens in years as reported by the World Bank (original identifier ‘SP.DYN.LE00.IN’, time-stable)                                                           |
-| gdp\_capita              | Country gross domestic product per capita, measured in 2010 US-$ as reported by the World Bank (original identifier ‘NY.GDP.PCAP.KD’, time-stable)                                                        |
-| timestamp                | Date and time where data has been collected from authoritative sources                                                                                                                                    |
+<table class="table" style="margin-left: auto; margin-right: auto;">
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+var\_name
+
+</th>
+
+<th style="text-align:left;">
+
+var\_def
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+iso3c
+
+</td>
+
+<td style="text-align:left;">
+
+ISO3c country code as defined by ISO 3166-1 alpha-3
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+country
+
+</td>
+
+<td style="text-align:left;">
+
+Country name
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+date
+
+</td>
+
+<td style="text-align:left;">
+
+Calendar date
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+confirmed
+
+</td>
+
+<td style="text-align:left;">
+
+Confirmed Covid-19 cases as reported by JHU CSSE (accumulated)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+deaths
+
+</td>
+
+<td style="text-align:left;">
+
+Covid-19-related deaths as reported by JHU CSSE (accumulated)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+recovered
+
+</td>
+
+<td style="text-align:left;">
+
+Covid-19 recoveries as reported by JHU CSSE (accumulated)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+ecdc\_cases
+
+</td>
+
+<td style="text-align:left;">
+
+Covid-19 cases as reported by ECDC (accumulated, weekly post 2020-12-14)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+ecdc\_deaths
+
+</td>
+
+<td style="text-align:left;">
+
+Covid-19-related deaths as reported by ECDC (accumulated, weekly post
+2020-12-14)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_tests
+
+</td>
+
+<td style="text-align:left;">
+
+Accumulated test counts as reported by Our World in Data
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+tests\_units
+
+</td>
+
+<td style="text-align:left;">
+
+Definition of what constitutes a ‘test’
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+positive\_rate
+
+</td>
+
+<td style="text-align:left;">
+
+The share of COVID-19 tests that are positive, given as a rolling 7-day
+average
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+hosp\_patients
+
+</td>
+
+<td style="text-align:left;">
+
+Number of COVID-19 patients in hospital on a given day
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+icu\_patients
+
+</td>
+
+<td style="text-align:left;">
+
+Number of COVID-19 patients in intensive care units (ICUs) on a given
+day
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+total\_vaccinations
+
+</td>
+
+<td style="text-align:left;">
+
+Total number of COVID-19 vaccination doses administered
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+soc\_dist
+
+</td>
+
+<td style="text-align:left;">
+
+Number of social distancing measures reported up to date by ACAPS, net
+of lifted restrictions
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+mov\_rest
+
+</td>
+
+<td style="text-align:left;">
+
+Number of movement restrictions reported up to date by ACAPS, net of
+lifted restrictions
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pub\_health
+
+</td>
+
+<td style="text-align:left;">
+
+Number of public health measures reported up to date by ACAPS, net of
+lifted restrictions
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gov\_soc\_econ
+
+</td>
+
+<td style="text-align:left;">
+
+Number of social and economic measures reported up to date by ACAPS, net
+of lifted restrictions
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+lockdown
+
+</td>
+
+<td style="text-align:left;">
+
+Number of lockdown measures reported up to date by ACAPS, net of lifted
+restrictions
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+apple\_mtr\_driving
+
+</td>
+
+<td style="text-align:left;">
+
+Apple Maps usage for driving directions, as percentage\*100 relative to
+the baseline of Jan 13, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+apple\_mtr\_walking
+
+</td>
+
+<td style="text-align:left;">
+
+Apple Maps usage for walking directions, as percentage\*100 relative to
+the baseline of Jan 13, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+apple\_mtr\_transit
+
+</td>
+
+<td style="text-align:left;">
+
+Apple Maps usage for public transit directions, as percentage\*100
+relative to the baseline of Jan 13, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gcmr\_retail\_recreation
+
+</td>
+
+<td style="text-align:left;">
+
+Google Community Mobility Reports data for the frequency that people
+visit retail and recreation places expressed as a percentage\*100 change
+relative to the baseline period Jan 3 - Feb 6, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gcmr\_grocery\_pharmacy
+
+</td>
+
+<td style="text-align:left;">
+
+Google Community Mobility Reports data for the frequency that people
+visit grocery stores and pharmacies expressed as a percentage\*100
+change relative to the baseline period Jan 3 - Feb 6, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gcmr\_parks
+
+</td>
+
+<td style="text-align:left;">
+
+Google Community Mobility Reports data for the frequency that people
+visit parks expressed as a percentage\*100 change relative to the
+baseline period Jan 3 - Feb 6, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gcmr\_transit\_stations
+
+</td>
+
+<td style="text-align:left;">
+
+Google Community Mobility Reports data for the frequency that people
+visit transit stations expressed as a percentage\*100 change relative to
+the baseline period Jan 3 - Feb 6, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gcmr\_workplaces
+
+</td>
+
+<td style="text-align:left;">
+
+Google Community Mobility Reports data for the frequency that people
+visit workplaces expressed as a percentage\*100 change relative to the
+baseline period Jan 3 - Feb 6, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gcmr\_residential
+
+</td>
+
+<td style="text-align:left;">
+
+Google Community Mobility Reports data for the frequency that people
+visit residential places expressed as a percentage\*100 change relative
+to the baseline period Jan 3 - Feb 6, 2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gtrends\_score
+
+</td>
+
+<td style="text-align:left;">
+
+Google search volume for the term ‘coronavirus’, relative across time
+with the country maximum scaled to 100
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gtrends\_country\_score
+
+</td>
+
+<td style="text-align:left;">
+
+Country-level Google search volume for the term ‘coronavirus’ over a
+period starting Jan 1, 2020, relative across countries with the country
+having the highest search volume scaled to 100 (time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+region
+
+</td>
+
+<td style="text-align:left;">
+
+Country region as classified by the World Bank (time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+income
+
+</td>
+
+<td style="text-align:left;">
+
+Country income group as classified by the World Bank (time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+population
+
+</td>
+
+<td style="text-align:left;">
+
+Country population as reported by the World Bank (original identifier
+‘SP.POP.TOTL’, time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+land\_area\_skm
+
+</td>
+
+<td style="text-align:left;">
+
+Country land mass in square kilometers as reported by the World Bank
+(original identifier ‘AG.LND.TOTL.K2’, time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pop\_density
+
+</td>
+
+<td style="text-align:left;">
+
+Country population density as reported by the World Bank (original
+identifier ‘EN.POP.DNST’, time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+pop\_largest\_city
+
+</td>
+
+<td style="text-align:left;">
+
+Population in the largest metropolian area of the country as reported by
+the World Bank (original identifier ‘EN.URB.LCTY’, time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+life\_expectancy
+
+</td>
+
+<td style="text-align:left;">
+
+Average life expectancy at birth of country citizens in years as
+reported by the World Bank (original identifier ‘SP.DYN.LE00.IN’,
+time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+gdp\_capita
+
+</td>
+
+<td style="text-align:left;">
+
+Country gross domestic product per capita, measured in 2010 US-$ as
+reported by the World Bank (original identifier ‘NY.GDP.PCAP.KD’,
+time-stable)
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+timestamp
+
+</td>
+
+<td style="text-align:left;">
+
+Date and time where data has been collected from authoritative sources
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 There are more examples on how to code in the code file in the main
 directory with the revealing name `code_examples.R`. Explore and reuse\!
