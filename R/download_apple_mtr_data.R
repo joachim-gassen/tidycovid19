@@ -3,7 +3,7 @@
 #' Provides Mobility Trends Reports related to Covid-19 as provided by Apple 
 #' (\url{https://www.apple.com/covid19/mobility}). Since apple is no longer 
 #' providing this data since April 14, 2022 the cached data will be returned
-#' and calling the function with \code{cache = TRUE} will yield an error.
+#' and calling the function with \code{cache = FALSE} will yield an error.
 #' 
 #' @param url The URL of the now defunct Apple Mobility Trend Reports. Ignored.
 #' @param type The type of data that you want to retrieve. Can be any subset of

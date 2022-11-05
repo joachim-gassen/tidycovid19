@@ -19,19 +19,13 @@ saveRDS(ecdc, "cached_data/ecdc_covid19.RDS", version = 2)
 owid_data <- download_owid_data(silent = TRUE)
 saveRDS(owid_data, "cached_data/owid_data.RDS", version = 2)
 
-acaps <- download_acaps_npi_data(silent = TRUE)
-saveRDS(acaps, "cached_data/acaps_npi.RDS", version = 2)
+# Since December 10, 2020 ACAPS is no longer updating NPI data
 
 wblist <- download_wbank_data(var_def = TRUE, silent = TRUE)
 saveRDS(wblist, "cached_data/wbank.RDS", version = 2)
 
 # Since Apr 14, 2022 Apple is no longer providing mobility data
-
-gcmr_list <- download_google_cmr_data(
-  type = c("country", "country_region", "country_sub_region", "us_county"),
-  silent = TRUE
-)
-saveRDS(gcmr_list, "cached_data/google_cmr.RDS", version = 2)
+# Since October 15, 2022 Google is no longer providing mobility data
 
 gtlist <- download_google_trends_data(
   type = c('country', 'country_day', 'region', 'city'), silent = TRUE

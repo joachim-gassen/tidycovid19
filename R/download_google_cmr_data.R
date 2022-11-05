@@ -7,7 +7,9 @@
 #' recreation, groceries and pharmacies, parks, transit stations,
 #' workplaces, and residential". Google prepares these reports to help
 #' interested parties to assess responses to social distancing guidance
-#' related to Covid-19.
+#' related to Covid-19. As Google is no longer updating this data since 
+#' October 15, 2022 static historic is downloaded and calling the function 
+#' with \code{cache = FALSE} yields a warning.
 #'
 #' @param type The type of data that you want to retrieve. Can be any subset of
 #' \itemize{
@@ -69,17 +71,12 @@ download_google_cmr_data <- function(type = "country", silent = FALSE,
     lst <- lst[match(type, c('country', 'country_region', 'country_sub_region', 'us_county'))]
     if (!silent) message(sprintf("done. Timestamp is %s", lst[[1]]$timestamp[1]))
   } else {
-    if (!silent) message("Start downloading Google Community Mobility Reports data\n")
+    warning("Google stopped providing mobility data as of 2022-10-15. Downloading historic data.")
 
-    cmr_url <- "https://www.google.com/covid19/mobility/"
+    # 2022-10-17: Google stopped providing mobility data as of 2022-10-15
+    # the URL should be static
 
-    # 2020-09-24 A temporary web page change has moved the download button to
-    # section 4
-    # 2020-10-09 And back to section 3 ;-)
-
-    url <- xml2::read_html(cmr_url) %>%
-      rvest::html_nodes(xpath = "/html/body/div[1]/section[3]/div[2]/div/div[1]/p[3]/a[1]") %>%
-      rvest::html_attr('href')
+    url <- "https://www.gstatic.com/covid19/mobility/Global_Mobility_Report.csv"
 
     if(!silent) message(sprintf("Downloading '%s'.\n", url))
     raw_data <- readr::read_csv(url, col_types = "cccccccccnnnnnn")

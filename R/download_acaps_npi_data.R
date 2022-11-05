@@ -3,6 +3,10 @@
 #' Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
 #' from the ACAPS governmental measures database
 #' (\url{https://www.acaps.org/covid19-government-measures-dataset}).
+#' Since ACAPS is no longer 
+#' updating this data since December 12, 2020 historic data is 
+#' downloaded and calling the function with \code{cache = FALSE} yields 
+#' a warning.
 #'
 #' @param silent Whether you want the function to send some status messages to
 #'     the console. Might be informative as downloading will take some time
@@ -40,7 +44,10 @@ download_acaps_npi_data <- function(silent = FALSE, cached = FALSE) {
       data_info("acaps_npi")
     }
     return(df)
+  } else {
+    warning("ACAPS stopped providing NPI data as of 2020-12-10. Downloading historic data.")
   }
+    
 
   if (!silent) message("Start downloading ACAPS NPI data\n")
 
