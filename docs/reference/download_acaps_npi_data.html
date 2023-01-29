@@ -42,7 +42,11 @@
 <meta property="og:title" content="Download ACAPS non-pharmaceutical interventions data — download_acaps_npi_data" />
 <meta property="og:description" content="Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
 from the ACAPS governmental measures database
-(https://www.acaps.org/covid19-government-measures-dataset)." />
+(https://www.acaps.org/covid19-government-measures-dataset).
+Since ACAPS is no longer 
+updating this data since December 12, 2020 historic data is 
+downloaded and calling the function with cache = FALSE yields 
+a warning." />
 
 
 
@@ -132,7 +136,11 @@ from the ACAPS governmental measures database
     <div class="ref-description">
     <p>Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
 from the ACAPS governmental measures database
-(<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>).</p>
+(<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>).
+Since ACAPS is no longer 
+updating this data since December 12, 2020 historic data is 
+downloaded and calling the function with <code>cache = FALSE</code> yields 
+a warning.</p>
     </div>
 
     <pre class="usage"><span class='fu'>download_acaps_npi_data</span><span class='op'>(</span>silent <span class='op'>=</span> <span class='cn'>FALSE</span>, cached <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>

@@ -25,6 +25,10 @@ A data frame containing the data, organized by intervention. It
 Downloads non-pharmaceutical interventions (NPI) data related to Covid-19
 from the ACAPS governmental measures database
 (\url{https://www.acaps.org/covid19-government-measures-dataset}).
+Since ACAPS is no longer 
+updating this data since December 12, 2020 historic data is 
+downloaded and calling the function with \code{cache = FALSE} yields 
+a warning.
 }
 \examples{
 df <- download_acaps_npi_data(silent = TRUE, cached = TRUE)

@@ -191,16 +191,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 217 × 2</span>
 #&gt;    country            population
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> China              <span style='text-decoration: underline;'>1</span>410<span style='text-decoration: underline;'>929</span>362
-#&gt; <span style='color: #BCBCBC;'> 2</span> India              <span style='text-decoration: underline;'>1</span>380<span style='text-decoration: underline;'>004</span>385
-#&gt; <span style='color: #BCBCBC;'> 3</span> United States       329<span style='text-decoration: underline;'>484</span>123
-#&gt; <span style='color: #BCBCBC;'> 4</span> Indonesia           273<span style='text-decoration: underline;'>523</span>621
-#&gt; <span style='color: #BCBCBC;'> 5</span> Pakistan            220<span style='text-decoration: underline;'>892</span>331
-#&gt; <span style='color: #BCBCBC;'> 6</span> Brazil              212<span style='text-decoration: underline;'>559</span>409
-#&gt; <span style='color: #BCBCBC;'> 7</span> Nigeria             206<span style='text-decoration: underline;'>139</span>587
-#&gt; <span style='color: #BCBCBC;'> 8</span> Bangladesh          164<span style='text-decoration: underline;'>689</span>383
-#&gt; <span style='color: #BCBCBC;'> 9</span> Russian Federation  144<span style='text-decoration: underline;'>104</span>080
-#&gt; <span style='color: #BCBCBC;'>10</span> Mexico              128<span style='text-decoration: underline;'>932</span>753
+#&gt; <span style='color: #BCBCBC;'> 1</span> China              <span style='text-decoration: underline;'>1</span>412<span style='text-decoration: underline;'>360</span>000
+#&gt; <span style='color: #BCBCBC;'> 2</span> India              <span style='text-decoration: underline;'>1</span>407<span style='text-decoration: underline;'>563</span>842
+#&gt; <span style='color: #BCBCBC;'> 3</span> United States       331<span style='text-decoration: underline;'>893</span>745
+#&gt; <span style='color: #BCBCBC;'> 4</span> Indonesia           273<span style='text-decoration: underline;'>753</span>191
+#&gt; <span style='color: #BCBCBC;'> 5</span> Pakistan            231<span style='text-decoration: underline;'>402</span>117
+#&gt; <span style='color: #BCBCBC;'> 6</span> Brazil              214<span style='text-decoration: underline;'>326</span>223
+#&gt; <span style='color: #BCBCBC;'> 7</span> Nigeria             213<span style='text-decoration: underline;'>401</span>323
+#&gt; <span style='color: #BCBCBC;'> 8</span> Bangladesh          169<span style='text-decoration: underline;'>356</span>251
+#&gt; <span style='color: #BCBCBC;'> 9</span> Russian Federation  143<span style='text-decoration: underline;'>449</span>286
+#&gt; <span style='color: #BCBCBC;'>10</span> Mexico              126<span style='text-decoration: underline;'>705</span>138
 #&gt; <span style='color: #949494;'># … with 207 more rows</span></div><div class='input'>
 <span class='va'>lst</span> <span class='op'>&lt;-</span> <span class='fu'>download_wbank_data</span><span class='op'>(</span>silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span>, var_def <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>lst</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
@@ -211,9 +211,9 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 #&gt;   wbank_variable   non_na
 #&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
 #&gt; <span style='color: #BCBCBC;'>1</span> gdp_capita          210
-#&gt; <span style='color: #BCBCBC;'>2</span> land_area_skm       217
-#&gt; <span style='color: #BCBCBC;'>3</span> life_expectancy     203
-#&gt; <span style='color: #BCBCBC;'>4</span> pop_density         217
+#&gt; <span style='color: #BCBCBC;'>2</span> land_area_skm       215
+#&gt; <span style='color: #BCBCBC;'>3</span> life_expectancy     206
+#&gt; <span style='color: #BCBCBC;'>4</span> pop_density         215
 #&gt; <span style='color: #BCBCBC;'>5</span> pop_largest_city    153
 #&gt; <span style='color: #BCBCBC;'>6</span> population          217</div><div class='input'>
 </div></pre>

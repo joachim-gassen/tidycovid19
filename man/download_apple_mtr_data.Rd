@@ -38,7 +38,7 @@ A data frame containing the data. It includes a \code{timestamp}
 Provides Mobility Trends Reports related to Covid-19 as provided by Apple 
 (\url{https://www.apple.com/covid19/mobility}). Since apple is no longer 
 providing this data since April 14, 2022 the cached data will be returned
-and calling the function with \code{cache = TRUE} will yield an error.
+and calling the function with \code{cache = FALSE} will yield an error.
 }
 \examples{
 df <- download_apple_mtr_data(silent = TRUE, cached = TRUE)

@@ -80,6 +80,8 @@ Currently, the package offers the following functions to download data:
     (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset).
     These data allow researchers to study the effect of
     non-pharmaceutical interventions on the development of the virus.
+    Please NOTE: This data is no longer updated by the data provider
+    since December 10, 2020.
   - `download_oxford_npi_data()`: Downloads and tidies data from the
     [Oxford Covid-19 Government Response
     Tracker](https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker),
@@ -95,13 +97,14 @@ Currently, the package offers the following functions to download data:
     sub-country levels until April 14, 2022.
   - `download_google_cmr_data()`: Downloads [Google COVID-19 Community
     Mobility Reports](https://www.google.com/covid19/mobility/) data. As
-    of April 17, Google provides a nice and clean CSV file containing
-    country-day and region-day data. This makes the PDF scraping code
-    that used to be part of this package obsolete. If you are interested
-    in it for didactic reasons, you can still find it in the [git
+    of April 17 2020, Google has been providing a nice and clean CSV
+    file containing country-day and region-day data. This makes the PDF
+    scraping code that used to be part of this package obsolete. If you
+    are interested in it for didactic reasons, you can still find it in
+    the [git
     hstory](https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R).
-    This data is available at the country, regional and U.S. county
-    level.
+    This data is available at the country, regional and U.S. county leve
+    abd has been provided by Google since October 15, 2022.
   - `download_google_trends_data()`: Downloads and tidies [Google
     Trends](https://trends.google.com/trends/) data on the search volume
     for the term “coronavirus” (Thank you to Yan Ouaknine for bringing
@@ -980,7 +983,7 @@ server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
     post](https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/)
     providing a quick walk-through of the package.
 
-  - **New**: [A blog
+  - [A blog
     post](https://joachim-gassen.github.io/2021/01/vaccination-data-an-outlier-tale/)
     on the OWID vaccination data.
 

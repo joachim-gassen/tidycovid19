@@ -37,7 +37,9 @@ by geography, across different categories of places such as retail and
 recreation, groceries and pharmacies, parks, transit stations,
 workplaces, and residential". Google prepares these reports to help
 interested parties to assess responses to social distancing guidance
-related to Covid-19.
+related to Covid-19. As Google is no longer updating this data since 
+October 15, 2022 static historic is downloaded and calling the function 
+with \code{cache = FALSE} yields a warning.
 }
 \examples{
 df <- download_google_cmr_data(silent = TRUE, cached = TRUE)
