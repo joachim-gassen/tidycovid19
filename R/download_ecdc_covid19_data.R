@@ -74,14 +74,18 @@ download_ecdc_covid19_data <- function(
 
     yrpart <- as.integer(substr(str, 1, 4))
     wkpart <- as.integer(substr(str, 6, 7))
-    if (max(yrpart) > 2022) stop(paste(
-      "Is it really 2023? ECDC week day conversion needs adjustment.",
+    if (max(yrpart) > 2023) stop(paste(
+      "Is it really 2024? ECDC week day conversion needs adjustment.",
       "Please file an issue on Github quoting this error message."
     ))
     as.Date(
-      ifelse(
-        yrpart == 2020, as.Date("2019-12-30"), 
-        ifelse(yrpart == 2021, as.Date("2021-01-04"), as.Date("2022-01-03"))
+      dplyr::case_when(
+        yrpart == 2020 ~ as.Date("2019-12-30"),
+        yrpart == 2021 ~ as.Date("2021-01-04"),
+        yrpart == 2022 ~ as.Date("2022-01-03"),
+        yrpart == 2023 ~ as.Date("2023-01-02") 
+        # 2023-01-28: educated guess for 2024: first Monday of the year
+        # that would be yrpart == 2024 ~ as.Date("2023-01-01")
       ) +
       7*wkpart, origin = "1970-01-01"
     )
