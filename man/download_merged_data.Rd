@@ -45,6 +45,8 @@ case data provided by the ECDC
 (\url{https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide}),
 the ACAPS governmental measures database
 (\url{https://www.acaps.org/covid19-government-measures-dataset}),
+the Oxford Covid-19 Government Respoonse Tracker
+(\url{https://github.com/OxCGRT/covid-policy-tracker}),
 Mobility Trends Reports provided by Apple related to Covid-19
 (\url{https://www.apple.com/covid19/mobility}),
 Google COVID-19 Community Mobility Reports
@@ -57,7 +59,8 @@ Our World in Data team,
 and from the World Bank
 (\url{https://data.worldbank.org}) intro a country-day data frame.
 Variable definitions are provided by the data frame
-\code{tidycovid19_variable_definitions}.
+\code{tidycovid19_variable_definitions} that also reports on the current 
+status of the data.
 }
 \details{
 See the documentation of the separate download functions of the

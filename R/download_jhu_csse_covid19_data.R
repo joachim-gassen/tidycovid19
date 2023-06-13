@@ -6,7 +6,8 @@
 #' The data for confirmed cases, reported deaths and recoveries are merged into
 #' one data frame, converted to long format and
 #' joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
-#' \link{countrycode} package.
+#' \link{countrycode} package. Please note: JHU stopped updating the data 
+#' on March 10, 2023.
 #'
 #' @param type The type of data that you want to retrieve. Can be any subset of
 #' \itemize{

@@ -39,7 +39,8 @@ SARS-CoV-2 virus and the Covid-19 pandemic
 The data for confirmed cases, reported deaths and recoveries are merged into
 one data frame, converted to long format and
 joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
-\link{countrycode} package.
+\link{countrycode} package. Please note: JHU stopped updating the data 
+on March 10, 2023.
 }
 \examples{
 df <- download_jhu_csse_covid19_data(silent = TRUE, cached = TRUE)

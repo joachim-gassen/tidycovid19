@@ -1,15 +1,30 @@
+library(tidycovid19)
+df <- download_merged_data(cached = T, silent = T)
 tidycovid19_data_sources <- read.csv("data-raw/tidycovid19_data_sources.csv",
                                      stringsAsFactors = FALSE)
-save(tidycovid19_data_sources, file = "data/tidycovid19_data_sources.RData", version = 2)
+last_data <- data.frame(
+  id = tidycovid19_data_sources$id,
+  last_data = as.Date(unlist(
+    lapply(
+      c(
+        "confirmed", "ecdc_cases", "total_vaccinations", "population",
+        "soc_dist", "oxcgrt_government_response_index", "apple_mtr_driving",
+        "gcmr_residential", "gtrends_score", "population"),
+      function(x) max(dplyr::pull(df[!is.na(df[x]), "date"]))
+    )
+  ), origin = "1970-01-01"),
+  stringsAsFactors = FALSE
+)
+tidycovid19_data_sources <- tidycovid19_data_sources %>%
+  dplyr::left_join(last_data, by = "id")
 
-library(tidycovid19)
-df <- download_merged_data(cached = T, silent = F)
+save(tidycovid19_data_sources, file = "data/tidycovid19_data_sources.RData", version = 2)
 
 tidycovid19_variable_definitions <- data.frame(
   var_name = names(df),
   var_source = c(
     rep(NA, 3), rep("jhu_ccse", 3), rep("ecdc_covid19", 2),
-    rep("owid_data", 6), rep("acaps_npi", 5),
+    rep("owid_data", 6), rep("acaps_npi", 5), rep("oxford_npi", 4),
     rep("apple_mtr", 3), rep("google_cmr", 6), rep("google_trends", 2),
     rep("wbank", 8), NA
   ),
@@ -33,6 +48,10 @@ tidycovid19_variable_definitions <- data.frame(
     "Number of public health measures reported up to date by ACAPS, net of lifted restrictions",
     "Number of social and economic measures reported up to date by ACAPS, net of lifted restrictions",
     "Number of lockdown measures reported up to date by ACAPS, net of lifted restrictions",
+    "Stringency index as provided by the Oxford COVID-19 Government Response Tracker",
+    "Legacy stringency index based on old data format (prior April 25, 2020) as provided by the Oxford COVID-19 Government Response Tracker",
+    "Overall government response index as provided by the Oxford COVID-19 Government Response Tracker",
+    "Containment and health index as provided by the Oxford COVID-19 Government Response Tracker",
     "Apple Maps usage for driving directions, as percentage*100 relative to the baseline of Jan 13, 2020",
     "Apple Maps usage for walking directions, as percentage*100 relative to the baseline of Jan 13, 2020",
     "Apple Maps usage for public transit directions, as percentage*100 relative to the baseline of Jan 13, 2020",

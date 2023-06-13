@@ -6,12 +6,8 @@ library(lubridate)
 library(tidycovid19)
 library(stringr)
 
-source("add_code/scrape_apple_mtr_url.R", echo = FALSE)
-
-jhu_list <- download_jhu_csse_covid19_data(
-  type = c("country", "country_region", "us_county"), silent = TRUE
-)
-saveRDS(jhu_list, "cached_data/jhu_csse_covid19.RDS", version = 2)
+# Since March 10, 2023 there are no John Hopkins updates anymore 
+# (last day of data 2023-03-09)
 
 ecdc <- download_ecdc_covid19_data(silent = TRUE)
 saveRDS(ecdc, "cached_data/ecdc_covid19.RDS", version = 2)
@@ -32,6 +28,8 @@ gtlist <- download_google_trends_data(
 )
 saveRDS(gtlist, "cached_data/google_trends.RDS", version = 2)
 
+# The data is no longer updated after December 31, 2022 
+# while data review processes continue.
 oxlist <- download_oxford_npi_data(type = c("measures", "index"), silent = TRUE)
 saveRDS(oxlist, "cached_data/oxford_npi.RDS", version = 2)
 
@@ -75,6 +73,10 @@ npis <- readRDS("cached_data/acaps_npi.RDS") %>%
   rename(npi_type = category) %>%
   select(iso3c, npi_date, log_type, npi_type)
 
+ox_npis <- readRDS("cached_data/oxford_npi.RDS")[[2]] %>%
+  select(-timestamp, -country) %>%
+  rename_at(vars(-iso3c, -date), ~ paste0("oxcgrt_", .))
+
 amtr_list <- readRDS("cached_data/apple_mtr.RDS")
 
 amtr <- amtr_list[[1]] %>%
@@ -84,7 +86,7 @@ amtr <- amtr_list[[1]] %>%
 gcmr_list <- readRDS("cached_data/google_cmr.RDS")
 
 gcmr <- gcmr_list[[1]] %>%
-  select(-timestamp) %>%
+  select(-timestamp, -place_id) %>%
   rename_at(vars(-iso3c, -date), ~ paste0("gcmr_", .))
 
 gtrends_list <- readRDS("cached_data/google_trends.RDS")
@@ -102,6 +104,8 @@ wbank <-  wb_list[[1]] %>%
 
 calc_npi_measure <-function(type, var_name) {
   my_npi <- npis %>% filter(npi_type == type)
+  first_date <- min(my_npi$npi_date)
+  last_date <- max(my_npi$npi_date)
   merged_base %>%
     left_join(
       my_npi %>%
@@ -118,7 +122,8 @@ calc_npi_measure <-function(type, var_name) {
       sum_npi = cumsum(npi)
     ) %>%
     ungroup() %>%
-    select(.data$iso3c, .data$date, .data$sum_npi) -> df
+    filter(date >= first_date, date <= last_date) %>%
+    select(iso3c, date, sum_npi) -> df
 
   names(df)[3] <- var_name
   df
@@ -134,14 +139,24 @@ calc_npi_measure <-function(type, var_name) {
 #             I reflect this name change by renaming the variable 'soc_econ'
 #             'gov_soc_econ'.
 
+# 2023-06-11: New merging strategy to reflect that only OWID and ECDC data
+#             still receive updates.
+
+# 2023-06-11: Removed stale ACAPS scores post 2020-12-10
+
+# 2023-06-11: Included Oxford NPI data into the merged dataset 
+
 merged_base <- jhu_cases %>%
   full_join(ecdc_acc, by = c("iso3c", "date")) %>%
+  full_join(owid_data, by = c("iso3c", "date")) %>%
   arrange(iso3c, date) %>%
-  mutate(country = countrycode::countrycode(iso3c, "iso3c", "country.name")) %>%
+  mutate(country = suppressWarnings({
+    countrycode::countrycode(iso3c, "iso3c", "country.name")
+  })) %>%
+  filter(!is.na(country)) %>%
   select(iso3c, country, everything())
 
 merged <- merged_base %>%
-  left_join(owid_data, by = c("iso3c", "date")) %>%
   left_join(
     calc_npi_measure("Social distancing", "soc_dist"),
     by = c("iso3c", "date")
@@ -162,6 +177,7 @@ merged <- merged_base %>%
     calc_npi_measure("Lockdown", "lockdown"),
     by = c("iso3c", "date")
   ) %>%
+  left_join(ox_npis, by = c("iso3c", "date")) %>%
   left_join(amtr, by = c("iso3c", "date")) %>%
   left_join(gcmr, by = c("iso3c", "date")) %>%
   left_join(gtrends_cd, by = c("iso3c", "date")) %>%
@@ -169,9 +185,9 @@ merged <- merged_base %>%
   left_join(wbank, by = "iso3c") %>%
   group_by(iso3c) %>%
   mutate(
-    has_npi = max(soc_dist) + max(mov_rest) +
-      max(.data$pub_health) + max(gov_soc_econ) +
-      max(lockdown) > 0,
+    has_npi = suppressWarnings({max(soc_dist, na.rm = T) + max(mov_rest, na.rm = T) +
+      max(.data$pub_health, na.rm = T) + max(gov_soc_econ, na.rm = T) +
+      max(lockdown, na.rm = T) > 0}),
     soc_dist = ifelse(has_npi, soc_dist, NA),
     mov_rest = ifelse(has_npi, mov_rest, NA),
     pub_health = ifelse(has_npi, pub_health, NA),
