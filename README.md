@@ -30,6 +30,10 @@ As of June 13, 2023 these are the included data sources
 ``` r
 data(tidycovid19_data_sources)
 df <- tidycovid19_data_sources %>% select(-id)
+df$description[nrow(df)] <- paste(
+  "The merged dataset provided by the tidycovid19 R package. Contains data",
+  "from all sources mentioned above."
+)
 kable(df) %>% kableExtra::kable_styling()
 ```
 
@@ -412,26 +416,8 @@ download\_merged\_data()
 
 <td style="text-align:left;">
 
-This data frame contains Covid-19 related data from multiple sources in
-a country-day structure. Data sources are JHU CSSE data on confirmed
-cases, deaths and recoveries
-(<https://github.com/CSSEGISandData/COVID-19>), ‘Our World in Data’ data
-(<https://github.com/owid/covid-19-data/tree/master/public/data>), ACAPS
-data on governmental measures
-(<https://www.acaps.org/covid19-government-measures-dataset>), Oxford
-Covid-19 Government Respoonse Tracker
-(<https://github.com/OxCGRT/covid-policy-tracker>), Apple’s Mobility
-Trend Reports on Apple Map usage
-(<https://www.apple.com/covid19/mobility>), Google’s Community Mobility
-Reports on individual movement trends
-(<https://www.google.com/covid19/mobility/>), Google Trends data on
-relative Google search volumes for the term ‘coronavirus’
-(<https://trends.google.com/>) and country-level World Bank data on
-population (density), life expectancy and national income
-(<https://data.worldbank.org>). The data frame
-‘tidycovid19\_variable\_definitions’ holds definitions for each
-variable in this data frame. The data frame ‘tidycovid19\_data\_sources’
-contains more information on the data sources included in this package.
+The merged dataset provided by the tidycovid19 R package. Contains data
+from all sources mentioned above.
 
 </td>
 
@@ -452,78 +438,6 @@ contains more information on the data sources included in this package.
 </tbody>
 
 </table>
-
-``` r
-df$description[nrow(df)] <- paste(
-  "The merged dataset provided by the tidycovid19 R package. Contains data",
-  "from all sources mentioned above."
-)
-```
-
-The package offers the following functions to download data:
-
-  - `download_jhu_csse_covid19_data()`: Downloads and tidies [Covid-19
-    data from the Johns Hopkins University CSSE Github
-    Repo](https://github.com/CSSEGISandData/COVID-19). This data has
-    developed to a standard resource for researchers and the general
-    audience interested in assessing the global spreading of the virus.
-    The data is provided at country and sub-country levels. Please NOTE:
-    This data is no longer updated since March 10, 2023.
-  - `download_ecdc_covid19_data()`: Downloads and tidies [Covid-19 case
-    data provided by the European Centre for Disease Prevention and
-    Control](https://www.ecdc.europa.eu/en/covid-19/data). The data is
-    updated weekly and contains the latest available public data on the
-    number of new Covid-19 cases reported per week and per country.
-  - `download_owid_data()`: Downloads and tidies [data collected by the
-    ‘Our World in Data’
-    team](https://ourworldindata.org/covid-testing). This team
-    systematically collects data on hospitalizations, testing and
-    vaccinations from multiple national sources.
-  - `download_acaps_npi_data()`: Downloads and tidies the [Government
-    measures dataset provided by the Assessment Capacities Project
-    (ACAPS)](https://www.acaps.org/covid19-government-measures-dataset).
-    These data allow researchers to study the effect of
-    non-pharmaceutical interventions on the development of the virus.
-    Please NOTE: This data is no longer updated by the data provider
-    since December 10, 2020.
-  - `download_oxford_npi_data()`: Downloads and tidies data from the
-    [Oxford Covid-19 Government Response
-    Tracker](https://www.bsg.ox.ac.uk/research/research-projects/oxford-covid-19-government-response-tracker),
-    an alternative data source for governmental interventions. Please
-    NOTE: This data is no longer extended by the data provider since
-    December 31, 2022 but reviewing and confirming of data issues
-    continues.
-  - `download_apple_mtr_data()`: Downloads [Mobility Trends Reports
-    provided by Apple](https://www.apple.com/covid19/mobility) related
-    to Covid-19. The data has been provided by Apple at country and
-    sub-country levels until April 14, 2022.
-  - `download_google_cmr_data()`: Downloads [Google COVID-19 Community
-    Mobility Reports](https://www.google.com/covid19/mobility/) data. As
-    of April 17 2020, Google has been providing a nice and clean CSV
-    file containing country-day and region-day data. This makes the PDF
-    scraping code that used to be part of this package obsolete. If you
-    are interested in it for didactic reasons, you can still find it in
-    the [git
-    hstory](https://github.com/joachim-gassen/tidycovid19/tree/947f010bccb111bc181ca31889c6f2f86b841fb5/R).
-    This data is available at the country, regional and U.S. county
-    level and has been provided by Google until October 15, 2022.
-  - `download_google_trends_data()`: Downloads and tidies [Google
-    Trends](https://trends.google.com/trends/) data on the search volume
-    for the term “coronavirus” (Thank you to Yan Ouaknine for bringing
-    up that idea\!). This data can be used to assess the public
-    attention to Covid-19 across countries and over time within a given
-    country. The data is available at the country, regional and city
-    level but availability varies across countries as Google Trends
-    provides only more granular data for regions with high search
-    volumes.
-  - `download_wbank_data()`: Downloads and tidies additional country
-    level information provided by the [World
-    Bank](https://data.worldbank.org) using the {wbstats} package. These
-    data allow researchers to calculate per capita measures of the virus
-    spread and to assess the association of macro-economic variables
-    with the development of the virus.
-  - `download_merged_data()`: Downloads all data sources and creates a
-    merged country-day panel.
 
 ## How to Use the Package
 
@@ -555,11 +469,11 @@ df %>%
 <img src="man/figures/Example-1.png" style="display: block; margin: auto;" />
 
 The data comes with two meta data sets that describe the data. The data
-frame `tidycovid19_data_sources` provides short descriptions and links
-for each data source used by the package. The data frame
-`tidycovid19_variable_defintions` provides variable definitions for each
-variable included in the merged country-day data frame provided by
-`download_merged_data()`:
+frame `tidycovid19_data_sources` listed above provides short
+descriptions and links for each data source used by the package. The
+data frame `tidycovid19_variable_defintions` provides variable
+definitions for each variable included in the merged country-day data
+frame provided by `download_merged_data()`:
 
 ``` r
 data(tidycovid19_variable_definitions)
@@ -1393,9 +1307,9 @@ plot_covid19_stripes(
 
 ### Map Covid-19
 
-Finally, as Covid-19 has become a truly world-wide pandemic, I decided
-to also include a basic mapping function. `map_covid19()` allows you to
-map the spread of the virus at a certain date both world-wide
+Finally, I also included a basic mapping function. `map_covid19()`
+allows you to map the spread of the virus at a certain date both
+world-wide
 …
 
 ``` r
@@ -1450,6 +1364,9 @@ connections, you can also use this [alternative
 server](https://trr266.wiwi.hu-berlin.de/shiny/tidycovid19/).
 
 ## Blog posts
+
+The blog posts are mostly dated. I am leaving the links here for
+reference:
 
   - [An intro blog
     post](https://joachim-gassen.github.io/2020/05/tidycovid19-new-data-and-doc/)
