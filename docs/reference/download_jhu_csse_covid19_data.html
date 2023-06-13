@@ -46,7 +46,8 @@ SARS-CoV-2 virus and the Covid-19 pandemic
 The data for confirmed cases, reported deaths and recoveries are merged into
 one data frame, converted to long format and
 joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
-countrycode package." />
+countrycode package. Please note: JHU stopped updating the data 
+on March 10, 2023." />
 
 
 
@@ -140,7 +141,8 @@ SARS-CoV-2 virus and the Covid-19 pandemic
 The data for confirmed cases, reported deaths and recoveries are merged into
 one data frame, converted to long format and
 joined with ISO3c (ISO 3166-1 alpha-3) country codes based on the
-countrycode package.</p>
+countrycode package. Please note: JHU stopped updating the data 
+on March 10, 2023.</p>
     </div>
 
     <pre class="usage"><span class='fu'>download_jhu_csse_covid19_data</span><span class='op'>(</span>
@@ -191,16 +193,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div><div class='output co'>#&gt; <span class='message'>Selecting by confirmed_cases</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 × 2</span>
 #&gt;    country        confirmed_cases
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> US                   102<span style='text-decoration: underline;'>277</span>103
-#&gt; <span style='color: #BCBCBC;'> 2</span> India                 44<span style='text-decoration: underline;'>683</span>754
-#&gt; <span style='color: #BCBCBC;'> 3</span> France                39<span style='text-decoration: underline;'>712</span>963
-#&gt; <span style='color: #BCBCBC;'> 4</span> Germany               37<span style='text-decoration: underline;'>739</span>472
-#&gt; <span style='color: #BCBCBC;'> 5</span> Brazil                36<span style='text-decoration: underline;'>791</span>267
-#&gt; <span style='color: #BCBCBC;'> 6</span> Japan                 32<span style='text-decoration: underline;'>386</span>992
-#&gt; <span style='color: #BCBCBC;'> 7</span> Korea, South          30<span style='text-decoration: underline;'>130</span>730
-#&gt; <span style='color: #BCBCBC;'> 8</span> Italy                 25<span style='text-decoration: underline;'>453</span>789
-#&gt; <span style='color: #BCBCBC;'> 9</span> United Kingdom        24<span style='text-decoration: underline;'>507</span>210
-#&gt; <span style='color: #BCBCBC;'>10</span> Russia                21<span style='text-decoration: underline;'>615</span>219</div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'> 1</span> US                   103<span style='text-decoration: underline;'>802</span>702
+#&gt; <span style='color: #BCBCBC;'> 2</span> India                 44<span style='text-decoration: underline;'>690</span>738
+#&gt; <span style='color: #BCBCBC;'> 3</span> France                39<span style='text-decoration: underline;'>866</span>718
+#&gt; <span style='color: #BCBCBC;'> 4</span> Germany               38<span style='text-decoration: underline;'>249</span>060
+#&gt; <span style='color: #BCBCBC;'> 5</span> Brazil                37<span style='text-decoration: underline;'>081</span>209
+#&gt; <span style='color: #BCBCBC;'> 6</span> Japan                 33<span style='text-decoration: underline;'>320</span>438
+#&gt; <span style='color: #BCBCBC;'> 7</span> Korea, South          30<span style='text-decoration: underline;'>615</span>522
+#&gt; <span style='color: #BCBCBC;'> 8</span> Italy                 25<span style='text-decoration: underline;'>603</span>510
+#&gt; <span style='color: #BCBCBC;'> 9</span> United Kingdom        24<span style='text-decoration: underline;'>658</span>705
+#&gt; <span style='color: #BCBCBC;'>10</span> Russia                22<span style='text-decoration: underline;'>075</span>858</div><div class='input'>
 <span class='va'>df</span> <span class='op'>&lt;-</span> <span class='fu'>download_jhu_csse_covid19_data</span><span class='op'>(</span>
   type <span class='op'>=</span> <span class='st'>"us_county"</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
@@ -213,16 +215,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div><div class='output co'>#&gt; <span class='message'>Selecting by deaths</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 × 2</span>
 #&gt;    state        deaths
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> California    <span style='text-decoration: underline;'>35</span>230
+#&gt; <span style='color: #BCBCBC;'> 1</span> California    <span style='text-decoration: underline;'>35</span>545
 #&gt; <span style='color: #BCBCBC;'> 2</span> Florida       <span style='text-decoration: underline;'>25</span>840
-#&gt; <span style='color: #BCBCBC;'> 3</span> Arizona       <span style='text-decoration: underline;'>18</span>665
-#&gt; <span style='color: #BCBCBC;'> 4</span> Illinois      <span style='text-decoration: underline;'>15</span>161
-#&gt; <span style='color: #BCBCBC;'> 5</span> New York      <span style='text-decoration: underline;'>14</span>088
-#&gt; <span style='color: #BCBCBC;'> 6</span> Texas         <span style='text-decoration: underline;'>11</span>529
-#&gt; <span style='color: #BCBCBC;'> 7</span> Nevada         <span style='text-decoration: underline;'>9</span>284
-#&gt; <span style='color: #BCBCBC;'> 8</span> Michigan       <span style='text-decoration: underline;'>8</span>976
-#&gt; <span style='color: #BCBCBC;'> 9</span> Puerto Rico    <span style='text-decoration: underline;'>5</span>678
-#&gt; <span style='color: #BCBCBC;'>10</span> Pennsylvania   <span style='text-decoration: underline;'>5</span>475</div><div class='input'>
+#&gt; <span style='color: #BCBCBC;'> 3</span> Arizona       <span style='text-decoration: underline;'>18</span>846
+#&gt; <span style='color: #BCBCBC;'> 4</span> Illinois      <span style='text-decoration: underline;'>15</span>289
+#&gt; <span style='color: #BCBCBC;'> 5</span> New York      <span style='text-decoration: underline;'>14</span>219
+#&gt; <span style='color: #BCBCBC;'> 6</span> Texas         <span style='text-decoration: underline;'>11</span>623
+#&gt; <span style='color: #BCBCBC;'> 7</span> Nevada         <span style='text-decoration: underline;'>9</span>313
+#&gt; <span style='color: #BCBCBC;'> 8</span> Michigan       <span style='text-decoration: underline;'>9</span>107
+#&gt; <span style='color: #BCBCBC;'> 9</span> Puerto Rico    <span style='text-decoration: underline;'>5</span>823
+#&gt; <span style='color: #BCBCBC;'>10</span> Pennsylvania   <span style='text-decoration: underline;'>5</span>549</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

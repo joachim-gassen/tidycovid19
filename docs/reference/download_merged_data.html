@@ -47,6 +47,8 @@ case data provided by the ECDC
 (https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide),
 the ACAPS governmental measures database
 (https://www.acaps.org/covid19-government-measures-dataset),
+the Oxford Covid-19 Government Respoonse Tracker
+(https://github.com/OxCGRT/covid-policy-tracker),
 Mobility Trends Reports provided by Apple related to Covid-19
 (https://www.apple.com/covid19/mobility),
 Google COVID-19 Community Mobility Reports
@@ -59,7 +61,8 @@ Our World in Data team,
 and from the World Bank
 (https://data.worldbank.org) intro a country-day data frame.
 Variable definitions are provided by the data frame
-tidycovid19_variable_definitions." />
+tidycovid19_variable_definitions that also reports on the current 
+status of the data." />
 
 
 
@@ -154,6 +157,8 @@ case data provided by the ECDC
 (<a href='https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide'>https://www.ecdc.europa.eu/en/publications-data/download-todays-data-geographic-distribution-covid-19-cases-worldwide</a>),
 the ACAPS governmental measures database
 (<a href='https://www.acaps.org/covid19-government-measures-dataset'>https://www.acaps.org/covid19-government-measures-dataset</a>),
+the Oxford Covid-19 Government Respoonse Tracker
+(<a href='https://github.com/OxCGRT/covid-policy-tracker'>https://github.com/OxCGRT/covid-policy-tracker</a>),
 Mobility Trends Reports provided by Apple related to Covid-19
 (<a href='https://www.apple.com/covid19/mobility'>https://www.apple.com/covid19/mobility</a>),
 Google COVID-19 Community Mobility Reports
@@ -166,7 +171,8 @@ Our World in Data team,
 and from the World Bank
 (<a href='https://data.worldbank.org'>https://data.worldbank.org</a>) intro a country-day data frame.
 Variable definitions are provided by the data frame
-<code>tidycovid19_variable_definitions</code>.</p>
+<code>tidycovid19_variable_definitions</code> that also reports on the current 
+status of the data.</p>
     </div>
 
     <pre class="usage"><span class='fu'>download_merged_data</span><span class='op'>(</span>
@@ -236,8 +242,8 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
                                              y <span class='op'>=</span> <span class='va'>soc_dist_measures</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_point.html'>geom_point</a></span><span class='op'>(</span><span class='op'>)</span> <span class='op'>+</span>
   <span class='fu'>ggrepel</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html'>geom_label_repel</a></span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>label <span class='op'>=</span> <span class='va'>iso3c</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span>
-  <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>trans<span class='op'>=</span><span class='st'>'log10'</span>, labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/label_number.html'>comma</a></span><span class='op'>)</span>
-</div><div class='img'><img src='download_merged_data-1.png' alt='' width='700' height='433' /></div><div class='input'>
+  <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_x_continuous</a></span><span class='op'>(</span>trans<span class='op'>=</span><span class='st'>'log10'</span>, labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/comma.html'>comma</a></span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 55 rows containing missing values (`geom_point()`).</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Removed 55 rows containing missing values (`geom_label_repel()`).</span></div><div class='img'><img src='download_merged_data-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
