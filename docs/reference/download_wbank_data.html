@@ -191,16 +191,16 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 217 × 2</span>
 #&gt;    country            population
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> China              <span style='text-decoration: underline;'>1</span>412<span style='text-decoration: underline;'>360</span>000
-#&gt; <span style='color: #BCBCBC;'> 2</span> India              <span style='text-decoration: underline;'>1</span>407<span style='text-decoration: underline;'>563</span>842
-#&gt; <span style='color: #BCBCBC;'> 3</span> United States       331<span style='text-decoration: underline;'>893</span>745
-#&gt; <span style='color: #BCBCBC;'> 4</span> Indonesia           273<span style='text-decoration: underline;'>753</span>191
-#&gt; <span style='color: #BCBCBC;'> 5</span> Pakistan            231<span style='text-decoration: underline;'>402</span>117
-#&gt; <span style='color: #BCBCBC;'> 6</span> Brazil              214<span style='text-decoration: underline;'>326</span>223
-#&gt; <span style='color: #BCBCBC;'> 7</span> Nigeria             213<span style='text-decoration: underline;'>401</span>323
-#&gt; <span style='color: #BCBCBC;'> 8</span> Bangladesh          169<span style='text-decoration: underline;'>356</span>251
-#&gt; <span style='color: #BCBCBC;'> 9</span> Russian Federation  143<span style='text-decoration: underline;'>449</span>286
-#&gt; <span style='color: #BCBCBC;'>10</span> Mexico              126<span style='text-decoration: underline;'>705</span>138
+#&gt; <span style='color: #BCBCBC;'> 1</span> India              <span style='text-decoration: underline;'>1</span>417<span style='text-decoration: underline;'>173</span>173
+#&gt; <span style='color: #BCBCBC;'> 2</span> China              <span style='text-decoration: underline;'>1</span>412<span style='text-decoration: underline;'>175</span>000
+#&gt; <span style='color: #BCBCBC;'> 3</span> United States       333<span style='text-decoration: underline;'>287</span>557
+#&gt; <span style='color: #BCBCBC;'> 4</span> Indonesia           275<span style='text-decoration: underline;'>501</span>339
+#&gt; <span style='color: #BCBCBC;'> 5</span> Pakistan            235<span style='text-decoration: underline;'>824</span>862
+#&gt; <span style='color: #BCBCBC;'> 6</span> Nigeria             218<span style='text-decoration: underline;'>541</span>212
+#&gt; <span style='color: #BCBCBC;'> 7</span> Brazil              215<span style='text-decoration: underline;'>313</span>498
+#&gt; <span style='color: #BCBCBC;'> 8</span> Bangladesh          171<span style='text-decoration: underline;'>186</span>372
+#&gt; <span style='color: #BCBCBC;'> 9</span> Russian Federation  143<span style='text-decoration: underline;'>555</span>736
+#&gt; <span style='color: #BCBCBC;'>10</span> Mexico              127<span style='text-decoration: underline;'>504</span>125
 #&gt; <span style='color: #949494;'># ℹ 207 more rows</span></div><div class='input'>
 <span class='va'>lst</span> <span class='op'>&lt;-</span> <span class='fu'>download_wbank_data</span><span class='op'>(</span>silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span>, var_def <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>lst</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
