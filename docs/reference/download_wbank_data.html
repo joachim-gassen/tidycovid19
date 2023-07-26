@@ -191,31 +191,23 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 217 × 2</span>
 #&gt;    country            population
 #&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                   <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
-#&gt; <span style='color: #BCBCBC;'> 1</span> India              <span style='text-decoration: underline;'>1</span>417<span style='text-decoration: underline;'>173</span>173
-#&gt; <span style='color: #BCBCBC;'> 2</span> China              <span style='text-decoration: underline;'>1</span>412<span style='text-decoration: underline;'>175</span>000
-#&gt; <span style='color: #BCBCBC;'> 3</span> United States       333<span style='text-decoration: underline;'>287</span>557
-#&gt; <span style='color: #BCBCBC;'> 4</span> Indonesia           275<span style='text-decoration: underline;'>501</span>339
-#&gt; <span style='color: #BCBCBC;'> 5</span> Pakistan            235<span style='text-decoration: underline;'>824</span>862
-#&gt; <span style='color: #BCBCBC;'> 6</span> Nigeria             218<span style='text-decoration: underline;'>541</span>212
-#&gt; <span style='color: #BCBCBC;'> 7</span> Brazil              215<span style='text-decoration: underline;'>313</span>498
-#&gt; <span style='color: #BCBCBC;'> 8</span> Bangladesh          171<span style='text-decoration: underline;'>186</span>372
-#&gt; <span style='color: #BCBCBC;'> 9</span> Russian Federation  143<span style='text-decoration: underline;'>555</span>736
-#&gt; <span style='color: #BCBCBC;'>10</span> Mexico              127<span style='text-decoration: underline;'>504</span>125
+#&gt; <span style='color: #BCBCBC;'> 1</span> Russian Federation  16<span style='text-decoration: underline;'>376</span>870 
+#&gt; <span style='color: #BCBCBC;'> 2</span> China                9<span style='text-decoration: underline;'>424</span>703.
+#&gt; <span style='color: #BCBCBC;'> 3</span> United States        9<span style='text-decoration: underline;'>147</span>420 
+#&gt; <span style='color: #BCBCBC;'> 4</span> Canada               8<span style='text-decoration: underline;'>965</span>590 
+#&gt; <span style='color: #BCBCBC;'> 5</span> Brazil               8<span style='text-decoration: underline;'>358</span>140 
+#&gt; <span style='color: #BCBCBC;'> 6</span> Australia            7<span style='text-decoration: underline;'>692</span>020 
+#&gt; <span style='color: #BCBCBC;'> 7</span> India                2<span style='text-decoration: underline;'>973</span>190 
+#&gt; <span style='color: #BCBCBC;'> 8</span> Argentina            2<span style='text-decoration: underline;'>736</span>690 
+#&gt; <span style='color: #BCBCBC;'> 9</span> Kazakhstan           2<span style='text-decoration: underline;'>699</span>700 
+#&gt; <span style='color: #BCBCBC;'>10</span> Algeria              2<span style='text-decoration: underline;'>381</span>741 
 #&gt; <span style='color: #949494;'># ℹ 207 more rows</span></div><div class='input'>
 <span class='va'>lst</span> <span class='op'>&lt;-</span> <span class='fu'>download_wbank_data</span><span class='op'>(</span>silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span>, var_def <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>lst</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
   <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span>, names_to <span class='op'>=</span> <span class='st'>"wbank_variable"</span>, values_to <span class='op'>=</span> <span class='st'>"values"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>wbank_variable</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>non_na <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>values</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 2</span>
-#&gt;   wbank_variable   non_na
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> gdp_capita          210
-#&gt; <span style='color: #BCBCBC;'>2</span> land_area_skm       215
-#&gt; <span style='color: #BCBCBC;'>3</span> life_expectancy     210
-#&gt; <span style='color: #BCBCBC;'>4</span> pop_density         215
-#&gt; <span style='color: #BCBCBC;'>5</span> pop_largest_city    153
-#&gt; <span style='color: #BCBCBC;'>6</span> population          217</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in tidyr::pivot_longer(., 5:10, names_to = "wbank_variable", values_to = "values"): Can't combine `population` &lt;double&gt; and `timestamp` &lt;datetime&lt;local&gt;&gt;.</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
