@@ -25,7 +25,7 @@ benefits of open science.
 
 ## The Data
 
-As of August 09, 2023 these are the included data sources
+As of August 10, 2023 these are the included data sources
 
 ``` r
 data(tidycovid19_data_sources)
@@ -400,7 +400,7 @@ not comparable across data frames.
 
 <td style="text-align:left;">
 
-2023-07-30
+2023-08-06
 
 </td>
 
