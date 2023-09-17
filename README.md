@@ -25,7 +25,7 @@ benefits of open science.
 
 ## The Data
 
-As of September 16, 2023 these are the included data sources
+As of September 17, 2023 these are the included data sources
 
 ``` r
 data(tidycovid19_data_sources)
@@ -171,7 +171,7 @@ of countries.
 
 <td style="text-align:left;">
 
-2023-09-14
+2023-09-15
 
 </td>
 
