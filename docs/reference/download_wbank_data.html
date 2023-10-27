@@ -207,15 +207,7 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='fu'>tidyr</span><span class='fu'>::</span><span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_longer.html'>pivot_longer</a></span><span class='op'>(</span><span class='fl'>5</span><span class='op'>:</span><span class='fl'>10</span>, names_to <span class='op'>=</span> <span class='st'>"wbank_variable"</span>, values_to <span class='op'>=</span> <span class='st'>"values"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>wbank_variable</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/summarise.html'>summarise</a></span><span class='op'>(</span>non_na <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='op'>!</span><span class='fu'><a href='https://rdrr.io/r/base/NA.html'>is.na</a></span><span class='op'>(</span><span class='va'>values</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 6 × 2</span>
-#&gt;   wbank_variable   non_na
-#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
-#&gt; <span style='color: #BCBCBC;'>1</span> gdp_capita          210
-#&gt; <span style='color: #BCBCBC;'>2</span> land_area_skm       216
-#&gt; <span style='color: #BCBCBC;'>3</span> life_expectancy     210
-#&gt; <span style='color: #BCBCBC;'>4</span> pop_density         216
-#&gt; <span style='color: #BCBCBC;'>5</span> pop_largest_city    153
-#&gt; <span style='color: #BCBCBC;'>6</span> population          217</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='error'>Error in tidyr::pivot_longer(., 5:10, names_to = "wbank_variable", values_to = "values"): Can't combine `population` &lt;double&gt; and `timestamp` &lt;datetime&lt;local&gt;&gt;.</span></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
