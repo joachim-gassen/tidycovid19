@@ -219,40 +219,40 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>iso3c</span>, <span class='va'>gtrends_score</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>gtrends_score</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;    iso3c gtrends_score
-#&gt; 1    ITA           100
-#&gt; 2    IRL            69
-#&gt; 3    LUX            47
-#&gt; 4    MUS            41
-#&gt; 5    KWT            40
-#&gt; 6    IND            34
-#&gt; 7    HND            32
-#&gt; 8    MEX            30
-#&gt; 9    GTM            29
-#&gt; 10   JAM            28
-#&gt; 11   NIC            28
-#&gt; 12   LKA            26
-#&gt; 13   MAR            25
-#&gt; 14   KEN            24
-#&gt; 15   LBN            24
-#&gt; 16   MKD            23
-#&gt; 17   NLD            20
-#&gt; 18   MYS            17
-#&gt; 19   NGA            15
-#&gt; 20   KHM            13
-#&gt; 21   HKG            12
-#&gt; 22   ISR            11
-#&gt; 23   HRV            10
-#&gt; 24   NOR            10
-#&gt; 25   LTU            10
-#&gt; 26   GRC             9
-#&gt; 27   JOR             9
-#&gt; 28   HUN             7
-#&gt; 29   IRQ             6
-#&gt; 30   KOR             4
-#&gt; 31   KAZ             3
-#&gt; 32   IDN             3
-#&gt; 33   IRN             2
-#&gt; 34   JPN             1</div><div class='input'>
+#&gt; 1    QAT           100
+#&gt; 2    URY            73
+#&gt; 3    NPL            62
+#&gt; 4    ZAF            62
+#&gt; 5    OMN            60
+#&gt; 6    NZL            57
+#&gt; 7    PER            57
+#&gt; 8    SEN            57
+#&gt; 9    ROU            56
+#&gt; 10   USA            55
+#&gt; 11   PAN            52
+#&gt; 12   SGP            50
+#&gt; 13   UGA            47
+#&gt; 14   SLV            42
+#&gt; 15   PRY            42
+#&gt; 16   PRI            38
+#&gt; 17   TTO            38
+#&gt; 18   VEN            38
+#&gt; 19   PAK            36
+#&gt; 20   TUN            35
+#&gt; 21   PRT            35
+#&gt; 22   SAU            20
+#&gt; 23   SWE            18
+#&gt; 24   SVN            17
+#&gt; 25   SVK            15
+#&gt; 26   PHL            12
+#&gt; 27   SRB            10
+#&gt; 28   POL             6
+#&gt; 29   THA             5
+#&gt; 30   TUR             3
+#&gt; 31   VNM             2
+#&gt; 32   TWN             2
+#&gt; 33   UKR             2
+#&gt; 34   RUS             2</div><div class='input'>
 <span class='va'>lst</span> <span class='op'>&lt;-</span> <span class='fu'>download_google_trends_data</span><span class='op'>(</span>type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"region"</span>, <span class='st'>"city"</span><span class='op'>)</span>, silent <span class='op'>=</span> <span class='cn'>TRUE</span>, cached <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='va'>lst</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>iso3c</span> <span class='op'>==</span> <span class='st'>"DEU"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
