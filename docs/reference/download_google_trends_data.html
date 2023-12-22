@@ -221,62 +221,62 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
 </div><div class='output co'>#&gt;    iso3c gtrends_score
 #&gt; 1    ITA           100
 #&gt; 2    ESP            84
-#&gt; 3    GBR            80
-#&gt; 4    QAT            75
-#&gt; 5    IRL            70
-#&gt; 6    FRA            63
-#&gt; 7    CHE            59
-#&gt; 8    ARE            57
-#&gt; 9    ARG            53
-#&gt; 10   AUS            53
-#&gt; 11   URY            51
-#&gt; 12   NPL            50
-#&gt; 13   CAN            45
+#&gt; 3    QAT            74
+#&gt; 4    GBR            74
+#&gt; 5    IRL            64
+#&gt; 6    FRA            62
+#&gt; 7    CHE            58
+#&gt; 8    URY            55
+#&gt; 9    ARE            54
+#&gt; 10   ARG            49
+#&gt; 11   AUS            49
+#&gt; 12   NPL            47
+#&gt; 13   ZAF            47
 #&gt; 14   USA            45
-#&gt; 15   ZAF            45
-#&gt; 16   ROU            45
-#&gt; 17   PER            43
-#&gt; 18   COL            42
-#&gt; 19   KWT            42
-#&gt; 20   NZL            42
-#&gt; 21   AUT            42
-#&gt; 22   BEL            39
-#&gt; 23   PAN            38
-#&gt; 24   SGP            38
-#&gt; 25   CHL            37
-#&gt; 26   DEU            37
-#&gt; 27   PRY            35
-#&gt; 28   BOL            34
-#&gt; 29   IND            32
-#&gt; 30   ECU            32
-#&gt; 31   CRI            31
-#&gt; 32   VEN            29
-#&gt; 33   MEX            29
-#&gt; 34   GTM            29
-#&gt; 35   MAR            27
-#&gt; 36   PRT            26
-#&gt; 37   LKA            26
-#&gt; 38   PAK            26
-#&gt; 39   DOM            26
-#&gt; 40   BGD            25
-#&gt; 41   KEN            25
-#&gt; 42   BRA            23
-#&gt; 43   DZA            22
-#&gt; 44   NLD            20
-#&gt; 45   MYS            18
-#&gt; 46   NGA            17
-#&gt; 47   SAU            15
+#&gt; 15   ROU            44
+#&gt; 16   PER            44
+#&gt; 17   NZL            43
+#&gt; 18   CAN            42
+#&gt; 19   AUT            41
+#&gt; 20   COL            40
+#&gt; 21   KWT            40
+#&gt; 22   SGP            38
+#&gt; 23   PAN            37
+#&gt; 24   BEL            37
+#&gt; 25   DEU            35
+#&gt; 26   IND            33
+#&gt; 27   CHL            33
+#&gt; 28   BOL            32
+#&gt; 29   GHA            31
+#&gt; 30   CRI            31
+#&gt; 31   MEX            30
+#&gt; 32   ECU            30
+#&gt; 33   VEN            28
+#&gt; 34   GTM            27
+#&gt; 35   PRT            26
+#&gt; 36   DOM            26
+#&gt; 37   PAK            25
+#&gt; 38   BGD            25
+#&gt; 39   MAR            25
+#&gt; 40   BRA            24
+#&gt; 41   KEN            24
+#&gt; 42   LKA            24
+#&gt; 43   NLD            20
+#&gt; 44   DZA            20
+#&gt; 45   MYS            16
+#&gt; 46   SAU            15
+#&gt; 47   NGA            14
 #&gt; 48   DNK            14
-#&gt; 49   SWE            14
-#&gt; 50   HKG            11
-#&gt; 51   ISR            10
+#&gt; 49   SWE            13
+#&gt; 50   ISR            11
+#&gt; 51   HKG            11
 #&gt; 52   PHL             9
 #&gt; 53   GRC             9
-#&gt; 54   EGY             6
+#&gt; 54   EGY             5
 #&gt; 55   POL             4
 #&gt; 56   THA             3
 #&gt; 57   TUR             3
-#&gt; 58   IDN             2
+#&gt; 58   IDN             3
 #&gt; 59   VNM             2
 #&gt; 60   RUS             2
 #&gt; 61   JPN             1</div><div class='input'>
@@ -287,36 +287,37 @@ faster and the cache is updated daily. Defaults to <code>FALSE</code>.</p></td>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>gtrends_score</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                    region gtrends_score
 #&gt; 1               Thuringia           100
-#&gt; 2       Baden-Württemberg            98
-#&gt; 3                Saarland            98
-#&gt; 4  North Rhine-Westphalia            96
-#&gt; 5            Lower Saxony            94
-#&gt; 6                 Bavaria            93
-#&gt; 7                  Bremen            91
-#&gt; 8                  Berlin            90
-#&gt; 9      Schleswig-Holstein            90
-#&gt; 10                 Saxony            87
-#&gt; 11          Saxony-Anhalt            86
-#&gt; 12                Hamburg            85
-#&gt; 13   Rhineland-Palatinate            85
-#&gt; 14                  Hesse            84
-#&gt; 15            Brandenburg            83
-#&gt; 16 Mecklenburg-Vorpommern            82</div><div class='input'>
+#&gt; 2                Saarland            98
+#&gt; 3       Baden-Württemberg            96
+#&gt; 4                  Bremen            96
+#&gt; 5  North Rhine-Westphalia            95
+#&gt; 6    Rhineland-Palatinate            92
+#&gt; 7           Saxony-Anhalt            92
+#&gt; 8                 Bavaria            92
+#&gt; 9                  Berlin            90
+#&gt; 10                  Hesse            89
+#&gt; 11                 Saxony            87
+#&gt; 12            Brandenburg            87
+#&gt; 13 Mecklenburg-Vorpommern            85
+#&gt; 14     Schleswig-Holstein            85
+#&gt; 15           Lower Saxony            84
+#&gt; 16                Hamburg            79</div><div class='input'>
 <span class='va'>lst</span><span class='op'>[[</span><span class='fl'>2</span><span class='op'>]</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/filter.html'>filter</a></span><span class='op'>(</span><span class='va'>iso3c</span> <span class='op'>==</span> <span class='st'>"DEU"</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>city</span>, <span class='va'>gtrends_score</span><span class='op'>)</span> <span class='op'>%&gt;%</span>
   <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/arrange.html'>arrange</a></span><span class='op'>(</span><span class='op'>-</span><span class='va'>gtrends_score</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                 city gtrends_score
-#&gt; 1              Stade           100
-#&gt; 2            Schmelz            95
-#&gt; 3        Hückeswagen            90
-#&gt; 4           Dreieich            85
-#&gt; 5            Bedburg            83
-#&gt; 6        Rüsselsheim            81
-#&gt; 7  Bergisch Gladbach            81
-#&gt; 8      Wilhelmshaven            80
-#&gt; 9             Erfurt            73
-#&gt; 10          Nordhorn            65</div><div class='input'>
+</div><div class='output co'>#&gt;             city gtrends_score
+#&gt; 1    Nordstemmen           100
+#&gt; 2  Bad Salzuflen            97
+#&gt; 3       Arnsberg            95
+#&gt; 4   Herzogenrath            86
+#&gt; 5   Sindelfingen            82
+#&gt; 6   Unterhaching            82
+#&gt; 7      Offenburg            77
+#&gt; 8       Meschede            73
+#&gt; 9         Erfurt            71
+#&gt; 10      Wedemark            68
+#&gt; 11     Kitzingen            62</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
