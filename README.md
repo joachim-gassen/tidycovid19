@@ -25,7 +25,7 @@ benefits of open science.
 
 ## The Data
 
-As of January 18, 2024 these are the included data sources
+As of January 19, 2024 these are the included data sources
 
 ``` r
 data(tidycovid19_data_sources)
@@ -171,7 +171,7 @@ of countries.
 
 <td style="text-align:left;">
 
-2024-01-03
+2024-01-17
 
 </td>
 
@@ -208,7 +208,7 @@ definitions.
 
 <td style="text-align:left;">
 
-2024-01-04
+2024-01-18
 
 </td>
 
@@ -400,7 +400,7 @@ not comparable across data frames.
 
 <td style="text-align:left;">
 
-2023-12-31
+2024-01-14
 
 </td>
 
@@ -429,7 +429,7 @@ from all sources mentioned above.
 
 <td style="text-align:left;">
 
-2024-01-04
+2024-01-18
 
 </td>
 
