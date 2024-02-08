@@ -25,7 +25,7 @@ benefits of open science.
 
 ## The Data
 
-As of February 07, 2024 these are the included data sources
+As of February 08, 2024 these are the included data sources
 
 ``` r
 data(tidycovid19_data_sources)
